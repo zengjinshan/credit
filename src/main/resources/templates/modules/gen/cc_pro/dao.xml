@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>dao</name>
+	<filePath>src/main/java/${packageName}/${moduleName}/dao/${subModuleName}</filePath>
+	<fileName>${ClassName}Dao.java</fileName>
+	<content><![CDATA[
+package ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>;
+
+import java.util.Map;
+
+import com.tansun.easycare.core.persistence.CrudDao;
+import com.tansun.easycare.core.persistence.annotation.MyBatisDao;
+import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
+
+/**
+ * ${functionName}DAO接口
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+@MyBatisDao
+public interface ${ClassName}Dao extends CrudDao<${ClassName}> {
+	
+	/** 
+	 * 方法说明: 更新四个平台状态</br>
+	 * 
+	 * @param map
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	public int update${ClassName}Status(Map<String, String> map);
+	
+	/** 
+	 * 方法说明: 通过联合主键查询数据</br>
+	 * 
+	 * @param ${className}
+	 * @return
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	public ${ClassName} get${ClassName}ByKey(${ClassName} ${className});
+	
+}]]>
+	</content>
+</template>

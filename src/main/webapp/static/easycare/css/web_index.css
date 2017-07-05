@@ -1,0 +1,182 @@
+#main {
+	padding: 0;
+	margin: 0;
+}
+
+#main .container-fluid {
+	padding: 0px;
+}
+
+#main .container-fluid .extend {
+	padding: 0 4px 0 6px;
+}
+
+#header {
+	margin: 0px;
+	position: static;
+	
+}
+
+#header li {
+	font-size: 14px;
+	_font-size: 12px;
+	/* padding-top:34px; */
+}
+
+#header .navbar-inner {
+	/* width: 100%;
+			height: 75px; */
+	background-image: url(../images/color_common/head_bground.gif);
+	/* background-repeat: repeat-x;
+    		background-position: left top; */
+}
+
+#header .brand {
+	width: 351px;
+	float: left;
+	height: 54px;
+	margin-left: 5px;
+	/* font-family:Helvetica, Georgia, Arial, sans-serif, 黑体; */
+	/* font-size:26px; */
+	/* padding-left:33px; */
+	/*background-image: url(../images/color_common/jgbs-logo.png);*/
+	 background-image: url(../images/color_common/zxcx-logo_yanshi.png);
+	background-repeat: no-repeat;
+	background-position: left;
+}
+
+#header .headermenu {
+	width: 100%;
+    height: 34px;
+    display: table;
+    margin: 0 auto;
+    background-color: #4494AB;
+}
+
+/*adance menu_layouttop*/
+#header .ddsmoothmenu{
+width: 100%;
+}
+
+#header .ddsmoothmenu ul{
+z-index:100;
+margin: 0;
+padding: 0;
+list-style-type: none;
+}
+
+#header .ddsmoothmenu ul li{
+position: relative;
+display: inline;
+float: left;
+font-size: 12px;
+}
+
+#header .ddsmoothmenu ul li a{
+display: block;
+/* color: #FFF; */
+padding: 7px 15px;
+/*border-right: 1px solid #778;*/
+text-decoration: none;
+}
+
+#header .ddsmoothmenu ul li a{ /*IE6 hack to get sub menu links to behave correctly*/
+display: inline-block;
+}
+
+#header .ddsmoothmenu ul li a:link, .ddsmoothmenu ul li a:visited{
+color: #FFF;
+}
+
+#header .ddsmoothmenu ul li a.selected{ /*CSS class that's dynamically added to the currently active menu items' LI A element*/
+background: #0ECE71; 
+color: #fff;
+}
+
+#header .ddsmoothmenu ul li a:hover{
+background: #0ECE71; /*background of menu items during onmouseover (hover state)*/
+color: #fff;
+}
+	
+#header .ddsmoothmenu ul li ul{
+border:solid 1px #CFCFCF;
+position: absolute;
+left: 0;
+display: none; /*collapse all sub menus to begin with*/
+visibility: hidden;
+-webkit-box-shadow: 3px 3px 9px #DDDCDC;
+-moz-box-shadow: 3px 3px 9px #DDDCDC;
+box-shadow: 3px 3px 9px #DDDCDC;
+*box-shadow: 3px 3px 9px #DDDCDC;
+background:#FFF;
+}
+
+
+#header .ddsmoothmenu ul li ul li{
+display: list-item;
+float: none;
+}
+
+#header .ddsmoothmenu ul li ul li ul{
+top: 0;
+}
+
+#header .ddsmoothmenu ul li ul li a{
+width: 130px; /*width of sub menus*/
+padding: 5px;
+padding-left:15px;
+margin: 0;
+border-top-width: 0;
+}
+#header .ddsmoothmenu ul li ul li a:link, .ddsmoothmenu ul li ul li a:visited{
+color: #333;
+}
+#header .ddsmoothmenu ul li ul li a.selected{ /*CSS class that's dynamically added to the currently active menu items' LI A element*/
+background: #CCC; 
+color: #000;
+}
+#header .ddsmoothmenu ul li ul li a:hover{
+background: #CCC; /*background of menu items during onmouseover (hover state)*/
+color: #000;
+}
+#header .ddsmoothmenu{height: 1%;} /*Holly Hack for IE7 and below*/
+
+.rightarrowclass {
+    position: absolute;
+    top: 6px;
+    right: 5px;
+}
+
+#footer {
+	/* margin: 8px 0 0 0; */
+	/* padding: 3px 0 0 0; */
+	width: 100%;
+    height: 36px;
+    line-height: 36px;
+	font-size: 13px;
+	text-align: center;
+	background: #4494AB;
+	/* border-top: 2px solid #0663A2; */
+}
+
+#footer, #footer a {
+	/* color: #999; */
+	color: #fff;
+}
+
+#left {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#left .collapse {
+	position: static;
+}
+
+#userControl>li>a { /*color:#fff;*/
+	text-shadow: none;
+}
+
+#userControl>li>a:hover, #user #userControl>li.open>a {
+	background: transparent;
+}

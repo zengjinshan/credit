@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>serviceImpl</name>
+	<filePath>src/main/java/${packageName}/${moduleName}/service/${subModuleName}/impl</filePath>
+	<fileName>${ClassName}ServiceImpl.java</fileName>
+	<content><![CDATA[
+package ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tansun.easycare.core.persistence.Page;
+import com.tansun.easycare.core.service.impl.CrudServiceImpl;
+import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
+import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Vo;
+import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dao;
+import ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service;
+
+/**
+ * ${functionName}ServiceImpl
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+@Service("${className}Service")
+@Transactional(readOnly = true)
+public class ${ClassName}ServiceImpl extends CrudServiceImpl<${ClassName}Dao, ${ClassName}> implements ${ClassName}Service{
+
+	/* 
+	 * 查询全部数据 </br>
+	 * 
+	 * @see com.tansun.easycare.core.service.impl.CrudServiceImpl#findList(com.tansun.easycare.core.persistence.DataEntity)
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	public List<${ClassName}> findList(${ClassName} ${className}) {
+		return super.findList(${className});
+	}
+	
+	/* 
+	 * 分页查询数据 </br>
+	 * 
+	 * @see com.tansun.easycare.core.service.impl.CrudServiceImpl#findPage(com.tansun.easycare.core.persistence.Page, com.tansun.easycare.core.persistence.DataEntity)
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	public Page<${ClassName}> findPage(Page<${ClassName}> page, ${ClassName} ${className}) {
+		return super.findPage(page, ${className});
+	}
+	
+	/* 
+	 * 新增数据 保存 </br>
+	 * 
+	 * @see com.tansun.easycare.core.service.impl.CrudServiceImpl#save(com.tansun.easycare.core.persistence.DataEntity)
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	@Transactional(readOnly = false)
+	public void save(${ClassName} ${className}) {
+		dao.insert(${className});
+	}
+	
+	/* 
+	 * 修改数据 保存 </br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#update(${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName})
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public int update(${ClassName} ${className}) {
+		return dao.update(${className});
+	}
+	
+	/* 
+	 * 删除数据 </br>
+	 * 
+	 * @see com.tansun.easycare.core.service.impl.CrudServiceImpl#delete(com.tansun.easycare.core.persistence.DataEntity)
+	 * @author 作者: cah
+	 * @date 创建时间：2017年3月30日 上午11:23:42
+	 */
+	@Transactional(readOnly = false)
+	public void delete(${ClassName} ${className}) {
+		super.delete(${className});
+	}
+	
+	 /* 
+	 * 更新四个平台状态 </br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#update${ClassName}Status(java.util.Map)
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public int update${ClassName}Status(Map<String,Object> map) {
+		return dao.update${ClassName}Status(map);
+	}
+	
+	/* 
+	 * 通过联合主键查询数据</br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#get${ClassName}ByKey(${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName})
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	@Override
+	public ${ClassName} get${ClassName}ByKey(${ClassName} ${className}) {
+		return dao.get${ClassName}ByKey(${className});
+	}
+	/* 
+	 * 修改日期</br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#get${ClassName}ByKey(${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName})
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	@Override
+	public void setQueryCondition(${ClassName}Vo ${className}Vo, ${ClassName} ${className}) throws Exception {
+		BeanUtils.copyProperties(${className}Vo, ${className});
+		<#list table.columnList as c>
+			<#-- 如果不是基类属性 -->
+		    <#if c.isNotBaseField>
+			<#-- 扣除特殊字段 -->
+			<#if c.simpleJavaField != "regDataStatus" && c.simpleJavaField != "regCheckStatus" && c.simpleJavaField != "regSendStatus" && c.simpleJavaField != "regOperateStatus" && c.simpleJavaField != "regOrgNo">
+	    	<#-- 父类对象 -->
+	    	<#if table.parentExists && table.parentTableFk == c.name>
+	    	<#else>
+	    	<#if  c.showType == "dateselect">
+	      SimpleDateFormat ${c.simpleJavaField}date = new SimpleDateFormat("yyyyMMdd");
+        	   if(${className}Vo.get${c.simpleJavaField?cap_first}() !=null && !${className}Vo.get${c.simpleJavaField?cap_first}().equals("")){
+        		   Date date = ${c.simpleJavaField}date.parse(${className}Vo.get${c.simpleJavaField?cap_first}());
+       	          ${className}.set${c.simpleJavaField?cap_first}(date);
+        	   }
+	
+		</#if>
+		<#if  c.showType == "dateselect" && c.queryType == "between">
+		   SimpleDateFormat ${c.simpleJavaField}timedate = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+			if(${className}Vo.getBegin${c.simpleJavaField?cap_first}() !=null && !${className}Vo.getBegin${c.simpleJavaField?cap_first}().equals("")){
+				Date dateb = ${c.simpleJavaField}timedate.parse(${className}Vo.getBegin${c.simpleJavaField?cap_first}());
+		        ${className}.setBegin${c.simpleJavaField?cap_first}(dateb);
+			}
+			if(${className}Vo.getEnd${c.simpleJavaField?cap_first}() !=null && !${className}Vo.getEnd${c.simpleJavaField?cap_first}().equals("")){
+				Date datee = ${c.simpleJavaField}timedate.parse(${className}Vo.getEnd${c.simpleJavaField?cap_first}());
+				${className}.setEnd${c.simpleJavaField?cap_first}(datee);
+			}	
+	
+		</#if>
+		</#if>
+		</#if>
+		</#if>
+	</#list>
+	}
+}]]>
+	</content>
+</template>

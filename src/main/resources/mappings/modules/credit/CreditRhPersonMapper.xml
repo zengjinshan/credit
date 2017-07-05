@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="creditRhPersonMapper">
+
+    <select id="selectCreditPersonList" resultType="com.tansun.easycare.modules.credit.domain.PersonDataCapture">
+        SELECT id,
+        CREATE_DATE AS createDate,
+        UPDATE_DATE AS updateDate,
+        CREATE_USER AS createUser,
+        UPDATE_USER AS updateUser,
+        SEARCHED_USER_NAME AS searchedUserName,
+        SEARCHED_CER_TYPE AS searchedCerType,
+        SEARCHED_CER_NO AS searchedCerNo,
+        QUERY_TYPE AS queryType,
+        QUERY_REASON AS queryReason
+        FROM
+        T_CREDIT_PERSON_DATA_CAPTURE
+        WHERE 1=1
+
+        <if test="searchedUserName !=null and searchedUserName != ''">
+            AND SEARCHED_USER_NAME LIKE '%'||#{searchedUserName}||'%'
+        </if>
+
+        <if test="searchedCerType !=null and searchedCerType !=''">
+            AND SEARCHED_CER_TYPE=#{searchedCerType}
+        </if>
+
+        <if test="searchedCerNo !=null and searchedCerNo !=''">
+            AND SEARCHED_CER_NO=#{searchedCerNo}
+        </if>
+
+        <if test="queryType !=null and queryType!=''">
+            AND QUERY_TYPE=#{queryType}
+        </if>
+
+        <if test="queryReason !=null and queryReason !=''">
+            AND QUERY_REASON=#{queryReason}
+        </if>
+
+        <if test="createUser!=null and createUser !=''">
+            AND CREATE_USER=#{createUser}
+        </if>
+        ORDER BY CREATE_DATE DESC
+    </select>
+
+    <insert id="saveDataCapture">
+        INSERT INTO T_CREDIT_PERSON_DATA_CAPTURE(ID,CREATE_DATE,CREATE_USER,UPDATE_DATE,UPDATE_USER,CAPTURE_DATA,
+        SEARCHED_USER_NAME,SEARCHED_CER_TYPE,SEARCHED_CER_NO,QUERY_TYPE,QUERY_REASON,QUERY_SUCCESS,SEARCHER_LOGIN_IP,
+        SEARCHER_LOGIN_RH_PASSWORD,SEARCHER_LOGIN_RH_USER_ID,SEARCHER_NAME)
+        VALUES (
+        #{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        #{captureData},
+        #{searchedUserName},
+        #{searchedCerType},
+        #{searchedCerNo},
+        #{queryType},
+        #{queryReason},
+        #{querySuccess},
+        #{searcherLoginIp},
+        #{searcherLoginRhPassword},
+        #{searcherLoginRhUserId},
+        #{searcherName}
+        )
+    </insert>
+    </mapper>

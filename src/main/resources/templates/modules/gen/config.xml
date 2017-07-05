@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<!-- 生成分类 -->
+	<category>
+		<category value="curd" label="增删改查（单表）">
+			<template>curd/controller.xml</template>
+			<template>curd/service.xml</template>
+			<template>curd/serviceImpl.xml</template>
+			<template>category-ref:dao</template>
+			<template>curd/viewForm.xml</template>
+			<template>curd/viewFormJs.xml</template>
+			<template>curd/viewList.xml</template>
+			<template>curd/viewListJs.xml</template>
+			<template>curd/sql.xml</template>
+		</category>
+		<category value="curd_many" label="增删改查（一对多）">
+			<template>curd/controller.xml</template>
+			<template>curd/serviceMany.xml</template>
+			<template>curd/serviceManyImpl.xml</template>
+			<template>category-ref:dao</template>
+			<template>curd/viewFormMany.xml</template>
+			<template>curd/viewFormManyJs.xml</template>
+			<template>curd/viewList.xml</template>
+			<template>curd/viewListJs.xml</template>
+			<childTable>
+				<template>category-ref:dao</template>
+			</childTable>
+		</category>
+		<category value="dao" label="仅持久层（dao/entity/mapper）">
+			<template>dao/dao.xml</template>
+			<template>dao/entity.xml</template>
+			<template>dao/mapper.xml</template>
+		</category>
+		<category value="treeTable" label="树结构表（一体）">
+			<template>treetable/controller.xml</template>
+			<template>treetable/service.xml</template>
+			<template>treetable/serviceImpl.xml</template>
+			<template>treetable/dao.xml</template>
+			<template>treetable/entity.xml</template>
+			<template>treetable/mapper.xml</template>
+			<template>treetable/viewForm.xml</template>
+			<template>treetable/viewFormJs.xml</template>
+			<template>treetable/viewList.xml</template>
+		</category>
+		<category value="treeTableAndList" label="树结构表（左树右表）">
+			<template>category-ref:dao</template>
+		</category>
+		<category value="cc" label="长春项目定制模板">
+			<template>cc/controller.xml</template>
+			<template>cc/entity.xml</template>
+			<template>cc/viewList.xml</template>
+			<template>cc/viewFormAdd.xml</template>
+			<template>cc/viewFormEdit.xml</template>
+			<template>cc/viewFormView.xml</template>
+			<template>cc/viewListJs.xml</template>
+			<template>cc/viewFormJs.xml</template>
+			<template>cc/service.xml</template>
+			<template>cc/serviceImpl.xml</template>
+			<template>cc/dao.xml</template>
+			<template>cc/mapper.xml</template>
+			<template>cc/check.xml</template>
+			<template>cc/sql.xml</template>
+		</category>
+		<category value="cc_pro" label="长春项目定制模板(提交复核)">
+			<template>cc_pro/controller.xml</template>
+			<template>cc_pro/entity.xml</template>
+			<template>cc_pro/viewList.xml</template>
+			<template>cc_pro/viewFormAdd.xml</template>
+			<template>cc_pro/viewFormEdit.xml</template>
+			<template>cc_pro/viewFormView.xml</template>
+			<template>cc_pro/viewListJs.xml</template>
+			<template>cc_pro/viewFormJs.xml</template>
+			<template>cc_pro/service.xml</template>
+			<template>cc_pro/serviceImpl.xml</template>
+			<template>cc_pro/dao.xml</template>
+			<template>cc_pro/mapper.xml</template>
+			<template>cc_pro/check.xml</template>
+			<template>cc_pro/sql.xml</template>
+		</category>
+		<category value="cc_east" label="银监标准化EAST">
+			<template>cc_east/controller.xml</template>
+			<template>cc_east/entity.xml</template>
+			<template>cc_east/viewList.xml</template>
+			<template>cc_east/viewFormAdd.xml</template>
+			<template>cc_east/viewFormEdit.xml</template>
+			<template>cc_east/viewFormView.xml</template>
+			<template>cc_east/viewListJs.xml</template>
+			<template>cc_east/viewFormJs.xml</template>
+			<template>cc_east/service.xml</template>
+			<template>cc_east/serviceImpl.xml</template>
+			<template>cc_east/dao.xml</template>
+			<template>cc_east/mapper.xml</template>
+			<template>cc_east/check.xml</template>
+			<template>cc_east/sql.xml</template>
+		</category>
+		<category value="cc_bak" label="长春项目定制模板(无流程)">
+			<template>cc_bak/controller.xml</template>
+			<template>cc_bak/entity.xml</template>
+			<template>cc_bak/viewList.xml</template>
+			<template>cc_bak/viewFormAdd.xml</template>
+			<template>cc_bak/viewFormEdit.xml</template>
+			<template>cc_bak/viewFormView.xml</template>
+			<template>cc_bak/viewListJs.xml</template>
+			<template>cc_bak/viewFormJs.xml</template>
+			<template>cc_bak/service.xml</template>
+			<template>cc_bak/serviceImpl.xml</template>
+			<template>cc_bak/dao.xml</template>
+			<template>cc_bak/mapper.xml</template>
+			<template>cc_bak/check.xml</template>
+			<template>cc_bak/sql.xml</template>
+		</category>
+		<category value="ccdate" label="长春项目定制模板支持日期">
+			<template>ccdate/controller.xml</template>
+			<template>ccdate/entity.xml</template>
+			<template>ccdate/entityVo.xml</template>
+			<template>ccdate/viewList.xml</template>
+			<template>ccdate/viewFormAdd.xml</template>
+			<template>ccdate/viewFormEdit.xml</template>
+			<template>ccdate/viewListJs.xml</template>
+			<template>ccdate/viewFormJs.xml</template>
+			<template>ccdate/service.xml</template>
+			<template>ccdate/serviceImpl.xml</template>
+			<template>ccdate/dao.xml</template>
+			<template>ccdate/mapper.xml</template>
+			<template>ccdate/check.xml</template>
+		</category>
+	</category>
+	<!-- java类型 -->
+	<javaType>
+		<dict value="String" label="String"/>
+		<dict value="Long" label="Long"/>
+		<dict value="Integer" label="Integer"/>
+		<dict value="Double" label="Double"/>
+		<dict value="java.math.BigDecimal" label="BigDecimal"/>
+		<dict value="java.util.Date" label="Date"/>
+		<dict value="com.tansun.easycare.modules.sys.entity.User" label="User"/>
+		<dict value="com.tansun.easycare.modules.sys.entity.Office" label="Office"/>
+		<dict value="com.tansun.easycare.modules.sys.entity.Area" label="Area"/>
+		<dict value="This" label="ThisObj" description="生成当前对象"/>
+		<dict value="Custom" label="Custom" description="自定义对象，生成后手动设置"/>
+	</javaType>
+	<!-- 查询类型 -->
+	<queryType>
+		<dict value="=" label="="/>
+		<dict value="!=" label="!="/>
+		<dict value="&gt;" label="&gt;"/>
+		<dict value="&gt;=" label="&gt;="/>
+		<dict value="&lt;" label="&lt;"/>
+		<dict value="&lt;=" label="&lt;="/>
+		<dict value="between" label="Between"/>
+		<dict value="like" label="Like"/>
+		<dict value="left_like" label="Left Like"/>
+		<dict value="right_like" label="Right Like"/>
+	</queryType>
+	<!-- 字段显示类型 -->
+	<showType>
+		<dict value="input" label="单行文本"/>
+		<dict value="textarea" label="多行文本"/>
+		<dict value="select" label="下拉选项(单选)"/>
+		<dict value="multiselect" label="下拉选项(多选)"/>
+		<dict value="radiobox" label="单选按钮"/>
+		<dict value="checkbox" label="复选框"/>
+		<dict value="dateselect" label="日期选择"/>
+		<dict value="userselect" label="人员选择"/>
+		<dict value="officeselect" label="部门选择"/>
+		<dict value="areaselect" label="区域选择"/>
+		<dict value="treeselect" label="树选择控件"/>
+	</showType>
+</config>

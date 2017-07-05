@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>check</name>
+	<filePath>src/main/java/${packageName}/${moduleName}/check/${subModuleName}</filePath>
+	<fileName>${ClassName}Check.java</fileName>
+	<content><![CDATA[
+package ${packageName}.${moduleName}.check<#if subModuleName != "">.${subModuleName}</#if>;
+
+
+import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
+
+/**
+ * ${functionName}Check
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+public class ${ClassName}Check {
+
+	
+
+}]]>
+	</content>
+</template>

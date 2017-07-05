@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>viewForm</name>
+	<filePath>src/main/webapp/WEB-INF/views/${lastPackageName}/${moduleName}/${subModuleName}</filePath>
+	<fileName>${className}FormView.jsp</fileName>
+	<content><![CDATA[
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<html>
+<head>
+	<title>${functionNameSimple}管理</title>
+	<meta name="decorator" content="default"/>
+	<script src="${r"${ctxStatic}"}/${lastPackageName}/js/${moduleName}/${className}Form.js" type="text/javascript"></script>
+</head>
+<body>
+	<br/>
+	<form:form id="inputForm" modelAttribute="${className}" action="${r"${ctx}"}/${urlPrefix}/update" method="post" class="form-horizontal">
+		<sys:message content="${r"${message}"}"/>
+		<#assign colno=0 />
+		<#list table.columnList as c>
+			<#-- 扣除特殊字段 -->
+			<#if c.simpleJavaField != "regDataStatus" && c.simpleJavaField != "regCheckStatus" && c.simpleJavaField != "regSendStatus" && c.simpleJavaField != "regOperateStatus" && c.simpleJavaField != "regOrgNo" && c.simpleJavaField != "createBy" && c.simpleJavaField != "createDate" && c.simpleJavaField != "updateBy" && c.simpleJavaField != "updateDate" && c.simpleJavaField != "delFlag" && c.simpleJavaField != "remarks">
+				<#if c.isEdit?? && c.isEdit == "1" && c.isNotBaseField>
+			   		<#if colno%2 == 0>
+		<div class="control-group">
+		 	<div class="container-fluid">
+		 		<div class="span6">
+		 			<#else>
+		 		<div class="span6">
+    		   		</#if>
+					<label class="control-label">${c.comments}：</label>
+					<div class="controls">
+					<#if c.showType == "input">
+						${"$"}{${className}.${c.javaFieldId}}
+					<#elseif c.showType == "textarea">
+					    ${"$"}{${className}.${c.javaFieldId}}
+					<#elseif c.showType == "select">
+					    ${"$"}{fns:getDictLabels(${className}.${c.javaFieldId}, '${c.dictType}', '')}
+					<#elseif c.showType == "multiselect">
+					     ${"$"}{fns:getDictLabels(${className}.${c.javaFieldId}, '${c.dictType}', '')}
+					<#elseif c.showType == "checkbox">
+						${"$"}{${className}.${c.javaFieldId}}
+					<#elseif c.showType == "radiobox">
+						${"$"}{${className}.${c.javaFieldId}}
+					<#elseif c.showType == "dateselect">
+							<#if c.simpleJavaType == "Date">
+							value="<fmt:formatDate value="${"$"}{${className}.${c.javaFieldId}}" pattern="<#if c.dictType??>${c.dictType}<#else>yyyyMMdd</#if>"/>"
+							<#else>
+							${"$"}{${className}.${c.javaFieldId}}
+							</#if>
+					<#elseif c.showType == "userselect">
+						<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
+							title="用户" url="/sys/office/treeData?type=3" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"<#if c.isPk == "1"> disabled="true"</#if>/>
+					<#elseif c.showType == "officeselect">
+						<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
+							title="部门" url="/sys/office/treeData?type=2" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"<#if c.isPk == "1"> disabled="true"</#if>/>
+					<#elseif c.showType == "areaselect">
+						<sys:treeselect id="${c.simpleJavaField}" name="${c.javaFieldId}" value="${"$"}{${className}.${c.javaFieldId}}" labelName="${c.javaFieldName}" labelValue="${"$"}{${className}.${c.javaFieldName}}"
+							title="区域" url="/sys/area/treeData" cssClass="<#if c.isNull != "1">required</#if>" allowClear="true" notAllowSelectParent="true"<#if c.isPk == "1"> disabled="true"</#if>/>
+					</#if>
+					<#if c.isNull != "1">
+						<span class="help-inline"><font color="red">*</font></span>
+					</#if>
+					</div>
+			<#if colno%2 == 0>
+			 	</div>
+			<#else>
+				</div>
+			</div>
+		</div>
+	    	</#if>
+			<#assign colno = colno + 1 />
+				</#if>
+			</#if>
+		</#list>
+		<#if colno%2 != 0>
+			</div>
+		</div>
+	    </#if>
+		<div class="control-group">
+		 	<div class="container-fluid">
+		 		<div class="span11">
+					<label class="control-label">备注信息：</label>
+					<div class="controls">
+					   ${"$"}{${className}.remarks}
+					</div>
+			 	</div>
+			</div>
+		</div>
+		<div class="form-actions">
+			<button class="btn_public" type="button" onclick="history.go(-1)"><i class="icon button_back"></i>返回</button>
+		</div>
+	</form:form>
+</body>
+</html>]]>
+	</content>
+</template>

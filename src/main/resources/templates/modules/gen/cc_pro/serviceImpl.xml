@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>serviceImpl</name>
+	<filePath>src/main/java/${packageName}/${moduleName}/service/${subModuleName}/impl</filePath>
+	<fileName>${ClassName}ServiceImpl.java</fileName>
+	<content><![CDATA[
+package ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tansun.easycare.core.persistence.Page;
+import com.tansun.easycare.core.service.impl.CrudServiceImpl;
+import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
+import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dao;
+import ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service;
+import com.tansun.easycare.reg.base.common.RegSysCommon;
+import com.tansun.easycare.reg.base.dao.RegProcessDao;
+import com.tansun.easycare.reg.base.dao.RegTableProcessDao;
+import com.tansun.easycare.reg.base.entity.RegProcess;
+import com.tansun.easycare.reg.util.RegProcessStatusUtil;
+
+/**
+ * ${functionName}ServiceImpl
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+@Service("${className}Service")
+@Transactional(readOnly = true)
+public class ${ClassName}ServiceImpl extends CrudServiceImpl<${ClassName}Dao, ${ClassName}> implements ${ClassName}Service{
+
+	@Autowired
+	private RegTableProcessDao regTableProcessdao;
+	
+	@Autowired
+	private RegProcessDao regProcessDao;
+
+	/* 
+	 * 查询全部数据 </br>
+	 * 
+	 * @see com.tansun.easycare.core.service.impl.CrudServiceImpl#findList(com.tansun.easycare.core.persistence.DataEntity)
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	public List<${ClassName}> findList(${ClassName} ${className}) {
+		return super.findList(${className});
+	}
+	
+	/* 
+	 * 分页查询数据 </br>
+	 * 
+	 * @see com.tansun.easycare.core.service.impl.CrudServiceImpl#findPage(com.tansun.easycare.core.persistence.Page, com.tansun.easycare.core.persistence.DataEntity)
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	public Page<${ClassName}> findPage(Page<${ClassName}> page, ${ClassName} ${className}) {
+		return super.findPage(page, ${className});
+	}
+	
+	/* 
+	 * 新增数据 保存 </br>
+	 * 
+	 * @see com.tansun.easycare.core.service.impl.CrudServiceImpl#save(com.tansun.easycare.core.persistence.DataEntity)
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	@Transactional(readOnly = false)
+	public void save(${ClassName} ${className}) {
+		dao.insert(${className});
+	}
+	
+	/* 
+	 * 修改数据 保存 </br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#update(${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName})
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public int update(${ClassName} ${className}) {
+		// 修改数据状态
+		update${ClassName}Status(${className}, RegSysCommon.REG_OPERATE_STATUS_EDT);
+		return dao.update(${className});
+	}
+	
+	/* 
+	 * 删除数据 </br>
+	 * 
+	 * @see com.tansun.easycare.core.service.impl.CrudServiceImpl#delete(com.tansun.easycare.core.persistence.DataEntity)
+	 * @author 作者: cah
+	 * @date 创建时间：2017年3月30日 上午11:23:42
+	 */
+	@Transactional(readOnly = false)
+	public void delete(${ClassName} ${className}) {
+//		super.delete(${className});
+		// 修改数据状态
+		update${ClassName}Status(${className}, RegSysCommon.REG_OPERATE_STATUS_DEL);
+	}
+	
+	/* 
+	 * 更新四个平台状态 </br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#update(${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}, java.lang.String)
+	 * @author 作者: cah
+	 * @date 创建时间：2017年4月15日 下午3:31:53
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public int update${ClassName}Status(${ClassName} ${className}, String operateType) {
+		// 获取表流程
+		String groupCode = regTableProcessdao.findRegTableProcess(${ClassName}.TABLE_NAME);
+		// 获取数据状态
+		${ClassName} status = dao.get${ClassName}ByKey(${className});
+		// 获取当前数据状态以及操作类型和所属流程组
+		Map<String, String> map = RegProcessStatusUtil.getRegDataEntityStatus(status, operateType, groupCode);
+		RegProcess process = regProcessDao.findNextRegProcess(map);
+		// 获取下一个数据状态状态
+		Map<String, String> nextMap = RegProcessStatusUtil.getNextStatus(process);
+		// 设置主键
+		<#list table.columnList as c>
+			<#if c.isPk == "1">
+		nextMap.put("${c.javaFieldId}", <#if c.simpleJavaType == "Long">String.valueOf(</#if>${className}.get${c.javaFieldId?cap_first}()<#if c.simpleJavaType == "Long">)</#if>);
+			</#if>
+		</#list>
+		return update${ClassName}Status(nextMap);
+	}
+	
+	/** 
+	 * 方法说明: 调用Dao层的修改方法</br>
+	 * 
+	 * @param map
+	 * @return
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	private int update${ClassName}Status(Map<String, String> map) {
+		return dao.update${ClassName}Status(map);
+	}
+	
+	/* 
+	 * 通过联合主键查询数据</br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#get${ClassName}ByKey(${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName})
+	 * @author ${functionAuthor}
+	 * @version ${functionVersion}
+	 */
+	@Override
+	public ${ClassName} get${ClassName}ByKey(${ClassName} ${className}) {
+		return dao.get${ClassName}ByKey(${className});
+	}
+	
+	/* 
+	 * 提交 </br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#submit${ClassName}(${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName})
+	 * @author 作者: cah
+	 * @date 创建时间：2017年5月2日 下午8:58:02
+	 */
+	@Override
+	public void submit${ClassName}(${ClassName} ${className}) {
+		update${ClassName}Status(${className}, RegSysCommon.REG_OPERATE_STATUS_SUB);
+	}
+
+	/* 
+	 * 复核 </br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#via${ClassName}(${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName})
+	 * @author 作者: cah
+	 * @date 创建时间：2017年5月2日 下午8:58:10
+	 */
+	@Override
+	public void via${ClassName}(${ClassName} ${className}) {
+		update${ClassName}Status(${className}, RegSysCommon.REG_OPERATE_STATUS_VIA);
+	}
+
+	/* 
+	 * 退回 </br>
+	 * 
+	 * @see ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service#return${ClassName}(${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName})
+	 * @author 作者: cah
+	 * @date 创建时间：2017年5月2日 下午8:58:15
+	 */
+	@Override
+	public void return${ClassName}(${ClassName} ${className}) {
+		update${ClassName}Status(${className}, RegSysCommon.REG_OPERATE_STATUS_RET);
+	}
+	
+}]]>
+	</content>
+</template>

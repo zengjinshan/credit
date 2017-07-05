@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>sql</name>
+	<filePath>sql</filePath>
+	<fileName>${table.name}_menu.sql</fileName>
+	<content><![CDATA[
+	<#assign uuid = "${ClassName?lower_case}">
+	<#assign len = uuid?length/>
+	<#list len..29 as aa>
+	<#assign uuid = uuid + "0">
+	</#list>
+<#-- 表菜单 -->
+insert into sys_menu (ID, PARENT_ID, PARENT_IDS, NAME, SORT, HREF, TARGET, ICON, IS_SHOW, PERMISSION, CREATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_DATE, REMARKS, DEL_FLAG)
+values ('${uuid}00', '1', '0,1,', '${functionName}', 900, '/${urlPrefix}', null, null, '1', null, '1', '10-4月 -17 ', '1', '10-4月 -17 ', null, '0');
+
+<#-- 查看 -->
+insert into sys_menu (ID, PARENT_ID, PARENT_IDS, NAME, SORT, HREF, TARGET, ICON, IS_SHOW, PERMISSION, CREATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_DATE, REMARKS, DEL_FLAG)
+values ('${uuid}01', '${uuid}00', '0,1,${uuid}00,', '查看 ', 10, null, null, null, '0', '${permissionPrefix}:view', '1', '10-4月 -17 ', '1', '10-4月 -17 ', null, '0');
+
+<#-- 编辑 -->
+insert into sys_menu (ID, PARENT_ID, PARENT_IDS, NAME, SORT, HREF, TARGET, ICON, IS_SHOW, PERMISSION, CREATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_DATE, REMARKS, DEL_FLAG)
+values ('${uuid}02', '${uuid}00', '0,1,${uuid}00,', '编辑', 20, null, null, null, '0', '${permissionPrefix}:edit', '1', '10-4月 -17 ', '1', '10-4月 -17 ', null, '0');
+
+<#-- 导入 -->
+insert into sys_menu (ID, PARENT_ID, PARENT_IDS, NAME, SORT, HREF, TARGET, ICON, IS_SHOW, PERMISSION, CREATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_DATE, REMARKS, DEL_FLAG)
+values ('${uuid}03', '${uuid}00', '0,1,${uuid}00,', '导入', 30, null, null, null, '0', '${permissionPrefix}:import', '1', '10-4月 -17 ', '1', '10-4月 -17 ', null, '0');
+
+<#-- 导出 -->
+insert into sys_menu (ID, PARENT_ID, PARENT_IDS, NAME, SORT, HREF, TARGET, ICON, IS_SHOW, PERMISSION, CREATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_DATE, REMARKS, DEL_FLAG)
+values ('${uuid}04', '${uuid}00', '0,1,${uuid}00,', '导出', 40, null, null, null, '0', '${permissionPrefix}:export', '1', '10-4月 -17 ', '1', '10-4月 -17 ', null, '0');
+
+commit;
+]]>
+	</content>
+</template>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>viewListJs</name>
+	<filePath>src/main/webapp/static/${lastPackageName}/js/${moduleName}</filePath>
+	<fileName>${className}List.js</fileName>
+	<content><![CDATA[
+var ${className}List = new function() {
+	return {
+		// 查询
+		query : function() {
+			var queryCondition = $("#searchForm").serialize();
+			$.ajax({
+				url : ctx + "/${urlPrefix}/setQueryCondition",
+				data : queryCondition,
+				async : false,
+				success : function(){
+					$("#searchForm").submit();
+				}
+			});
+		},
+		// 新增
+		add : function() {
+			go(ctx + "/${urlPrefix}/formAdd");
+		},
+		// 修改
+		modify : function() {
+			var checkDatas = getTableCheckedDatas("contentTable");  // 获取所选的数据
+			if(!checkDatas || checkDatas.length != 1){
+				alertx("请选择一条记录");
+				return ;
+			}
+			var tableName = "${table.name?upper_case}";  // 表名
+			var operateType = "EDT";  // 操作类型
+			<#-- 扣除特殊字段 -->
+			<#assign index = 1>
+			<#assign regDataStatus = 0>
+			<#assign regCheckStatus = 0>
+			<#assign regSendStatus = 0>
+			<#assign regOperateStatus = 0>
+			<#list table.columnList as c>
+				<#if c.isList == "1">
+					<#if c.simpleJavaField == "regDataStatus">
+					<#assign regDataStatus = regDataStatus + 1>
+			var regDataStatus = checkDatas[0][${index}];  // ${c.comments}
+					</#if>
+					<#if c.simpleJavaField == "regCheckStatus">
+					<#assign regCheckStatus = regCheckStatus + 1>
+			var regCheckStatus = checkDatas[0][${index}];  // ${c.comments}
+					</#if>
+					<#if c.simpleJavaField == "regSendStatus">
+					<#assign regSendStatus = regSendStatus + 1>
+			var regSendStatus = checkDatas[0][${index}];  // ${c.comments}
+					</#if>
+					<#if c.simpleJavaField == "regOperateStatus">
+					<#assign regOperateStatus = regOperateStatus + 1>
+			var regOperateStatus = checkDatas[0][${index}];  // ${c.comments}
+					</#if>
+					<#assign index = index + 1>
+				</#if>
+			</#list>
+			<#if regDataStatus == 0>
+			var regDataStatus = "00";  // 数据状态
+			</#if>
+			<#if regCheckStatus == 0>
+			var regCheckStatus = "00";  // 校验状态
+			</#if>
+			<#if regSendStatus == 0>
+			var regSendStatus = "00";  // 报送状态
+			</#if>
+			<#if regOperateStatus == 0>
+			var regOperateStatus = "00";  // 操作状态
+			</#if>
+			// 对数据状态、校验状态、报送状态、操作状态进行判断
+			//determine(tableName, operateType, regDataStatus, regCheckStatus, regSendStatus, regOperateStatus, returnEdit);
+			returnEdit();
+		},
+		// 删除
+		remove : function() {
+			var checkDatas = getTableCheckedDatas("contentTable");  // 获取所选的数据
+			if(!checkDatas || checkDatas.length != 1){
+				alertx("请选择一条记录");
+				return ;
+			}
+			var tableName = "${table.name?upper_case}";  // 表名
+			var operateType = "EDT";  // 操作类型
+			<#-- 扣除特殊字段 -->
+			<#assign index = 0>
+			<#assign regDataStatus = 0>
+			<#assign regCheckStatus = 0>
+			<#assign regSendStatus = 0>
+			<#assign regOperateStatus = 0>
+			<#list table.columnList as c>
+				<#if c.isList == "1">
+					<#if c.simpleJavaField == "regDataStatus">
+					<#assign regDataStatus = regDataStatus + 1>
+			var regDataStatus = checkDatas[0][${index}];  // ${c.comments}
+					</#if>
+					<#if c.simpleJavaField == "regCheckStatus">
+					<#assign regCheckStatus = regCheckStatus + 1>
+			var regCheckStatus = checkDatas[0][${index}];  // ${c.comments}
+					</#if>
+					<#if c.simpleJavaField == "regSendStatus">
+					<#assign regSendStatus = regSendStatus + 1>
+			var regSendStatus = checkDatas[0][${index}];  // ${c.comments}
+					</#if>
+					<#if c.simpleJavaField == "regOperateStatus">
+					<#assign regOperateStatus = regOperateStatus + 1>
+			var regOperateStatus = checkDatas[0][${index}];  // ${c.comments}
+					</#if>
+					<#assign index = index + 1>
+				</#if>
+			</#list>
+			<#if regDataStatus == 0>
+			var regDataStatus = "00";  // 数据状态
+			</#if>
+			<#if regCheckStatus == 0>
+			var regCheckStatus = "00";  // 校验状态
+			</#if>
+			<#if regSendStatus == 0>
+			var regSendStatus = "00";  // 报送状态
+			</#if>
+			<#if regOperateStatus == 0>
+			var regOperateStatus = "00";  // 操作状态
+			</#if>
+			// 对数据状态、校验状态、报送状态、操作状态进行判断
+			//determine(tableName, operateType, regDataStatus, regCheckStatus, regSendStatus, regOperateStatus, returnDelete);
+			returnDelete();
+		},
+		// 导出Excel
+		exportExcel : function() {
+			top.$.jBox.confirm("确认要导出${functionName}数据吗？", "系统提示", function(v, h, f) {
+				if (v == "ok") {
+					$("#searchForm").attr("action", ctx + "/${urlPrefix}/exportExcel");
+					$("#searchForm").submit();
+				}
+			}, {
+				buttonsFocus : 1
+			});
+			top.$('.jbox-body .jbox-icon').css('top', '55px');
+		},
+		// 导入Excel数据
+		importExcel : function() {
+			$.jBox($("#importBox").html(), {
+				title : "导入数据",
+				buttons : {
+					"关闭" : true
+				},
+				bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
+			});
+		}
+	}
+};
+
+/**
+ * 修改 --在判断后进行调用
+ */
+function returnEdit() {
+	// 获取所有的主键
+	var checkDataIds = getTableCheckedIds("contentTable");
+	if(!checkDataIds || checkDataIds.length != 1){
+		alertx("请选择一条记录");
+		return ;
+	}
+	// 对主键进行切割
+	var checkData = checkDataIds[0].split("@_#");
+	<#assign x = 0>
+	<#list table.columnList as c>
+		<#if c.isPk == "1">
+	var ${c.javaFieldId} = checkData[${x}];
+		<#assign x = x + 1>
+		</#if>
+	</#list>
+	<#assign y = 0>
+	go(ctx + "/${urlPrefix}/formEdit?<#list table.columnList as c><#if c.isPk == "1"><#if y != 0>+ "&</#if><#assign y = y + 1>${c.javaFieldId}=" + ${c.javaFieldId}</#if></#list>);
+}
+
+/**
+ * 删除 --在判断后进行调用
+ */
+function returnDelete() {
+	// 获取所有的主键
+	var checkDataIds = getTableCheckedIds("contentTable");
+	if(!checkDataIds || checkDataIds.length != 1){
+		alertx("请选择一条记录");
+		return ;
+	}
+	// 对主键进行切割
+	var checkData = checkDataIds[0].split("@_#");
+	<#assign x = 0>
+	<#list table.columnList as c>
+		<#if c.isPk == "1">
+	var ${c.javaFieldId} = checkData[${x}];
+		<#assign x = x + 1>
+		</#if>
+	</#list>
+	<#assign y = 0>
+	confirmx('确认要删除该${functionNameSimple}吗？', ctx + "/${urlPrefix}/delete?<#list table.columnList as c><#if c.isPk == "1"><#if y != 0>+ "&</#if><#assign y = y + 1>${c.javaFieldId}=" + ${c.javaFieldId}</#if></#list>);
+}
+
+$(function(){
+	$("select").select2({allowClear: true, width:'177px'}); 
+});]]>
+	</content>
+</template>

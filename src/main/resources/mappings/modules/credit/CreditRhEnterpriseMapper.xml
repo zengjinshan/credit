@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="creditRhEnterpriseMapper">
+
+    <select id="findCreditEnterpriseList" resultType="com.tansun.easycare.modules.credit.domain.EnterpriseDataCapture">
+        SELECT id,
+         CREATE_DATE AS createDate,
+        UPDATE_DATE AS updateDate,
+        CREATE_USER AS createUser,
+        UPDATE_USER AS updateUser,
+        CREDIT_CODE AS creditCode,
+        LOAN_CARD_NO AS loanCardNo,
+        CORP_NO AS corpNo,
+        REGI_TYPE_CODE AS regiTypeCode,
+        FRG_CORP_NO AS frgCorpNo,
+        GS_REGI_NO AS gsRegiNo,
+        DS_REGI_NO AS dsRegiNo,
+        SEARCHER_ORG_CODE AS searcherOrgCode,
+        SEARCHER_LOGIN_RH_USER_ID AS searcherLoginRhUserId,
+        SEARCHER_LOGIN_RH_PASSWORD AS searcherLoginRhPassword,
+        SEARCH_TYPE AS searchType,
+        SEARCH_REASON AS searchReason
+        FROM T_CREDIT_E_DATA_CAPTURE
+        WHERE 1=1
+
+        <if test="searchReason !=null and searchReason!=''">
+           AND SEARCH_REASON=#{searchReason}
+        </if>
+
+        <if test="gsRegiNo !=null and gsRegiNo!=''">
+            AND GS_REGI_NO = #{gsRegiNo}
+        </if>
+
+        <if test="dsRegiNo !=null and gsRegiNo!=''">
+            AND DS_REGI_NO = #{gsRegiNo}
+        </if>
+
+        <if test="loanCardNo !=null and loanCardNo!=''">
+            AND  LOAN_CARD_NO=#{loanCardNo}
+        </if>
+
+        <if test="corpNo !=null and corpNo!=''">
+            AND CORP_NO=#{corpNo}
+        </if>
+
+        <if test="regiTypeCode !=null and regiTypeCode!=''">
+            AND  REGI_TYPE_CODE=#{regiTypeCode}
+        </if>
+
+        <if test="frgCorpNo !=null and frgCorpNo!=''">
+            and FRG_CORP_NO=#{frgCorpNo}
+        </if>
+
+        <if test="createUser!=null and createUser !=''">
+            AND CREATE_USER=#{createUser}
+        </if>
+        ORDER BY CREATE_DATE DESC
+    </select>
+
+    <insert id="saveEnterprise">
+        INSERT INTO T_CREDIT_E_DATA_CAPTURE(ID,CREATE_USER,CREATE_DATE,LOAN_CARD_NO,SEARCHER_ORG_CODE,SEARCHER_LOGIN_RH_USER_ID
+        ,SEARCHER_LOGIN_RH_PASSWORD,SEARCH_TYPE,CAPTURE_DATA,SEARCH_REASON)
+        VALUES (#{id},#{createUser},#{createDate},#{loanCardNo},#{searcherOrgCode},#{searcherLoginRhUserId},#{searcherLoginRhPassword}
+        ,#{searchType},#{captureData},#{searchReason})
+    </insert>
+    </mapper>

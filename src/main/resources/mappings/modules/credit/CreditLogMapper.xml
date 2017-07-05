@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="creditLogMapper">
+    <select id="findSearchLog" resultType="com.tansun.easycare.modules.credit.domain.RhSearchLog">
+        SELECT * FROM T_RH_SEARCH_LOG WHERE 1=1
+        <if test="peFlag!=null and peFlag!=''">
+            AND PE_FLAG=#{peFlag}
+        </if>
+        <if test="createUserName!=null and createUserName!=''">
+            AND CREATE_USER_NAME LIKE '%'||#{createUserName}||'%'
+        </if>
+
+        <if test="beginDate !=null and beginDate!=''">
+            AND CREATE_DATE>=#{createDate}
+        </if>
+
+        <if test="endDate !=null and endDate!=''">
+            AND CREATE_DATE &lt;=#{endDate}
+        </if>
+        ORDER  BY CREATE_DATE DESC
+
+    </select>
+    </mapper>
