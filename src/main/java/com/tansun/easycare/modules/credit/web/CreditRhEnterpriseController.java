@@ -4,8 +4,10 @@ import com.tansun.easycare.common.Constant;
 import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.core.web.BaseController;
 import com.tansun.easycare.framework.httpspider.EnterpriseCredit;
+import com.tansun.easycare.framework.httpspider.PersonCredit;
 import com.tansun.easycare.framework.service.BaseService;
 import com.tansun.easycare.framework.util.CreditPropertyUtil;
+import com.tansun.easycare.framework.util.DownFile;
 import com.tansun.easycare.framework.util.HtmlRegxUtil;
 import com.tansun.easycare.framework.util.MsgIdUtil;
 import com.tansun.easycare.modules.credit.domain.EnterpriseDataCapture;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -75,7 +78,7 @@ public class CreditRhEnterpriseController extends BaseController {
     }
 
     @RequestMapping(value = "searchCredit")
-    public String searchCredit(EnterpriseDataCapture dataCapture,Model model){
+    public String searchCredit(EnterpriseDataCapture dataCapture,Model model,HttpServletRequest request){
         User user = UserUtils.getUser();
         String code = user.getCompany().getCode();
         Map<String,Object> map=new HashMap<String,Object>();
@@ -103,11 +106,22 @@ public class CreditRhEnterpriseController extends BaseController {
             List<String> cssLinks = HtmlRegxUtil.match(html, "link", "href");
             List<String> scriptLinks=HtmlRegxUtil.match(html,"script","src");
             String proAddress = CreditPropertyUtil.instance.getPropertyValue("credit.person.search.page2");
+            String basePath = request.getSession().getServletContext().getRealPath(File.separator);
+            String cssFilePath=basePath+"static"+File.separator+"credit"+File.separator+"css"+File.separator;
+            String jsFilePath=basePath+"static"+File.separator+"credit"+File.separator+"js"+File.separator;
+            String cssPath=request.getContextPath()+File.separator+"static"+File.separator+"credit"+File.separator+"css"+File.separator;
+            String jsPath=request.getContextPath()+File.separator+"static"+File.separator+"credit"+File.separator+"js"+File.separator;
             for (String css:cssLinks){
-                StringUtils.replace(html,css,proAddress+css);
+                byte[] cssBytes = DownFile.getFileFromNetByUrl(proAddress + css);
+                String fileName=css.substring(css.lastIndexOf(File.separator)+1);
+                DownFile.writeImageToDisk(cssBytes,cssFilePath,fileName);
+                html= StringUtils.replace(html, css, cssPath + fileName);
             }
             for (String script:scriptLinks){
-                StringUtils.replace(html,script,proAddress+script);
+                byte[] jsBytes = DownFile.getFileFromNetByUrl(proAddress + script);
+                String fileName=script.substring(script.lastIndexOf(File.separator)+1);
+                DownFile.writeImageToDisk(jsBytes,jsFilePath,fileName);
+                html=StringUtils.replace(html,script,jsPath+fileName);
             }
             model.addAttribute("resultHtml",html);
             dataCapture.setId(UUID.randomUUID().toString().replaceAll("-",""));
@@ -129,7 +143,7 @@ public class CreditRhEnterpriseController extends BaseController {
             searchLog.setQuerySeri(MsgIdUtil.randomForNum(7));
             searchLog.setCreateUser(user.getId());
             searchLog.setCreateUserName(user.getName());
-            searchLog.setPeFlag(Constant.CREDIT_PERSON);
+            searchLog.setPeFlag(Constant.CREDIT_ENTERPRISE);
             searchLog.setCreateUserName(user.getName());
             searchLog.setSearcherNo(dataCapture.getLoanCardNo());
             searchLog.setSearcher("企业");
@@ -159,6 +173,5 @@ public class CreditRhEnterpriseController extends BaseController {
         model.addAttribute("resultHtml",da.getCaptureData());
         return "/modules/credit/person/person_credit_show";
     }
-
 
 }

@@ -1,20 +1,24 @@
 package com.tansun.easycare.framework.httpspider;
 
 import com.tansun.easycare.framework.util.CreditPropertyUtil;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
@@ -104,10 +108,57 @@ public class PersonCredit {
             HttpPost httppost = new HttpPost(CreditPropertyUtil.instance.getPropertyValue("credit.person.login.page"));
             List nvps = new ArrayList();
             nvps.add(new BasicNameValuePair("userid", username));
+            //nvps.add(new BasicNameValuePair("username", username));
             nvps.add(new BasicNameValuePair("password", password));
             httppost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
             long b = System.currentTimeMillis();
             HttpResponse response = httpClient.execute(httppost);
+            int statusCode = response.getStatusLine().getStatusCode();
+/*            httppost.abort();
+            if(statusCode==302){
+                Header location = response.getFirstHeader("Location");
+                String value = location.getValue();
+                String url = value.substring(0, value.indexOf(";"));
+                httppost=new HttpPost("http://127.0.0.1:8080"+url);
+                httppost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+                HttpResponse execute = httpClient.execute(httppost);
+                HttpEntity entity = execute.getEntity();
+                String creditResult="";
+                if (entity != null) {
+                    int reportsize = Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("credit.report.size"));//10000000
+                    //int reportsize = Integer.parseInt("10000000");
+                    int tot = 0;
+                    InputStream in = entity.getContent();
+                    ByteArrayOutputStream baos = null;
+                    try{
+                        baos = new ByteArrayOutputStream();
+                        byte[] buf = new byte[1024];
+                        int idx = -1;
+                        while ((idx = in.read(buf)) != -1) {
+                            baos.write(buf, 0, idx);
+                            tot += idx;
+                            if (tot > reportsize){
+                                creditResult = "1402";
+                                break;
+                            }
+                        }
+                        if (!"1402".equals(creditResult)){
+                            creditResult = new String(baos.toByteArray(),"gbk");
+                            logger.info("查询结果====================:"+creditResult);
+                        }
+                    }catch(Exception e){
+                        logger.info("获取人行征信报告异常："+e);
+                    }
+                    finally{
+                        if (baos != null)
+                            baos.close();
+                        if (in != null) {
+                            in.close();
+                        }
+                    }
+
+                }
+            }*/
             HttpEntity resEntity = response.getEntity();
             loginresult = EntityUtils.toString(resEntity);
             logger.info("登录代码执行完成。结果返回=================："+loginresult);
@@ -142,6 +193,7 @@ public class PersonCredit {
             EntityUtils.consume(resEntity);
             httppost.abort();
         }catch (Exception e){
+            e.printStackTrace();
             logger.info("login: connection fail");
             loginresult = "0404";
         } finally {
@@ -170,6 +222,12 @@ public class PersonCredit {
             HttpPost httppost = new HttpPost(CreditPropertyUtil.instance.getPropertyValue("credit.person.search.page"));//http://11.156.206.11:8001/credituniontest/queryAction.do
             //HttpPost httppost = new HttpPost("http://11.156.206.11:8001/credituniontest/blurqueryAction.do");
             List nvps = new ArrayList();
+           // nvps.add(new BasicNameValuePair("type", "1"));
+          /*  httppost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+            HttpResponse execute = httpclient.execute(httppost);
+            HttpEntity resEntity = execute.getEntity();*/
+            
+            
             nvps.add(new BasicNameValuePair("username", userName));
             nvps.add(new BasicNameValuePair("certype", certType));
             nvps.add(new BasicNameValuePair("cercode", certNo));
@@ -188,6 +246,7 @@ public class PersonCredit {
             logger.info("个人查询结束===========================");
 
             HttpEntity resEntity = response.getEntity();
+
 
             if (resEntity != null) {
                 int reportsize = Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("credit.report.size"));//10000000
@@ -227,7 +286,7 @@ public class PersonCredit {
 
             EntityUtils.consume(resEntity);
             long e = System.currentTimeMillis();
-            logger.info("get report:["+userName  + "time spend =" + (e-b));
+           /* logger.info("get report:["+userName  + "time spend =" + (e-b));*/
             httppost.abort();
         } catch (IOException e) {
             logger.info(e);

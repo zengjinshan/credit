@@ -1,9 +1,6 @@
 package com.tansun.easycare.framework.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -39,6 +36,7 @@ public class DownFile {
      * @throws Exception
      */
     public static byte[] readInputStream(InputStream inStream) throws Exception{
+
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int len = 0;
@@ -69,9 +67,10 @@ public class DownFile {
                 file2.createNewFile();
             }
             FileOutputStream fops = new FileOutputStream(file2);
-            fops.write(fileBytes);
-            fops.flush();
-            fops.close();
+            OutputStreamWriter outputStreamWriter=new OutputStreamWriter(fops,"GBK");
+            BufferedWriter writer=new BufferedWriter(outputStreamWriter);
+            writer.write(new String(fileBytes));
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
