@@ -103,26 +103,58 @@ public class CreditRhEnterpriseController extends BaseController {
             paramMap.put("loancardcode",dataCapture.getLoanCardNo());
             paramMap.put("searchReasonCode",dataCapture.getSearchReason());
             String html = enterprise.enterpriseSearch(paramMap);
-            List<String> cssLinks = HtmlRegxUtil.match(html, "link", "href");
+          /*  List<String> cssLinks = HtmlRegxUtil.match(html, "link", "href");
             List<String> scriptLinks=HtmlRegxUtil.match(html,"script","src");
-            String proAddress = CreditPropertyUtil.instance.getPropertyValue("credit.person.search.page2");
+            List<String> imgLinks=HtmlRegxUtil.match(html,"img","src");
+            List<String> inputLinks=HtmlRegxUtil.match(html,"input","src");*/
+            List<String> cssLinks = HtmlRegxUtil.matchSuffix(html,"css");
+            List<String> scriptLinks = HtmlRegxUtil.matchSuffix(html,"js");
+            List<String> imgLinks=HtmlRegxUtil.matchSuffix(html,"gif");
+            String proAddress = CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.search.page2");
+            String proAddress2 = CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.search.page3");
             String basePath = request.getSession().getServletContext().getRealPath(File.separator);
             String cssFilePath=basePath+"static"+File.separator+"credit"+File.separator+"css"+File.separator;
             String jsFilePath=basePath+"static"+File.separator+"credit"+File.separator+"js"+File.separator;
+            String imgFilePath=basePath+"static"+File.separator+"credit"+File.separator+"img"+File.separator;
+            logger.info("本地图片文件地址===========："+imgFilePath);
             String cssPath=request.getContextPath()+File.separator+"static"+File.separator+"credit"+File.separator+"css"+File.separator;
             String jsPath=request.getContextPath()+File.separator+"static"+File.separator+"credit"+File.separator+"js"+File.separator;
+            String imgPath=request.getContextPath()+File.separator+"static"+File.separator+"credit"+File.separator+"img"+File.separator;
+            logger.info("图片替换地址============="+imgPath);
             for (String css:cssLinks){
-                byte[] cssBytes = DownFile.getFileFromNetByUrl(proAddress + css);
-                String fileName=css.substring(css.lastIndexOf(File.separator)+1);
-                DownFile.writeImageToDisk(cssBytes,cssFilePath,fileName);
-                html= StringUtils.replace(html, css, cssPath + fileName);
+                String cssContent = DownFile.getFileFromNetByUrl(proAddress+"/" + css);
+                String fileName=css.substring(css.lastIndexOf("/")+1);
+                DownFile.writeFileToDisk(cssContent,cssFilePath,fileName);
+                html= StringUtils.replace(html, File.separator+CreditPropertyUtil.instance.getPropertyValue("credit.rh.project.name")+File.separator+css, cssPath + fileName);
             }
             for (String script:scriptLinks){
-                byte[] jsBytes = DownFile.getFileFromNetByUrl(proAddress + script);
-                String fileName=script.substring(script.lastIndexOf(File.separator)+1);
-                DownFile.writeImageToDisk(jsBytes,jsFilePath,fileName);
-                html=StringUtils.replace(html,script,jsPath+fileName);
+                String jsContent = DownFile.getFileFromNetByUrl(proAddress+"/" + script);
+                String fileName=script.substring(script.lastIndexOf("/")+1);
+                DownFile.writeFileToDisk(jsContent,jsFilePath,fileName);
+                html=StringUtils.replace(html, File.separator+CreditPropertyUtil.instance.getPropertyValue("credit.rh.project.name")+File.separator+script,jsPath+fileName);
             }
+            for (String img:imgLinks){
+                logger.info("img标签抓取连接===="+img);
+               // byte[] imgContent = DownFile.getImgFileFromNetByUrl(proAddress +"/"+ img,imgFilePath,fileName);
+                logger.info("图片下载地址==================："+proAddress +"/"+ img);
+                String fileName=img.substring(img.lastIndexOf("/")+1);
+                logger.info("图片文件名==================："+fileName);
+                DownFile.getImgFileFromNetByUrl(proAddress +"/"+ img,imgFilePath,fileName);
+                html=StringUtils.replace(html,img,imgPath+fileName);
+                html=StringUtils.replace(html,File.separator+CreditPropertyUtil.instance.getPropertyValue("credit.rh.project.name")
+                        +File.separator+File.separator+imgPath+fileName,imgPath+fileName);
+                html=StringUtils.replace(html,".."+File.separator
+                        +File.separator+imgPath+fileName,imgPath+fileName);
+            }
+           /* for (String img:inputLinks){
+                logger.info("img标签抓取连接===="+img);
+                // byte[] imgContent = DownFile.getImgFileFromNetByUrl(proAddress +"/"+ img,imgFilePath,fileName);
+                logger.info("图片下载地址==================："+proAddress +"/"+ img);
+                String fileName=img.substring(img.lastIndexOf("/")+1);
+                logger.info("图片文件名==================："+fileName);
+                DownFile.getImgFileFromNetByUrl(proAddress2 +"/"+ img,imgFilePath,fileName);
+                html=StringUtils.replace(html,img,imgPath+fileName);
+            }*/
             model.addAttribute("resultHtml",html);
             dataCapture.setId(UUID.randomUUID().toString().replaceAll("-",""));
             dataCapture.setCreateUser(user.getId());
@@ -150,7 +182,7 @@ public class CreditRhEnterpriseController extends BaseController {
             searchLog.setSearchType("中征码");
             baseService.save(searchLog);
         }catch (Exception e){
-            e.printStackTrace();
+           logger.info(e.getMessage(),e);
         }
         return "/modules/credit/person/person_credit_show";
     }
