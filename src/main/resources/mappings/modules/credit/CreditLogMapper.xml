@@ -10,6 +10,10 @@
             AND CREATE_USER_NAME LIKE '%'||#{createUserName}||'%'
         </if>
 
+        <if test="searcherNo!=null and searcherNo!=''">
+            AND SEARCHER_NO LIKE '%'||#{searcherNo}||'%'
+        </if>
+
         <if test="beginDate !=null and beginDate!=''">
             AND CREATE_DATE>=#{createDate}
         </if>

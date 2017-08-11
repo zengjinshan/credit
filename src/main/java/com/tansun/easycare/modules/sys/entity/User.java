@@ -51,8 +51,6 @@ public class User extends DataEntity<User> {
 
 	private String isThisCompany; //是否只过滤当前机构
 
-	private String searchType;//1：个人2：企业：3：企业和个人
-
 	public User() {
 		super();
 		this.loginFlag = Global.YES;
@@ -314,11 +312,4 @@ public class User extends DataEntity<User> {
 		return id;
 	}
 
-	public String getSearchType() {
-		return searchType;
-	}
-
-	public void setSearchType(String searchType) {
-		this.searchType = searchType;
-	}
 }

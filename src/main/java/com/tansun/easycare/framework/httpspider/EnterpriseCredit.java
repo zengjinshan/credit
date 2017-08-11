@@ -10,16 +10,20 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.AllClientPNames;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -129,10 +133,6 @@ public class EnterpriseCredit {
         HttpClient httpClient = new DefaultHttpClient();
         String loginresult = null;
         try {
-            //设置本地代理地址跟服务端口
-            HttpHost proxy = new HttpHost(CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.login.proxyip"),
-                    Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.login.proxyport")));
-            //httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
             httpClient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("SO_TIMEOUT")));
             HttpPost httppost = new HttpPost(CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.login.page"));
             List nvps = new ArrayList();
@@ -144,7 +144,7 @@ public class EnterpriseCredit {
             HttpResponse response = httpClient.execute(httppost);
             HttpEntity resEntity = response.getEntity();
             loginresult = EntityUtils.toString(resEntity);
-
+            System.out.println("登录爬取返回结果===========："+loginresult);
             if (loginresult.indexOf("帐号被停用") != -1) {
                 logger.error(username + " user is disabled!");
                 loginresult = "6666";
@@ -166,7 +166,6 @@ public class EnterpriseCredit {
             } else {
                 loginresult = "0000";
                 this.getCookies(httpClient);
-                System.out.println("登录的cookie为："+cookieValues[cookieValues.length-1]);
             }
             long e = System.currentTimeMillis();
             logger.info("Login for:[" + username + "time spend =" + (e - b));
@@ -174,6 +173,7 @@ public class EnterpriseCredit {
             httppost.abort();
         } catch (Exception e) {
             logger.error("login: connection fail");
+            logger.error(e.getMessage(),e);
             loginresult = "0404";
         } finally {
             httpClient.getConnectionManager().shutdown();
@@ -187,33 +187,26 @@ public class EnterpriseCredit {
         String creditResult = null;
         logger.info("查询开始");
         try {
-            // 设置代理服务器128.64.184.94
-            //HttpHost proxy = new HttpHost("128.64.184.94", 8001);
-            HttpHost proxy = new HttpHost(CreditPropertyUtil.instance.getPropertyValue("credit.person.login.proxyip"),
-                    Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("credit.person.login.proxyport")));
-            //HttpHost proxy = new HttpHost(proutil.getConfigValue("pcis.login.proxyip"), 8080);
             this.setCookies(httpclient);
-
-            //httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
             httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("SO_TIMEOUT")));
             httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("CONNECTION_TIMEOUT")));
-
             HttpPost httppost = new HttpPost(CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.search.page"));//http://11.156.206.11:8001/credituniontest/queryAction.do
-            //HttpPost httppost = new HttpPost("http://11.156.206.11:8001/credituniontest/blurqueryAction.do");
 
             List nvps = new ArrayList();
-            nvps.add(new BasicNameValuePair("borrowernamecn", ""));
-            nvps.add(new BasicNameValuePair("borrownatuCode", "1"));
-            nvps.add(new BasicNameValuePair("crccode", ""));
-            nvps.add(new BasicNameValuePair("creditCode", ""));
-            nvps.add(new BasicNameValuePair("financecode", map.get("outCode") + ""));
-            nvps.add(new BasicNameValuePair("loancardcode", map.get("loancardcode") + ""));
-            nvps.add(new BasicNameValuePair("reportcode", "20"));
-            nvps.add(new BasicNameValuePair("reqid", "0"));
-            nvps.add(new BasicNameValuePair("searchReason", ""));
-            nvps.add(new BasicNameValuePair("searchReasonCode", map.get("searchReasonCode") + ""));
-            nvps.add(new BasicNameValuePair("sz_zk.x", "28"));
-            nvps.add(new BasicNameValuePair("sz_zk.y", "9"));
+            nvps.add(new BasicNameValuePair("attribute", "0"));
+            nvps.add(new BasicNameValuePair("corpno", "1"));
+            nvps.add(new BasicNameValuePair("creditcode", ""));
+            nvps.add(new BasicNameValuePair("displayreason", "1"));
+            nvps.add(new BasicNameValuePair("dsregino", ""));
+            nvps.add(new BasicNameValuePair("frgcorpno", ""));
+            nvps.add(new BasicNameValuePair("gsregino", ""));
+            nvps.add(new BasicNameValuePair("loancardno", map.get("loancardcode")+""));
+            nvps.add(new BasicNameValuePair("offline", null));
+            nvps.add(new BasicNameValuePair("radioValue", "0"));
+            nvps.add(new BasicNameValuePair("regitypecode", ""));
+            nvps.add(new BasicNameValuePair("searchreason", map.get("searchReasonCode")+""));
+            nvps.add(new BasicNameValuePair("searchType", "1"));
+            nvps.add(new BasicNameValuePair("type", "20"));
             httppost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
             long b = System.currentTimeMillis();
@@ -242,7 +235,7 @@ public class EnterpriseCredit {
                     }
                     if (!"1402".equals(creditResult)) {
                         creditResult = new String(baos.toByteArray(), "gbk");
-                        logger.info("查询结果====================:" + creditResult);
+                        //logger.info("查询结果====================:" + creditResult);
                     }
                 } catch (Exception e) {
                     logger.error("获取人行征信报告异常：" + e);
@@ -280,23 +273,15 @@ public class EnterpriseCredit {
 
 
     public String enterpriseSearch2(Map<String, String> map, String uri) {
-        HttpClient httpclient = new DefaultHttpClient();
+        DefaultHttpClient httpclient = new DefaultHttpClient();
         String creditResult = null;
         logger.info("查询开始");
         try {
-            // 设置代理服务器128.64.184.94
-            //HttpHost proxy = new HttpHost("128.64.184.94", 8001);
-            HttpHost proxy = new HttpHost(CreditPropertyUtil.instance.getPropertyValue("credit.person.login.proxyip"),
-                    Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("credit.person.login.proxyport")));
-            //HttpHost proxy = new HttpHost(proutil.getConfigValue("pcis.login.proxyip"), 8080);
             this.setCookies(httpclient);
-            System.out.println("查询的cookie为："+cookieValues[cookieValues.length-1]);
-            System.out.println("cookie共有："+cookieValues.length+"个=======分别为:"+cookieValues);
-            //httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
             httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("SO_TIMEOUT")));
             httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("CONNECTION_TIMEOUT")));
             uri = uri.substring(uri.lastIndexOf(File.separator) + 1);
-            String rhUrl = CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.search.page2") + uri;
+            String rhUrl = CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.search.page2") +"/"+ uri;
             logger.info("访问人行地址===============;" + rhUrl);
             HttpResponse response = null;
             List nvps = new ArrayList();
@@ -310,7 +295,7 @@ public class EnterpriseCredit {
                 nvps.add(new BasicNameValuePair(s, map.get(s)));
             }
             httppost = new HttpPost(rhUrl);//http://11.156.206.11:8001/credituniontest/queryAction.do
-            //HttpPost httppost = new HttpPost("http://11.156.206.11:8001/credituniontest/blurqueryAction.do");i
+            //HttpPost httppost = new HttpPost("http://11.156.206.11:8001/credituniontest/blurqueryAction.do");
             httppost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
             long b = System.currentTimeMillis();
             response = httpclient.execute(httppost);
@@ -320,20 +305,10 @@ public class EnterpriseCredit {
                 Header location = response.getFirstHeader("Location");
                 String value = location.getValue();
                 logger.info("链接重定向地址："+value);
-                /*String url = value.substring(1, value.indexOf(";"));
-                logger.info("链接重定向地址去jessionid："+url);
-                rhUrl = CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.search.page2") + url;
-                logger.info("重定向真实地址："+rhUrl);*/
                 httppost=new HttpPost(value);
                 httppost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
                 response = httpclient.execute(httppost);
             }
-          /*  if(method.equalsIgnoreCase("GET")){
-                str = EntityUtils.toString(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-                get=new HttpGet(rhUrl+"?"+str);
-                get.addHeader(new BasicHeader("Cookie",cookieValues[cookieValues.length-1]));
-                response=httpclient.execute(get);
-            }*/
             HttpEntity resEntity = response.getEntity();
             logger.info("企业查询结束===========================");
             if (resEntity != null) {
@@ -357,7 +332,7 @@ public class EnterpriseCredit {
                     }
                     if (!"1402".equals(creditResult)) {
                         creditResult = new String(baos.toByteArray(), "gbk");
-                        logger.info("查询结果====================:" + creditResult);
+                        //logger.info("查询结果====================:" + creditResult);
                     }
                 } catch (Exception e) {
                     logger.error("获取人行征信报告异常：" + e);
@@ -374,6 +349,91 @@ public class EnterpriseCredit {
             EntityUtils.consume(resEntity);
             long e = System.currentTimeMillis();
             httppost.abort();
+        } catch (IOException e) {
+            logger.error(e);
+            return "0404";
+        } finally {
+            httpclient.getConnectionManager().shutdown();
+        }
+        return creditResult;
+    }
+
+
+    public InputStream enterpriseSearch3(Map<String, String> map, String uri) {
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        String creditResult = null;
+        InputStream in=null;
+        logger.info("查询开始");
+        try {
+            HttpHost proxy = new HttpHost(CreditPropertyUtil.instance.getPropertyValue("credit.person.login.proxyip"),
+                    Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("credit.person.login.proxyport")));
+            this.setCookies(httpclient);
+            System.out.println("查询的cookie为："+cookieValues[cookieValues.length-1]);
+            System.out.println("cookie共有："+cookieValues.length+"个=======分别为:"+cookieValues);
+            httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("SO_TIMEOUT")));
+            httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("CONNECTION_TIMEOUT")));
+            uri = uri.substring(uri.lastIndexOf(File.separator) + 1);
+            String rhUrl = CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.search.page2") +"/"+ uri;
+            logger.info("访问人行地址===============;" + rhUrl);
+            HttpResponse response = null;
+            List nvps = new ArrayList();
+            Set<String> strings = map.keySet();
+            logger.info("访问人行参数==============================================：");
+            String str = "";
+            HttpPost httppost = null;
+            HttpGet get=null;
+            for (String s : strings) {
+                logger.info("key=" + s + "=====value=" + map.get(s));
+                nvps.add(new BasicNameValuePair(s, map.get(s)));
+            }
+            str = EntityUtils.toString(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+            get=new HttpGet(rhUrl+"?"+str);
+            logger.info("下载链接============="+rhUrl+"?"+str);
+            long b = System.currentTimeMillis();
+            response = httpclient.execute(get);
+            int status=response.getStatusLine().getStatusCode();
+            logger.info("请求返回状态码=============================："+status);
+            HttpEntity resEntity = response.getEntity();
+            logger.info("企业查询结束===========================");
+        /*    if (resEntity != null) {
+                int reportsize = Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("credit.report.size"));//10000000
+                //int reportsize = Integer.parseInt("10000000");
+                int tot = 0;
+                InputStream in = resEntity.getContent();
+                ByteArrayOutputStream baos = null;
+                try {
+                    baos = new ByteArrayOutputStream();
+                    byte[] buf = new byte[1024];
+                    int idx = -1;
+                    while ((idx = in.read(buf)) != -1) {
+                        baos.write(buf, 0, idx);
+                        tot += idx;
+                        if (tot > reportsize) {
+                            creditResult = "1402";
+                            logger.info(":信用报告超过解析上限");
+                            break;
+                        }
+                    }
+                    if (!"1402".equals(creditResult)) {
+                        creditResult = new String(baos.toByteArray(), "gbk");
+                        //logger.info("查询结果====================:" + creditResult);
+                    }
+                } catch (Exception e) {
+                    logger.error("获取人行征信报告异常：" + e);
+                } finally {
+                    if (baos != null)
+                        baos.close();
+                    if (in != null) {
+                        in.close();
+                    }
+                }
+
+            }*/
+
+            //EntityUtils.consume(resEntity);
+            in=resEntity.getContent();
+            long e = System.currentTimeMillis();
+            get.abort();
          /*   if(method.equalsIgnoreCase("POST")){
                 httppost.abort();
             }*/
@@ -382,7 +442,6 @@ public class EnterpriseCredit {
             }*/
         } catch (IOException e) {
             logger.error(e);
-            return "0404";
         } finally {
             // When HttpClient instance is no longer needed,
             // shut down the connection manager to ensure
@@ -396,6 +455,6 @@ public class EnterpriseCredit {
 		} else {
 			return creditResult;
 		}*/
-        return creditResult;
+        return in;
     }
 }

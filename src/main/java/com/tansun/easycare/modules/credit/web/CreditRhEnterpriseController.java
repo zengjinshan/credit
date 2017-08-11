@@ -20,6 +20,7 @@ import com.tansun.easycare.modules.sys.entity.User;
 import com.tansun.easycare.modules.sys.utils.DictUtils;
 import com.tansun.easycare.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +42,7 @@ import java.util.*;
 @Controller
 @RequestMapping("${adminPath}/rh/enterprise")
 public class CreditRhEnterpriseController extends BaseController {
+
 
     @Autowired
     private ICreditRhEnterpriseService creditRhEnterpriseService;
@@ -85,7 +87,6 @@ public class CreditRhEnterpriseController extends BaseController {
         map.put("orgCode",code);
         map.put("type", Constant.CREDIT_ENTERPRISE);
         map.put("standInd","1");
-        String resultHtml="";
         String username="";
         String password="";
         String outCode="";
@@ -103,58 +104,7 @@ public class CreditRhEnterpriseController extends BaseController {
             paramMap.put("loancardcode",dataCapture.getLoanCardNo());
             paramMap.put("searchReasonCode",dataCapture.getSearchReason());
             String html = enterprise.enterpriseSearch(paramMap);
-          /*  List<String> cssLinks = HtmlRegxUtil.match(html, "link", "href");
-            List<String> scriptLinks=HtmlRegxUtil.match(html,"script","src");
-            List<String> imgLinks=HtmlRegxUtil.match(html,"img","src");
-            List<String> inputLinks=HtmlRegxUtil.match(html,"input","src");*/
-            List<String> cssLinks = HtmlRegxUtil.matchSuffix(html,"css");
-            List<String> scriptLinks = HtmlRegxUtil.matchSuffix(html,"js");
-            List<String> imgLinks=HtmlRegxUtil.matchSuffix(html,"gif");
-            String proAddress = CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.search.page2");
-            String proAddress2 = CreditPropertyUtil.instance.getPropertyValue("credit.enterprise.search.page3");
-            String basePath = request.getSession().getServletContext().getRealPath(File.separator);
-            String cssFilePath=basePath+"static"+File.separator+"credit"+File.separator+"css"+File.separator;
-            String jsFilePath=basePath+"static"+File.separator+"credit"+File.separator+"js"+File.separator;
-            String imgFilePath=basePath+"static"+File.separator+"credit"+File.separator+"img"+File.separator;
-            logger.info("本地图片文件地址===========："+imgFilePath);
-            String cssPath=request.getContextPath()+File.separator+"static"+File.separator+"credit"+File.separator+"css"+File.separator;
-            String jsPath=request.getContextPath()+File.separator+"static"+File.separator+"credit"+File.separator+"js"+File.separator;
-            String imgPath=request.getContextPath()+File.separator+"static"+File.separator+"credit"+File.separator+"img"+File.separator;
-            logger.info("图片替换地址============="+imgPath);
-            for (String css:cssLinks){
-                String cssContent = DownFile.getFileFromNetByUrl(proAddress+"/" + css);
-                String fileName=css.substring(css.lastIndexOf("/")+1);
-                DownFile.writeFileToDisk(cssContent,cssFilePath,fileName);
-                html= StringUtils.replace(html, File.separator+CreditPropertyUtil.instance.getPropertyValue("credit.rh.project.name")+File.separator+css, cssPath + fileName);
-            }
-            for (String script:scriptLinks){
-                String jsContent = DownFile.getFileFromNetByUrl(proAddress+"/" + script);
-                String fileName=script.substring(script.lastIndexOf("/")+1);
-                DownFile.writeFileToDisk(jsContent,jsFilePath,fileName);
-                html=StringUtils.replace(html, File.separator+CreditPropertyUtil.instance.getPropertyValue("credit.rh.project.name")+File.separator+script,jsPath+fileName);
-            }
-            for (String img:imgLinks){
-                logger.info("img标签抓取连接===="+img);
-               // byte[] imgContent = DownFile.getImgFileFromNetByUrl(proAddress +"/"+ img,imgFilePath,fileName);
-                logger.info("图片下载地址==================："+proAddress +"/"+ img);
-                String fileName=img.substring(img.lastIndexOf("/")+1);
-                logger.info("图片文件名==================："+fileName);
-                DownFile.getImgFileFromNetByUrl(proAddress +"/"+ img,imgFilePath,fileName);
-                html=StringUtils.replace(html,img,imgPath+fileName);
-                html=StringUtils.replace(html,File.separator+CreditPropertyUtil.instance.getPropertyValue("credit.rh.project.name")
-                        +File.separator+File.separator+imgPath+fileName,imgPath+fileName);
-                html=StringUtils.replace(html,".."+File.separator
-                        +File.separator+imgPath+fileName,imgPath+fileName);
-            }
-           /* for (String img:inputLinks){
-                logger.info("img标签抓取连接===="+img);
-                // byte[] imgContent = DownFile.getImgFileFromNetByUrl(proAddress +"/"+ img,imgFilePath,fileName);
-                logger.info("图片下载地址==================："+proAddress +"/"+ img);
-                String fileName=img.substring(img.lastIndexOf("/")+1);
-                logger.info("图片文件名==================："+fileName);
-                DownFile.getImgFileFromNetByUrl(proAddress2 +"/"+ img,imgFilePath,fileName);
-                html=StringUtils.replace(html,img,imgPath+fileName);
-            }*/
+            html= creditRhEnterpriseService.enterpriseSearch(html, request);
             model.addAttribute("resultHtml",html);
             dataCapture.setId(UUID.randomUUID().toString().replaceAll("-",""));
             dataCapture.setCreateUser(user.getId());
@@ -184,7 +134,7 @@ public class CreditRhEnterpriseController extends BaseController {
         }catch (Exception e){
            logger.info(e.getMessage(),e);
         }
-        return "/modules/credit/person/person_credit_show";
+        return "/modules/credit/enterprise/enterprise_credit_show";
     }
 
     /**
@@ -203,7 +153,7 @@ public class CreditRhEnterpriseController extends BaseController {
             e.printStackTrace();
         }
         model.addAttribute("resultHtml",da.getCaptureData());
-        return "/modules/credit/person/person_credit_show";
+        return "/modules/credit/enterprise/enterprise_credit_show";
     }
 
 }

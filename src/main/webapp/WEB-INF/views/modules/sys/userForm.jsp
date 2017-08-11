@@ -113,13 +113,6 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">授权查询:</label>
-			<div class="controls">
-				<form:radiobuttons path="searchType" items="${fns:getDictList('searchType')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"  ></form:radiobuttons>
-				<span class="help-inline"><font color="red">*</font></span>
-			</div>
-		</div>
-		<div class="control-group">
 			<label class="control-label">备注:</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>

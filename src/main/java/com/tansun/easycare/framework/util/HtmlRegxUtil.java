@@ -19,7 +19,8 @@ public class HtmlRegxUtil {
      */
     public static List<String> match(String source, String element, String attr) {
         List<String> result = new ArrayList<String>();
-        String reg = "<" + element + "[^<>]*?\\s" + attr + "=['\"]?(.*?)['\"]?(\\s.*?)?>";
+        //String reg = "<" + element + "[^<>]*?\\s" + attr + "=['\"]?(.*?)['\"]?(\\s.*?)?>";
+        String reg = "<" + element + "[^<>]*?\\s" + attr + "=['\"]{1}(.*?)['\"]{1}.*>";
         Matcher m = Pattern.compile(reg).matcher(source);
         while (m.find()) {
             String r = m.group(1);
@@ -27,4 +28,23 @@ public class HtmlRegxUtil {
         }
         return result;
     }
+
+    /**
+     * 获取指定HTML页面源css/js/gif后缀的链接地址
+     * @param source 要匹配的源文本
+     * @param suffix 后缀名称
+     * @return 属性值列表
+     */
+    public static List<String> matchSuffix(String source, String suffix) {
+        List<String> result = new ArrayList<String>();
+        String reg = "(?:src=|url\\(|href=)['\"]{1}(?:/"+CreditPropertyUtil.instance.getPropertyValue("credit.rh.project.name")+"/|\\.\\./)?(.+?\\." + suffix + ")['\"]{1}";
+        Matcher m = Pattern.compile(reg).matcher(source);
+        while (m.find()) {
+            String r = m.group(1);
+            result.add(r);
+        }
+        return result;
+    }
+
+
 }

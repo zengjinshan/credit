@@ -11,22 +11,28 @@
 <div id="accordion">
     <h3 class="accordion_head accordion_head_actived ui-state-hover">查询条件</h3>
     <div class="row-fluid show-grid">
-        <form:form id="searchForm" modelAttribute="rhSearchLog" action="${ctx}/rh/person/list" method="post" class="search-form">
+        <form:form id="searchForm" modelAttribute="rhSearchLog" action="${ctx}/rh/log/logList" method="post" class="search-form">
             <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
             <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
             <sys:tableSort id="orderBy" name="orderBy" value="${page.orderBy}" callback="page();"/>
             <!-- 第一行 -->
             <div>
-                <div class="span3">
-                    <label>查询人：</label>
+                <div class="span3" style="padding-left: 28px;">
+                    <label>系统查询用户：</label>
                     <div>
                         <form:input path="createUserName" htmlEscape="false" maxlength="50" class="input-medium"/>
                     </div>
                 </div>
-
                 <div class="span3">
-                    <label>个人、企业：</label>
+                    <label>被查询用户号码：</label>
                     <div>
+                        <form:input path="searcherNo" htmlEscape="false" maxlength="50" class="input-medium"/>
+                    </div>
+                </div>
+
+                <div class="span3" style="display: inline-block; white-space: nowrap;">
+                    <label>查询类型：</label>
+                    <div style="display:inline-block;">
                         <select id="peFlag" name="peFlag" class="input-large">
                             <option />
                             <c:forEach items="${userTypes}" var="userType">
@@ -35,8 +41,8 @@
                         </select>
                     </div>
                 </div>
-                <div class="span4" style="display: inline-block; white-space: nowrap;">
-                    <label>日期范围：</label>
+                <div class="span4" style="text-align: left;float: left;">
+                    <label style="width: 104px;text-align: left;">查询日期范围：</label>
                     <div style="display:inline-block;">
                         <input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
                                value="<fmt:formatDate value="${log.beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
@@ -45,7 +51,7 @@
                                value="<fmt:formatDate value="${log.endDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
                     </div>
                 </div>
-                <div style="padding-top: 70px;margin-left: 520px;">
+                <div style="padding-top: 90px;margin-left: 550px;">
                     <button class="btn_public" type="button" onclick="rhLogList.query();"><i class="icon button_search"></i>查询</button>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <button class="btn_public" type="reset"><i class="icon button_reset"></i>重置</button>
@@ -87,11 +93,11 @@
         <tr onclick="checkLine(this);">
             <td><input type="checkbox" id="${log.id }"></td>
             <td>${log.querySeri}</td>
+            <td>${log.createUserName}</td>
             <td>${fns:getDictLabel(log.peFlag,"rh_user_type" ,"")}</td>
             <td>${log.searcher}</td>
             <td>${log.searcherNo}</td>
             <td>${log.searchType}</td>
-            <td>${log.createUserName}</td>
             <td>
                 <fmt:formatDate value="${log.createDate}" pattern="yyyy-MM-dd HH:mm:ss" type="both"/>
             </td>
