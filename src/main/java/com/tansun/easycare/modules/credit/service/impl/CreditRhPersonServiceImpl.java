@@ -6,8 +6,6 @@ import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.framework.service.BaseService;
 import com.tansun.easycare.modules.credit.domain.PersonDataCapture;
 import com.tansun.easycare.modules.credit.service.ICreditRhPersonService;
-import com.tansun.easycare.modules.credit.service.IPeopleSaveService;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -41,9 +39,6 @@ public class CreditRhPersonServiceImpl implements ICreditRhPersonService {
     
 	@Resource(name = "titleMap")
 	private Map<String, String> titleMap;
-	
-	@Autowired
-    private IPeopleSaveService peopleSaveService;
 
     /**
      * 个人征信查询列表
@@ -116,9 +111,9 @@ public class CreditRhPersonServiceImpl implements ICreditRhPersonService {
 			if(allObjectList.size()>0)
 			{
 				try {
-					peopleSaveService.savePeopleCreditDatasList(allObjectList);
-				} catch (Exception e) {
-					e.printStackTrace();
+					baseService.batchSave(allObjectList);
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 			}
 			System.out.println("end");
