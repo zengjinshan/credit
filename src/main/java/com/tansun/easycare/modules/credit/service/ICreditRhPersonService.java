@@ -9,4 +9,6 @@ import com.tansun.easycare.modules.credit.domain.PersonDataCapture;
 public interface ICreditRhPersonService {
 
     public Page<PersonDataCapture> findRhPersonSearchList(PersonDataCapture dataCapture, Page<PersonDataCapture> page) throws Exception;
+    
+    public void jsoupToObject(String rawText);
 }

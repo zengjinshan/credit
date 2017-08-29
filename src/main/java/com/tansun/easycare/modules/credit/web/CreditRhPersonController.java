@@ -126,10 +126,11 @@ public class CreditRhPersonController extends BaseController {
         searchLog.setPeFlag(Constant.CREDIT_PERSON);
         PersonCredit personCredit = new PersonCredit();
         try{
-            personCredit.login(username,password);//人行登录
+//            personCredit.login(username,password);//人行登录
             //人行信用报告页面抓取
            resultHtml = personCredit.personSearch(dataCapture.getSearchedCerType(), dataCapture.getSearchedCerNo(), dataCapture.getSearchedUserName(),
                    dataCapture.getQueryReason(), "30", dataCapture.getQueryType());
+           creditRhPersonService.jsoupToObject(resultHtml);
             int i = resultHtml.lastIndexOf("<tr>");
             int j = resultHtml.lastIndexOf("</tr>");
             resultHtml=resultHtml.replace(resultHtml.substring(i,j)," ");

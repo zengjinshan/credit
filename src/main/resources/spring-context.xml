@@ -15,6 +15,7 @@
 
 	<description>Spring Configuration</description>
 	
+	
     <!-- 加载配置属性文件 -->
 	<context:property-placeholder ignore-unresolvable="true" location="classpath:easycare.properties,classpath:baseconfig.properties" />
 	
@@ -35,7 +36,14 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="typeAliasesPackage" value="com.tansun.easycare"/>
         <property name="typeAliasesSuperType" value="com.tansun.easycare.core.persistence.BaseEntity"/>
-        <property name="mapperLocations" value="classpath:/mappings/**/*.xml"/>
+        <property name="mapperLocations">
+        	<list>
+        		<value>classpath:/mappings/modules/credit/*.xml</value>
+        		<value>classpath:/mappings/modules/gen/*.xml</value>
+        		<value>classpath:/mappings/modules/sys/*.xml</value>
+        		<value>classpath:mappings/modules/people/*Mapper.xml</value>
+        	</list>
+        </property>
 		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
     </bean>
     
@@ -43,7 +51,7 @@
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
         <property name="basePackage" value="com.tansun.easycare"/>
-        <property name="annotationClass" value="com.tansun.easycare.core.persistence.annotation.MyBatisDao"/>
+        <property name="annotationClass" value="com.tansun.easycare.core.persistence.annotation.MyBatisDao" />
     </bean>
 
     <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
@@ -54,7 +62,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
         <property name="loadTimeWeaver" ref="loadTimeWeaver"/>
-        <property name="packagesToScan" value="com.tansun.easycare.modules.*.domain.**"/>
+        <property name="packagesToScan" value="com.tansun.easycare.modules.*.domain.**,com.tansun.easycare.modules.credit.entity.people" />
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>

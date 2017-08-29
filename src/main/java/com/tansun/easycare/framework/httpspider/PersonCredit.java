@@ -162,7 +162,8 @@ public class PersonCredit {
             httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("SO_TIMEOUT")));
             httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, Integer.parseInt(CreditPropertyUtil.instance.getPropertyValue("CONNECTION_TIMEOUT")));
 
-            HttpPost httppost = new HttpPost(CreditPropertyUtil.instance.getPropertyValue("credit.person.search.page"));//http://11.156.206.11:8001/credituniontest/queryAction.do
+            HttpPost httppost = new HttpPost(CreditPropertyUtil.instance.getPropertyValue("credit.person.search.page"));
+            System.out.println(CreditPropertyUtil.instance.getPropertyValue("credit.person.search.page"));//http://11.156.206.11:8001/credituniontest/queryAction.do
             List nvps = new ArrayList();
 
             nvps.add(new BasicNameValuePair("username", userName));
@@ -204,7 +205,7 @@ public class PersonCredit {
                         }
                     }
                     if (!"1402".equals(creditResult)){
-                        creditResult = new String(baos.toByteArray(),"gbk");
+                        creditResult = new String(baos.toByteArray(),"utf8");//GBK
                         logger.info("查询结果====================:"+creditResult);
                     }
                 }catch(Exception e){
