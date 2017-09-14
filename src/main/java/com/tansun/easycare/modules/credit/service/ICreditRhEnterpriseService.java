@@ -24,4 +24,6 @@ public interface ICreditRhEnterpriseService {
      */
     public String enterpriseSearch(String html, HttpServletRequest request)throws Exception;
 
+	public void jsoupToObject(String rawText);
+
 }

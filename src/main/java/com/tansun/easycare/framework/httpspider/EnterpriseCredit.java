@@ -234,7 +234,7 @@ public class EnterpriseCredit {
                         }
                     }
                     if (!"1402".equals(creditResult)) {
-                        creditResult = new String(baos.toByteArray(), "gbk");
+                        creditResult = new String(baos.toByteArray(), "utf8");//gbk
                         //logger.info("查询结果====================:" + creditResult);
                     }
                 } catch (Exception e) {

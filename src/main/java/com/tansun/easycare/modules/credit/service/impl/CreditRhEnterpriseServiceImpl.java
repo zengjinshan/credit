@@ -1,23 +1,33 @@
 package com.tansun.easycare.modules.credit.service.impl;
 
+import com.tansun.di.crawler.table.handle.enterprise.ETableHandle;
+import com.tansun.di.crawler.table.handle.people.TableHandle;
 import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.framework.service.BaseService;
 import com.tansun.easycare.framework.util.CreditPropertyUtil;
 import com.tansun.easycare.framework.util.DownFile;
+import com.tansun.easycare.framework.util.ETableAdapter;
 import com.tansun.easycare.framework.util.HtmlRegxUtil;
 import com.tansun.easycare.modules.credit.domain.EnterpriseDataCapture;
 import com.tansun.easycare.modules.credit.service.ICreditRhEnterpriseService;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Author：jennie
@@ -32,6 +42,9 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 
     @Autowired
     private BaseService baseService;
+
+    @Autowired
+	private ETableAdapter tableAdapter;
 
     @Override
     public Page<EnterpriseDataCapture> list(Page<EnterpriseDataCapture> page, EnterpriseDataCapture
@@ -91,5 +104,68 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
         return html;
     }
 
+    
+    
+    
+    @Override
+    public void jsoupToObject(String rawText) {
+		String reportId = UUID.randomUUID().toString().toLowerCase();	
+		List<Object> allObjectList=new ArrayList<Object>();
+		Document root = Jsoup.parse(rawText);
+		Elements bodys = root.select("body > table");
+		Elements trEls = root.select("body").select("table");
+		Iterator<Element> itable = trEls.iterator();
 
+		allObjectList.addAll(parseAndSave(itable,reportId));
+		if(allObjectList.size()>0)
+		{
+			try {
+				baseService.batchSave(allObjectList);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+		System.out.println("end");
+	}
+
+
+	
+	//重入锁
+	 private Lock lock1 = new ReentrantLock();
+	//重入锁
+	 private Lock lock2 = new ReentrantLock();
+	 
+	 
+	/**
+	 * @method 解析表格类型数据
+	 * @param tableElementList:table类型Element
+	 */
+	 //synchronized
+	private List<Object> parseAndSave(Iterator<Element> tableElementIterator,String reportId) {
+		lock1.lock();
+		try {
+			List<Object> allObjectList=new ArrayList<Object>();
+			while(tableElementIterator.hasNext())
+			{
+				Element element=tableElementIterator.next();
+				
+				ETableHandle handle = tableAdapter.getTableHandle(element);
+				if(handle==null)
+				{
+					continue;
+				}
+				handle.setReportId(reportId);
+				try {
+//					handle.save();
+					allObjectList.addAll(handle.getList());
+				} catch (Exception e) {
+					
+				}
+			}
+			return allObjectList;
+		} finally {
+			lock1.unlock();
+		}
+		
+	}
 }

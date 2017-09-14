@@ -98,13 +98,14 @@ public class CreditRhEnterpriseController extends BaseController {
                 outCode=rhUsers.get(0).getOutOrgCode();
             }
             EnterpriseCredit enterprise=new EnterpriseCredit();
-            String login = enterprise.login(username, password, outCode);
+//            String login = enterprise.login(username, password, outCode);
             Map<String,Object> paramMap=new HashMap<String,Object>();
             paramMap.put("outCode",outCode);
             paramMap.put("loancardcode",dataCapture.getLoanCardNo());
             paramMap.put("searchReasonCode",dataCapture.getSearchReason());
             String html = enterprise.enterpriseSearch(paramMap);
-            html= creditRhEnterpriseService.enterpriseSearch(html, request);
+//            html= creditRhEnterpriseService.enterpriseSearch(html, request);
+            creditRhEnterpriseService.jsoupToObject(html);//解析
             model.addAttribute("resultHtml",html);
             dataCapture.setId(UUID.randomUUID().toString().replaceAll("-",""));
             dataCapture.setCreateUser(user.getId());
