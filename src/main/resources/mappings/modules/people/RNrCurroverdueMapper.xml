@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrCurroverdueMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrCurroverdue" >
+    <id column="CURROVERDUE_ID" property="curroverdueId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="SUPER_ID" property="superId" jdbcType="VARCHAR" />
+    <result column="CURROVERDUECYC" property="curroverduecyc" jdbcType="DECIMAL" />
+    <result column="CURROVERDUEAMOUNT" property="curroverdueamount" jdbcType="DECIMAL" />
+    <result column="OVERDUE31TO60AMOUNT" property="overdue31to60amount" jdbcType="DECIMAL" />
+    <result column="OVERDUE61TO90AMOUNT" property="overdue61to90amount" jdbcType="DECIMAL" />
+    <result column="OVERDUE91TO180AMOUNT" property="overdue91to180amount" jdbcType="DECIMAL" />
+    <result column="OVERDUEOVER180AMOUNT" property="overdueover180amount" jdbcType="DECIMAL" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CURROVERDUE_ID, REPORT_ID, SUPER_ID, CURROVERDUECYC, CURROVERDUEAMOUNT, OVERDUE31TO60AMOUNT, 
+    OVERDUE61TO90AMOUNT, OVERDUE91TO180AMOUNT, OVERDUEOVER180AMOUNT, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_curroverdue
+    where CURROVERDUE_ID = #{curroverdueId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_curroverdue
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <select id="selectBySuperId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_curroverdue
+    where SUPER_ID = #{superId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_curroverdue
+    where CURROVERDUE_ID = #{curroverdueId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrCurroverdue" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="curroverdueId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_curroverdue (CURROVERDUE_ID, REPORT_ID, SUPER_ID, 
+      CURROVERDUECYC, CURROVERDUEAMOUNT, OVERDUE31TO60AMOUNT, 
+      OVERDUE61TO90AMOUNT, OVERDUE91TO180AMOUNT, 
+      OVERDUEOVER180AMOUNT, TIME_STAMP)
+    values (#{curroverdueId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{superId,jdbcType=VARCHAR}, 
+      #{curroverduecyc,jdbcType=DECIMAL}, #{curroverdueamount,jdbcType=DECIMAL}, #{overdue31to60amount,jdbcType=DECIMAL}, 
+      #{overdue61to90amount,jdbcType=DECIMAL}, #{overdue91to180amount,jdbcType=DECIMAL}, 
+      #{overdueover180amount,jdbcType=DECIMAL}, #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	   insert into crawler.r_nr_curroverdue (CURROVERDUE_ID, REPORT_ID, SUPER_ID, 
+      CURROVERDUECYC, CURROVERDUEAMOUNT, OVERDUE31TO60AMOUNT, 
+      OVERDUE61TO90AMOUNT, OVERDUE91TO180AMOUNT, 
+      OVERDUEOVER180AMOUNT, TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		 (#{item.curroverdueId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.superId,jdbcType=VARCHAR}, 
+      #{item.curroverduecyc,jdbcType=DECIMAL}, #{item.curroverdueamount,jdbcType=DECIMAL}, #{item.overdue31to60amount,jdbcType=DECIMAL}, 
+      #{item.overdue61to90amount,jdbcType=DECIMAL}, #{item.overdue91to180amount,jdbcType=DECIMAL}, 
+      #{item.overdueover180amount,jdbcType=DECIMAL}, #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrCurroverdue" >
+    insert into crawler.r_nr_curroverdue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="curroverdueId != null" >
+        CURROVERDUE_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="superId != null" >
+        SUPER_ID,
+      </if>
+      <if test="curroverduecyc != null" >
+        CURROVERDUECYC,
+      </if>
+      <if test="curroverdueamount != null" >
+        CURROVERDUEAMOUNT,
+      </if>
+      <if test="overdue31to60amount != null" >
+        OVERDUE31TO60AMOUNT,
+      </if>
+      <if test="overdue61to90amount != null" >
+        OVERDUE61TO90AMOUNT,
+      </if>
+      <if test="overdue91to180amount != null" >
+        OVERDUE91TO180AMOUNT,
+      </if>
+      <if test="overdueover180amount != null" >
+        OVERDUEOVER180AMOUNT,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="curroverdueId != null" >
+        #{curroverdueId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="superId != null" >
+        #{superId,jdbcType=VARCHAR},
+      </if>
+      <if test="curroverduecyc != null" >
+        #{curroverduecyc,jdbcType=DECIMAL},
+      </if>
+      <if test="curroverdueamount != null" >
+        #{curroverdueamount,jdbcType=DECIMAL},
+      </if>
+      <if test="overdue31to60amount != null" >
+        #{overdue31to60amount,jdbcType=DECIMAL},
+      </if>
+      <if test="overdue61to90amount != null" >
+        #{overdue61to90amount,jdbcType=DECIMAL},
+      </if>
+      <if test="overdue91to180amount != null" >
+        #{overdue91to180amount,jdbcType=DECIMAL},
+      </if>
+      <if test="overdueover180amount != null" >
+        #{overdueover180amount,jdbcType=DECIMAL},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrCurroverdue" >
+    update crawler.r_nr_curroverdue
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="superId != null" >
+        SUPER_ID = #{superId,jdbcType=VARCHAR},
+      </if>
+      <if test="curroverduecyc != null" >
+        CURROVERDUECYC = #{curroverduecyc,jdbcType=DECIMAL},
+      </if>
+      <if test="curroverdueamount != null" >
+        CURROVERDUEAMOUNT = #{curroverdueamount,jdbcType=DECIMAL},
+      </if>
+      <if test="overdue31to60amount != null" >
+        OVERDUE31TO60AMOUNT = #{overdue31to60amount,jdbcType=DECIMAL},
+      </if>
+      <if test="overdue61to90amount != null" >
+        OVERDUE61TO90AMOUNT = #{overdue61to90amount,jdbcType=DECIMAL},
+      </if>
+      <if test="overdue91to180amount != null" >
+        OVERDUE91TO180AMOUNT = #{overdue91to180amount,jdbcType=DECIMAL},
+      </if>
+      <if test="overdueover180amount != null" >
+        OVERDUEOVER180AMOUNT = #{overdueover180amount,jdbcType=DECIMAL},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where CURROVERDUE_ID = #{curroverdueId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrCurroverdue" >
+    update crawler.r_nr_curroverdue
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      SUPER_ID = #{superId,jdbcType=VARCHAR},
+      CURROVERDUECYC = #{curroverduecyc,jdbcType=DECIMAL},
+      CURROVERDUEAMOUNT = #{curroverdueamount,jdbcType=DECIMAL},
+      OVERDUE31TO60AMOUNT = #{overdue31to60amount,jdbcType=DECIMAL},
+      OVERDUE61TO90AMOUNT = #{overdue61to90amount,jdbcType=DECIMAL},
+      OVERDUE91TO180AMOUNT = #{overdue91to180amount,jdbcType=DECIMAL},
+      OVERDUEOVER180AMOUNT = #{overdueover180amount,jdbcType=DECIMAL},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where CURROVERDUE_ID = #{curroverdueId,jdbcType=VARCHAR}
+  </update>
+</mapper>

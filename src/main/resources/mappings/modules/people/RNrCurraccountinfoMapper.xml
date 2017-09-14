@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrCurraccountinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrCurraccountinfo" >
+    <id column="CURRACCOUNTINFO_ID" property="curraccountinfoId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="LOAN_ID" property="loanId" jdbcType="VARCHAR" />
+    <result column="STATEENDDATE" property="stateenddate" jdbcType="VARCHAR" />
+    <result column="STATEENDMONTH" property="stateendmonth" jdbcType="VARCHAR" />
+    <result column="CLASS5STATE" property="class5state" jdbcType="VARCHAR" />
+    <result column="BALANCE" property="balance" jdbcType="DECIMAL" />
+    <result column="REMAINPAYMENTCYC" property="remainpaymentcyc" jdbcType="DECIMAL" />
+    <result column="SCHEDULEDPAYMENTAMOUNT" property="scheduledpaymentamount" jdbcType="DECIMAL" />
+    <result column="SCHEDULEDPAYMENTDATE" property="scheduledpaymentdate" jdbcType="VARCHAR" />
+    <result column="ACTUALPAYMENTAMOUNT" property="actualpaymentamount" jdbcType="DECIMAL" />
+    <result column="RECENTPAYDATE" property="recentpaydate" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CURRACCOUNTINFO_ID, REPORT_ID, LOAN_ID, STATEENDDATE, STATEENDMONTH, CLASS5STATE, 
+    BALANCE, REMAINPAYMENTCYC, SCHEDULEDPAYMENTAMOUNT, SCHEDULEDPAYMENTDATE, ACTUALPAYMENTAMOUNT, 
+    RECENTPAYDATE, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_curraccountinfo
+    where CURRACCOUNTINFO_ID = #{curraccountinfoId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_curraccountinfo
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+   <select id="selectByLoanId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_curraccountinfo
+    where LOAN_ID = #{loanId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_curraccountinfo
+    where CURRACCOUNTINFO_ID = #{curraccountinfoId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrCurraccountinfo" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="curraccountinfoId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_curraccountinfo (CURRACCOUNTINFO_ID, REPORT_ID, LOAN_ID, 
+      STATEENDDATE, STATEENDMONTH, CLASS5STATE, 
+      BALANCE, REMAINPAYMENTCYC, SCHEDULEDPAYMENTAMOUNT, 
+      SCHEDULEDPAYMENTDATE, ACTUALPAYMENTAMOUNT, 
+      RECENTPAYDATE, TIME_STAMP)
+    values (#{curraccountinfoId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{loanId,jdbcType=VARCHAR}, 
+      #{stateenddate,jdbcType=VARCHAR}, #{stateendmonth,jdbcType=VARCHAR}, #{class5state,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=DECIMAL}, #{remainpaymentcyc,jdbcType=DECIMAL}, #{scheduledpaymentamount,jdbcType=DECIMAL}, 
+      #{scheduledpaymentdate,jdbcType=VARCHAR}, #{actualpaymentamount,jdbcType=DECIMAL}, 
+      #{recentpaydate,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	    insert into crawler.r_nr_curraccountinfo (CURRACCOUNTINFO_ID, REPORT_ID, LOAN_ID, 
+      STATEENDDATE, STATEENDMONTH, CLASS5STATE, 
+      BALANCE, REMAINPAYMENTCYC, SCHEDULEDPAYMENTAMOUNT, 
+      SCHEDULEDPAYMENTDATE, ACTUALPAYMENTAMOUNT, 
+      RECENTPAYDATE, TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		 (#{item.curraccountinfoId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.loanId,jdbcType=VARCHAR}, 
+      #{item.stateenddate,jdbcType=VARCHAR}, #{item.stateendmonth,jdbcType=VARCHAR}, #{item.class5state,jdbcType=VARCHAR}, 
+      #{item.balance,jdbcType=DECIMAL}, #{item.remainpaymentcyc,jdbcType=DECIMAL}, #{item.scheduledpaymentamount,jdbcType=DECIMAL}, 
+      #{item.scheduledpaymentdate,jdbcType=VARCHAR}, #{item.actualpaymentamount,jdbcType=DECIMAL}, 
+      #{item.recentpaydate,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrCurraccountinfo" >
+    insert into crawler.r_nr_curraccountinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="curraccountinfoId != null" >
+        CURRACCOUNTINFO_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="loanId != null" >
+        LOAN_ID,
+      </if>
+      <if test="stateenddate != null" >
+        STATEENDDATE,
+      </if>
+      <if test="stateendmonth != null" >
+        STATEENDMONTH,
+      </if>
+      <if test="class5state != null" >
+        CLASS5STATE,
+      </if>
+      <if test="balance != null" >
+        BALANCE,
+      </if>
+      <if test="remainpaymentcyc != null" >
+        REMAINPAYMENTCYC,
+      </if>
+      <if test="scheduledpaymentamount != null" >
+        SCHEDULEDPAYMENTAMOUNT,
+      </if>
+      <if test="scheduledpaymentdate != null" >
+        SCHEDULEDPAYMENTDATE,
+      </if>
+      <if test="actualpaymentamount != null" >
+        ACTUALPAYMENTAMOUNT,
+      </if>
+      <if test="recentpaydate != null" >
+        RECENTPAYDATE,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="curraccountinfoId != null" >
+        #{curraccountinfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null" >
+        #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="stateenddate != null" >
+        #{stateenddate,jdbcType=VARCHAR},
+      </if>
+      <if test="stateendmonth != null" >
+        #{stateendmonth,jdbcType=VARCHAR},
+      </if>
+      <if test="class5state != null" >
+        #{class5state,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="remainpaymentcyc != null" >
+        #{remainpaymentcyc,jdbcType=DECIMAL},
+      </if>
+      <if test="scheduledpaymentamount != null" >
+        #{scheduledpaymentamount,jdbcType=DECIMAL},
+      </if>
+      <if test="scheduledpaymentdate != null" >
+        #{scheduledpaymentdate,jdbcType=VARCHAR},
+      </if>
+      <if test="actualpaymentamount != null" >
+        #{actualpaymentamount,jdbcType=DECIMAL},
+      </if>
+      <if test="recentpaydate != null" >
+        #{recentpaydate,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrCurraccountinfo" >
+    update crawler.r_nr_curraccountinfo
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null" >
+        LOAN_ID = #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="stateenddate != null" >
+        STATEENDDATE = #{stateenddate,jdbcType=VARCHAR},
+      </if>
+      <if test="stateendmonth != null" >
+        STATEENDMONTH = #{stateendmonth,jdbcType=VARCHAR},
+      </if>
+      <if test="class5state != null" >
+        CLASS5STATE = #{class5state,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        BALANCE = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="remainpaymentcyc != null" >
+        REMAINPAYMENTCYC = #{remainpaymentcyc,jdbcType=DECIMAL},
+      </if>
+      <if test="scheduledpaymentamount != null" >
+        SCHEDULEDPAYMENTAMOUNT = #{scheduledpaymentamount,jdbcType=DECIMAL},
+      </if>
+      <if test="scheduledpaymentdate != null" >
+        SCHEDULEDPAYMENTDATE = #{scheduledpaymentdate,jdbcType=VARCHAR},
+      </if>
+      <if test="actualpaymentamount != null" >
+        ACTUALPAYMENTAMOUNT = #{actualpaymentamount,jdbcType=DECIMAL},
+      </if>
+      <if test="recentpaydate != null" >
+        RECENTPAYDATE = #{recentpaydate,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where CURRACCOUNTINFO_ID = #{curraccountinfoId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrCurraccountinfo" >
+    update crawler.r_nr_curraccountinfo
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      LOAN_ID = #{loanId,jdbcType=VARCHAR},
+      STATEENDDATE = #{stateenddate,jdbcType=VARCHAR},
+      STATEENDMONTH = #{stateendmonth,jdbcType=VARCHAR},
+      CLASS5STATE = #{class5state,jdbcType=VARCHAR},
+      BALANCE = #{balance,jdbcType=DECIMAL},
+      REMAINPAYMENTCYC = #{remainpaymentcyc,jdbcType=DECIMAL},
+      SCHEDULEDPAYMENTAMOUNT = #{scheduledpaymentamount,jdbcType=DECIMAL},
+      SCHEDULEDPAYMENTDATE = #{scheduledpaymentdate,jdbcType=VARCHAR},
+      ACTUALPAYMENTAMOUNT = #{actualpaymentamount,jdbcType=DECIMAL},
+      RECENTPAYDATE = #{recentpaydate,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where CURRACCOUNTINFO_ID = #{curraccountinfoId,jdbcType=VARCHAR}
+  </update>
+</mapper>

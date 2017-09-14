@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrMateMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrMate" >
+    <id column="MATE_ID" property="mateId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CERTTYPE" property="certtype" jdbcType="VARCHAR" />
+    <result column="CERTNO" property="certno" jdbcType="VARCHAR" />
+    <result column="EMPLOYER" property="employer" jdbcType="VARCHAR" />
+    <result column="TELEPHONENO" property="telephoneno" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    MATE_ID, REPORT_ID, NAME, CERTTYPE, CERTNO, EMPLOYER, TELEPHONENO, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_mate
+    where MATE_ID = #{mateId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_mate
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_mate
+    where MATE_ID = #{mateId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrMate" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="mateId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_mate (MATE_ID, REPORT_ID, NAME, 
+      CERTTYPE, CERTNO, EMPLOYER, 
+      TELEPHONENO, TIME_STAMP)
+    values (#{mateId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{certtype,jdbcType=VARCHAR}, #{certno,jdbcType=VARCHAR}, #{employer,jdbcType=VARCHAR}, 
+      #{telephoneno,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+  	 <insert id="insertByBatch" parameterType="java.util.List">
+	  insert into crawler.r_nr_mate (MATE_ID, REPORT_ID, NAME, 
+      CERTTYPE, CERTNO, EMPLOYER, 
+      TELEPHONENO, TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.mateId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+      #{item.certtype,jdbcType=VARCHAR}, #{item.certno,jdbcType=VARCHAR}, #{item.employer,jdbcType=VARCHAR}, 
+      #{item.telephoneno,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  	
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrMate" >
+    insert into crawler.r_nr_mate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mateId != null" >
+        MATE_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="certtype != null" >
+        CERTTYPE,
+      </if>
+      <if test="certno != null" >
+        CERTNO,
+      </if>
+      <if test="employer != null" >
+        EMPLOYER,
+      </if>
+      <if test="telephoneno != null" >
+        TELEPHONENO,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mateId != null" >
+        #{mateId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="certtype != null" >
+        #{certtype,jdbcType=VARCHAR},
+      </if>
+      <if test="certno != null" >
+        #{certno,jdbcType=VARCHAR},
+      </if>
+      <if test="employer != null" >
+        #{employer,jdbcType=VARCHAR},
+      </if>
+      <if test="telephoneno != null" >
+        #{telephoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrMate" >
+    update crawler.r_nr_mate
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="certtype != null" >
+        CERTTYPE = #{certtype,jdbcType=VARCHAR},
+      </if>
+      <if test="certno != null" >
+        CERTNO = #{certno,jdbcType=VARCHAR},
+      </if>
+      <if test="employer != null" >
+        EMPLOYER = #{employer,jdbcType=VARCHAR},
+      </if>
+      <if test="telephoneno != null" >
+        TELEPHONENO = #{telephoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where MATE_ID = #{mateId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrMate" >
+    update crawler.r_nr_mate
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      CERTTYPE = #{certtype,jdbcType=VARCHAR},
+      CERTNO = #{certno,jdbcType=VARCHAR},
+      EMPLOYER = #{employer,jdbcType=VARCHAR},
+      TELEPHONENO = #{telephoneno,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where MATE_ID = #{mateId,jdbcType=VARCHAR}
+  </update>
+</mapper>

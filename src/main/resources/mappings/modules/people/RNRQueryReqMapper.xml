@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRQueryReqMapper">
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNRQueryReq">
+    <id column="QUERYREQ_ID" jdbcType="VARCHAR" property="queryreqId" />
+    <result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+    <result column="PRODUCTTYPE" jdbcType="VARCHAR" property="producttype" />
+    <result column="FORMAT" jdbcType="VARCHAR" property="format" />
+    <result column="FORMATVERSION" jdbcType="VARCHAR" property="formatversion" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="CERTTYPE" jdbcType="VARCHAR" property="certtype" />
+    <result column="CERTNO" jdbcType="VARCHAR" property="certno" />
+    <result column="QUERYRESULTCUE" jdbcType="VARCHAR" property="queryresultcue" />
+    <result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+    <result column="QUERY_OPERATOR" jdbcType="VARCHAR" property="queryOperator" />
+    <result column="QUERY_REASON" jdbcType="VARCHAR" property="queryReason" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    QUERYREQ_ID,REPORT_ID, PRODUCTTYPE, FORMAT, FORMATVERSION, NAME, CERTTYPE, CERTNO, QUERYRESULTCUE, 
+    TIME_STAMP, QUERY_OPERATOR, QUERY_REASON
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_queryreq
+    where QUERYREQ_ID = #{queryreqId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_queryreq
+    where REPORT_ID = #{reportId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from crawler.r_nr_queryreq
+    where QUERYREQ_ID = #{queryreqId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRQueryReq">
+  <selectKey order="BEFORE" resultType="String" keyProperty="queryreqId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_QUERYREQ (QUERYREQ_ID,REPORT_ID, PRODUCTTYPE, FORMAT, 
+      FORMATVERSION, NAME, CERTTYPE, 
+      CERTNO, QUERYRESULTCUE, TIME_STAMP, 
+      QUERY_OPERATOR, QUERY_REASON)
+    values (#{queryreqId,jdbcType=VARCHAR},#{reportId,jdbcType=VARCHAR}, #{producttype,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, 
+      #{formatversion,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{certtype,jdbcType=VARCHAR}, 
+      #{certno,jdbcType=VARCHAR}, #{queryresultcue,jdbcType=VARCHAR}, #{timeStamp,jdbcType=TIMESTAMP}, 
+      #{queryOperator,jdbcType=VARCHAR}, #{queryReason,jdbcType=VARCHAR})
+  </insert>
+  
+  	<insert id="insertByBatch" parameterType="java.util.List">
+		 insert into crawler.r_nr_QUERYREQ (QUERYREQ_ID,REPORT_ID, PRODUCTTYPE, FORMAT, 
+      FORMATVERSION, NAME, CERTTYPE, 
+      CERTNO, QUERYRESULTCUE, TIME_STAMP, 
+      QUERY_OPERATOR, QUERY_REASON)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.queryreqId,jdbcType=VARCHAR},#{item.reportId,jdbcType=VARCHAR}, #{item.producttype,jdbcType=VARCHAR}, #{item.format,jdbcType=VARCHAR}, 
+      #{item.formatversion,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.certtype,jdbcType=VARCHAR}, 
+      #{item.certno,jdbcType=VARCHAR}, #{item.queryresultcue,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=TIMESTAMP}, 
+      #{item.queryOperator,jdbcType=VARCHAR}, #{item.queryReason,jdbcType=VARCHAR})
+	    </foreach>
+  	</insert>
+  	
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRQueryReq">
+    insert into crawler.r_nr_QUERYREQ
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="queryreqId != null">
+        QUERYREQ_ID,
+      </if>
+      <if test="reportId != null">
+        REPORT_ID,
+      </if>
+      <if test="producttype != null">
+        PRODUCTTYPE,
+      </if>
+      <if test="format != null">
+        FORMAT,
+      </if>
+      <if test="formatversion != null">
+        FORMATVERSION,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="certtype != null">
+        CERTTYPE,
+      </if>
+      <if test="certno != null">
+        CERTNO,
+      </if>
+      <if test="queryresultcue != null">
+        QUERYRESULTCUE,
+      </if>
+      <if test="timeStamp != null">
+        TIME_STAMP,
+      </if>
+      <if test="queryOperator != null">
+        QUERY_OPERATOR,
+      </if>
+      <if test="queryReason != null">
+        QUERY_REASON,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+     <if test="queryreqId != null">
+        #{queryreqId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null">
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="producttype != null">
+        #{producttype,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null">
+        #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="formatversion != null">
+        #{formatversion,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="certtype != null">
+        #{certtype,jdbcType=VARCHAR},
+      </if>
+      <if test="certno != null">
+        #{certno,jdbcType=VARCHAR},
+      </if>
+      <if test="queryresultcue != null">
+        #{queryresultcue,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null">
+        #{timeStamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="queryOperator != null">
+        #{queryOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="queryReason != null">
+        #{queryReason,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRQueryReq">
+    update crawler.r_nr_QUERYREQ
+    <set>
+     <if test="reportId != null">
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="producttype != null">
+        PRODUCTTYPE = #{producttype,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null">
+        FORMAT = #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="formatversion != null">
+        FORMATVERSION = #{formatversion,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="certtype != null">
+        CERTTYPE = #{certtype,jdbcType=VARCHAR},
+      </if>
+      <if test="certno != null">
+        CERTNO = #{certno,jdbcType=VARCHAR},
+      </if>
+      <if test="queryresultcue != null">
+        QUERYRESULTCUE = #{queryresultcue,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null">
+        TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="queryOperator != null">
+        QUERY_OPERATOR = #{queryOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="queryReason != null">
+        QUERY_REASON = #{queryReason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where QUERYREQ_ID = #{queryreqId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRQueryReq">
+    update crawler.r_nr_QUERYREQ
+    set 
+      REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      PRODUCTTYPE = #{producttype,jdbcType=VARCHAR},
+      FORMAT = #{format,jdbcType=VARCHAR},
+      FORMATVERSION = #{formatversion,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      CERTTYPE = #{certtype,jdbcType=VARCHAR},
+      CERTNO = #{certno,jdbcType=VARCHAR},
+      QUERYRESULTCUE = #{queryresultcue,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+      QUERY_OPERATOR = #{queryOperator,jdbcType=VARCHAR},
+      QUERY_REASON = #{queryReason,jdbcType=VARCHAR}
+    where QUERYREQ_ID = #{queryreqId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrLoanMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrLoan" >
+    <id column="LOAN_ID" property="loanId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="CUE" property="cue" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LOAN_ID, REPORT_ID, CUE, STATE, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_loan
+    where LOAN_ID = #{loanId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_loan
+    where REPORT_ID = #{reportId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_loan
+    where LOAN_ID = #{loanId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrLoan" >
+    insert into crawler.r_nr_loan (LOAN_ID, REPORT_ID, CUE, 
+      STATE, TIME_STAMP)
+    values (#{loanId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{cue,jdbcType=VARCHAR}, 
+      #{state,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	 insert into crawler.r_nr_loan (LOAN_ID, REPORT_ID, CUE, 
+      STATE, TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.loanId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.cue,jdbcType=VARCHAR}, 
+      #{item.state,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  	
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrLoan" >
+    insert into crawler.r_nr_loan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="loanId != null" >
+        LOAN_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="cue != null" >
+        CUE,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="loanId != null" >
+        #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="cue != null" >
+        #{cue,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrLoan" >
+    update crawler.r_nr_loan
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="cue != null" >
+        CUE = #{cue,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where LOAN_ID = #{loanId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrLoan" >
+    update crawler.r_nr_loan
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      CUE = #{cue,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where LOAN_ID = #{loanId,jdbcType=VARCHAR}
+  </update>
+</mapper>

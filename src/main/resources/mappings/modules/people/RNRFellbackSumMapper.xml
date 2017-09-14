@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRFellbackSumMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tansun.easycare.modules.credit.entity.people.RNRFellbackSum">
+		<id column="FELLBACKSUM_ID" jdbcType="VARCHAR" property="fellbacksumId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="COUNT" jdbcType="DECIMAL" property="count" />
+		<result column="BALANCE" jdbcType="DECIMAL" property="balance" />
+		<result column="TYPE" jdbcType="VARCHAR" property="type" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		FELLBACKSUM_ID, REPORT_ID, COUNT, BALANCE, TYPE, TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_fellbacksum
+		where FELLBACKSUM_ID =
+		#{fellbacksumId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_fellbacksum
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		crawler.r_nr_fellbacksum
+		where FELLBACKSUM_ID =
+		#{fellbacksumId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRFellbackSum">
+		<selectKey order="BEFORE" resultType="String" keyProperty="fellbacksumId">
+			select UUID()
+		</selectKey>
+		insert into crawler.r_nr_FELLBACKSUM (FELLBACKSUM_ID, REPORT_ID, COUNT,
+		BALANCE, TYPE, TIME_STAMP
+		)
+		values (#{fellbacksumId,jdbcType=VARCHAR},
+		#{reportId,jdbcType=VARCHAR},
+		#{count,jdbcType=DECIMAL},
+		#{balance,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR},
+		#{timeStamp,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="insertByBatch" parameterType="java.util.List">
+	 	insert into crawler.r_nr_FELLBACKSUM (FELLBACKSUM_ID, REPORT_ID, COUNT,
+		BALANCE, TYPE, TIME_STAMP
+		)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		 (#{item.fellbacksumId,jdbcType=VARCHAR},
+		#{item.reportId,jdbcType=VARCHAR},
+		#{item.count,jdbcType=DECIMAL},
+		#{item.balance,jdbcType=DECIMAL}, #{item.type,jdbcType=VARCHAR},
+		#{item.timeStamp,jdbcType=TIMESTAMP}
+		)
+	    </foreach>
+  	</insert>
+	<insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRFellbackSum">
+		insert into crawler.r_nr_FELLBACKSUM
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="fellbacksumId != null">
+				FELLBACKSUM_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="count != null">
+				COUNT,
+			</if>
+			<if test="balance != null">
+				BALANCE,
+			</if>
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="fellbacksumId != null">
+				#{fellbacksumId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				#{count,jdbcType=DECIMAL},
+			</if>
+			<if test="balance != null">
+				#{balance,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRFellbackSum">
+		update crawler.r_nr_FELLBACKSUM
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				COUNT = #{count,jdbcType=DECIMAL},
+			</if>
+			<if test="balance != null">
+				BALANCE = #{balance,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				TYPE = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where FELLBACKSUM_ID = #{fellbacksumId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRFellbackSum">
+		update
+		crawler.r_nr_FELLBACKSUM
+		set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+		COUNT =
+		#{count,jdbcType=DECIMAL},
+		BALANCE = #{balance,jdbcType=DECIMAL},
+		TYPE =
+		#{type,jdbcType=VARCHAR},
+		TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP}
+		where FELLBACKSUM_ID = #{fellbacksumId,jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrShareanddebtMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrShareanddebt" >
+    <id column="SHAREANDDEBT_ID" property="shareanddebtId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="FINANCECORPCOUNT" property="financecorpcount" jdbcType="DECIMAL" />
+    <result column="FINANCEORGCOUNT" property="financeorgcount" jdbcType="DECIMAL" />
+    <result column="ACCOUNTCOUNT" property="accountcount" jdbcType="DECIMAL" />
+    <result column="CREDITLIMIT" property="creditlimit" jdbcType="DECIMAL" />
+    <result column="MAXCREDITLIMITPERORG" property="maxcreditlimitperorg" jdbcType="DECIMAL" />
+    <result column="MINCREDITLIMITPERORG" property="mincreditlimitperorg" jdbcType="DECIMAL" />
+    <result column="BALANCE" property="balance" jdbcType="DECIMAL" />
+    <result column="USEDCREDITLIMIT" property="usedcreditlimit" jdbcType="DECIMAL" />
+    <result column="LATEST6MONTHUSEDAVGAMOUNT" property="latest6monthusedavgamount" jdbcType="DECIMAL" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SHAREANDDEBT_ID, REPORT_ID, FINANCECORPCOUNT, FINANCEORGCOUNT, ACCOUNTCOUNT, CREDITLIMIT, 
+    MAXCREDITLIMITPERORG, MINCREDITLIMITPERORG, BALANCE, USEDCREDITLIMIT, LATEST6MONTHUSEDAVGAMOUNT, 
+    TYPE, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_shareanddebt
+    where SHAREANDDEBT_ID = #{shareanddebtId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_shareanddebt
+    where REPORT_ID = #{reportId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_shareanddebt
+    where SHAREANDDEBT_ID = #{shareanddebtId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrShareanddebt" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="shareanddebtId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_shareanddebt (SHAREANDDEBT_ID, REPORT_ID, FINANCECORPCOUNT, 
+      FINANCEORGCOUNT, ACCOUNTCOUNT, CREDITLIMIT, 
+      MAXCREDITLIMITPERORG, MINCREDITLIMITPERORG, 
+      BALANCE, USEDCREDITLIMIT, LATEST6MONTHUSEDAVGAMOUNT, 
+      TYPE, TIME_STAMP)
+    values (#{shareanddebtId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{financecorpcount,jdbcType=DECIMAL}, 
+      #{financeorgcount,jdbcType=DECIMAL}, #{accountcount,jdbcType=DECIMAL}, #{creditlimit,jdbcType=DECIMAL}, 
+      #{maxcreditlimitperorg,jdbcType=DECIMAL}, #{mincreditlimitperorg,jdbcType=DECIMAL}, 
+      #{balance,jdbcType=DECIMAL}, #{usedcreditlimit,jdbcType=DECIMAL}, #{latest6monthusedavgamount,jdbcType=DECIMAL}, 
+      #{type,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+     <insert id="insertByBatch" parameterType="java.util.List">
+	  insert into crawler.r_nr_shareanddebt (SHAREANDDEBT_ID, REPORT_ID, FINANCECORPCOUNT, 
+      FINANCEORGCOUNT, ACCOUNTCOUNT, CREDITLIMIT, 
+      MAXCREDITLIMITPERORG, MINCREDITLIMITPERORG, 
+      BALANCE, USEDCREDITLIMIT, LATEST6MONTHUSEDAVGAMOUNT, 
+      TYPE, TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		  (#{item.shareanddebtId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.financecorpcount,jdbcType=DECIMAL}, 
+      #{item.financeorgcount,jdbcType=DECIMAL}, #{item.accountcount,jdbcType=DECIMAL}, #{item.creditlimit,jdbcType=DECIMAL}, 
+      #{item.maxcreditlimitperorg,jdbcType=DECIMAL}, #{item.mincreditlimitperorg,jdbcType=DECIMAL}, 
+      #{item.balance,jdbcType=DECIMAL}, #{item.usedcreditlimit,jdbcType=DECIMAL}, #{item.latest6monthusedavgamount,jdbcType=DECIMAL}, 
+      #{item.type,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrShareanddebt" >
+    insert into crawler.r_nr_shareanddebt
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="shareanddebtId != null" >
+        SHAREANDDEBT_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="financecorpcount != null" >
+        FINANCECORPCOUNT,
+      </if>
+      <if test="financeorgcount != null" >
+        FINANCEORGCOUNT,
+      </if>
+      <if test="accountcount != null" >
+        ACCOUNTCOUNT,
+      </if>
+      <if test="creditlimit != null" >
+        CREDITLIMIT,
+      </if>
+      <if test="maxcreditlimitperorg != null" >
+        MAXCREDITLIMITPERORG,
+      </if>
+      <if test="mincreditlimitperorg != null" >
+        MINCREDITLIMITPERORG,
+      </if>
+      <if test="balance != null" >
+        BALANCE,
+      </if>
+      <if test="usedcreditlimit != null" >
+        USEDCREDITLIMIT,
+      </if>
+      <if test="latest6monthusedavgamount != null" >
+        LATEST6MONTHUSEDAVGAMOUNT,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="shareanddebtId != null" >
+        #{shareanddebtId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="financecorpcount != null" >
+        #{financecorpcount,jdbcType=DECIMAL},
+      </if>
+      <if test="financeorgcount != null" >
+        #{financeorgcount,jdbcType=DECIMAL},
+      </if>
+      <if test="accountcount != null" >
+        #{accountcount,jdbcType=DECIMAL},
+      </if>
+      <if test="creditlimit != null" >
+        #{creditlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="maxcreditlimitperorg != null" >
+        #{maxcreditlimitperorg,jdbcType=DECIMAL},
+      </if>
+      <if test="mincreditlimitperorg != null" >
+        #{mincreditlimitperorg,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="usedcreditlimit != null" >
+        #{usedcreditlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="latest6monthusedavgamount != null" >
+        #{latest6monthusedavgamount,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrShareanddebt" >
+    update crawler.r_nr_shareanddebt
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="financecorpcount != null" >
+        FINANCECORPCOUNT = #{financecorpcount,jdbcType=DECIMAL},
+      </if>
+      <if test="financeorgcount != null" >
+        FINANCEORGCOUNT = #{financeorgcount,jdbcType=DECIMAL},
+      </if>
+      <if test="accountcount != null" >
+        ACCOUNTCOUNT = #{accountcount,jdbcType=DECIMAL},
+      </if>
+      <if test="creditlimit != null" >
+        CREDITLIMIT = #{creditlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="maxcreditlimitperorg != null" >
+        MAXCREDITLIMITPERORG = #{maxcreditlimitperorg,jdbcType=DECIMAL},
+      </if>
+      <if test="mincreditlimitperorg != null" >
+        MINCREDITLIMITPERORG = #{mincreditlimitperorg,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        BALANCE = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="usedcreditlimit != null" >
+        USEDCREDITLIMIT = #{usedcreditlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="latest6monthusedavgamount != null" >
+        LATEST6MONTHUSEDAVGAMOUNT = #{latest6monthusedavgamount,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where SHAREANDDEBT_ID = #{shareanddebtId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrShareanddebt" >
+    update crawler.r_nr_shareanddebt
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      FINANCECORPCOUNT = #{financecorpcount,jdbcType=DECIMAL},
+      FINANCEORGCOUNT = #{financeorgcount,jdbcType=DECIMAL},
+      ACCOUNTCOUNT = #{accountcount,jdbcType=DECIMAL},
+      CREDITLIMIT = #{creditlimit,jdbcType=DECIMAL},
+      MAXCREDITLIMITPERORG = #{maxcreditlimitperorg,jdbcType=DECIMAL},
+      MINCREDITLIMITPERORG = #{mincreditlimitperorg,jdbcType=DECIMAL},
+      BALANCE = #{balance,jdbcType=DECIMAL},
+      USEDCREDITLIMIT = #{usedcreditlimit,jdbcType=DECIMAL},
+      LATEST6MONTHUSEDAVGAMOUNT = #{latest6monthusedavgamount,jdbcType=DECIMAL},
+      TYPE = #{type,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where SHAREANDDEBT_ID = #{shareanddebtId,jdbcType=VARCHAR}
+  </update>
+</mapper>

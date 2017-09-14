@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRSalvationMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tansun.easycare.modules.credit.entity.people.RNRSalvation">
+		<id column="SALVATION_ID" jdbcType="VARCHAR" property="salvationId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="PERSONNELTYPE" jdbcType="VARCHAR" property="personneltype" />
+		<result column="AREA" jdbcType="VARCHAR" property="area" />
+		<result column="ORGANNAME" jdbcType="VARCHAR" property="organname" />
+		<result column="MONEY" jdbcType="DECIMAL" property="money" />
+		<result column="REGISTERDATE" jdbcType="VARCHAR" property="registerdate" />
+		<result column="PASSDATE" jdbcType="VARCHAR" property="passdate" />
+		<result column="GETTIME" jdbcType="VARCHAR" property="gettime" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		SALVATION_ID, REPORT_ID, PERSONNELTYPE, AREA, ORGANNAME,
+		MONEY, REGISTERDATE,
+		PASSDATE,
+		GETTIME, TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_salvation
+		where SALVATION_ID =
+		#{salvationId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_salvation
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		crawler.r_nr_salvation
+		where SALVATION_ID = #{salvationId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRSalvation">
+		<selectKey order="BEFORE" resultType="String" keyProperty="salvationId">
+			select UUID()
+		</selectKey>
+		insert into crawler.r_nr_SALVATION (SALVATION_ID, REPORT_ID, PERSONNELTYPE,
+		AREA, ORGANNAME, MONEY,
+		REGISTERDATE, PASSDATE, GETTIME,
+		TIME_STAMP)
+		values (#{salvationId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR},
+		#{personneltype,jdbcType=VARCHAR},
+		#{area,jdbcType=VARCHAR},
+		#{organname,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL},
+		#{registerdate,jdbcType=VARCHAR}, #{passdate,jdbcType=VARCHAR},
+		#{gettime,jdbcType=VARCHAR},
+		#{timeStamp,jdbcType=TIMESTAMP})
+	</insert>
+	
+	
+	 <insert id="insertByBatch" parameterType="java.util.List">
+	  insert into crawler.r_nr_SALVATION (SALVATION_ID, REPORT_ID, PERSONNELTYPE,
+		AREA, ORGANNAME, MONEY,
+		REGISTERDATE, PASSDATE, GETTIME,
+		TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		  (#{item.salvationId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR},
+		#{item.personneltype,jdbcType=VARCHAR},
+		#{item.area,jdbcType=VARCHAR},
+		#{item.organname,jdbcType=VARCHAR}, #{item.money,jdbcType=DECIMAL},
+		#{item.registerdate,jdbcType=VARCHAR}, #{item.passdate,jdbcType=VARCHAR},
+		#{item.gettime,jdbcType=VARCHAR},
+		#{item.timeStamp,jdbcType=TIMESTAMP})
+	    </foreach>
+  	</insert>
+  	
+  	
+	<insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRSalvation">
+		insert into crawler.r_nr_SALVATION
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="salvationId != null">
+				SALVATION_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="personneltype != null">
+				PERSONNELTYPE,
+			</if>
+			<if test="area != null">
+				AREA,
+			</if>
+			<if test="organname != null">
+				ORGANNAME,
+			</if>
+			<if test="money != null">
+				MONEY,
+			</if>
+			<if test="registerdate != null">
+				REGISTERDATE,
+			</if>
+			<if test="passdate != null">
+				PASSDATE,
+			</if>
+			<if test="gettime != null">
+				GETTIME,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="salvationId != null">
+				#{salvationId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="personneltype != null">
+				#{personneltype,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				#{area,jdbcType=VARCHAR},
+			</if>
+			<if test="organname != null">
+				#{organname,jdbcType=VARCHAR},
+			</if>
+			<if test="money != null">
+				#{money,jdbcType=DECIMAL},
+			</if>
+			<if test="registerdate != null">
+				#{registerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="passdate != null">
+				#{passdate,jdbcType=VARCHAR},
+			</if>
+			<if test="gettime != null">
+				#{gettime,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRSalvation">
+		update crawler.r_nr_SALVATION
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="personneltype != null">
+				PERSONNELTYPE = #{personneltype,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				AREA = #{area,jdbcType=VARCHAR},
+			</if>
+			<if test="organname != null">
+				ORGANNAME = #{organname,jdbcType=VARCHAR},
+			</if>
+			<if test="money != null">
+				MONEY = #{money,jdbcType=DECIMAL},
+			</if>
+			<if test="registerdate != null">
+				REGISTERDATE = #{registerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="passdate != null">
+				PASSDATE = #{passdate,jdbcType=VARCHAR},
+			</if>
+			<if test="gettime != null">
+				GETTIME = #{gettime,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where SALVATION_ID = #{salvationId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRSalvation">
+		update
+		crawler.r_nr_SALVATION
+		set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+		PERSONNELTYPE = #{personneltype,jdbcType=VARCHAR},
+		AREA =
+		#{area,jdbcType=VARCHAR},
+		ORGANNAME = #{organname,jdbcType=VARCHAR},
+		MONEY = #{money,jdbcType=DECIMAL},
+		REGISTERDATE =
+		#{registerdate,jdbcType=VARCHAR},
+		PASSDATE =
+		#{passdate,jdbcType=VARCHAR},
+		GETTIME = #{gettime,jdbcType=VARCHAR},
+		TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP}
+		where SALVATION_ID =
+		#{salvationId,jdbcType=VARCHAR}
+	</update>
+</mapper>

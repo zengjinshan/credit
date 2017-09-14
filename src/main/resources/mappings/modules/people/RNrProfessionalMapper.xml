@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrProfessionalMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrProfessional" >
+    <id column="PROFESSIONAL_ID" property="professionalId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="EMPLOYER" property="employer" jdbcType="VARCHAR" />
+    <result column="EMPLOYERADDRESS" property="employeraddress" jdbcType="VARCHAR" />
+    <result column="OCCUPATION" property="occupation" jdbcType="VARCHAR" />
+    <result column="INDUSTRY" property="industry" jdbcType="VARCHAR" />
+    <result column="DUTY" property="duty" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="STARTYEAR" property="startyear" jdbcType="VARCHAR" />
+    <result column="GETTIME" property="gettime" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PROFESSIONAL_ID, REPORT_ID, EMPLOYER, EMPLOYERADDRESS, OCCUPATION, INDUSTRY, DUTY, 
+    TITLE, STARTYEAR, GETTIME, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_professional
+    where PROFESSIONAL_ID = #{professionalId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_professional
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_professional
+    where PROFESSIONAL_ID = #{professionalId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrProfessional" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="professionalId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_professional (PROFESSIONAL_ID, REPORT_ID, EMPLOYER, 
+      EMPLOYERADDRESS, OCCUPATION, INDUSTRY, 
+      DUTY, TITLE, STARTYEAR, 
+      GETTIME, TIME_STAMP)
+    values (#{professionalId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{employer,jdbcType=VARCHAR}, 
+      #{employeraddress,jdbcType=VARCHAR}, #{occupation,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, 
+      #{duty,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{startyear,jdbcType=VARCHAR}, 
+      #{gettime,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	  insert into crawler.r_nr_professional (PROFESSIONAL_ID, REPORT_ID, EMPLOYER, 
+      EMPLOYERADDRESS, OCCUPATION, INDUSTRY, 
+      DUTY, TITLE, STARTYEAR, 
+      GETTIME, TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.professionalId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.employer,jdbcType=VARCHAR}, 
+      #{item.employeraddress,jdbcType=VARCHAR}, #{item.occupation,jdbcType=VARCHAR}, #{item.industry,jdbcType=VARCHAR}, 
+      #{item.duty,jdbcType=VARCHAR}, #{item.title,jdbcType=VARCHAR}, #{item.startyear,jdbcType=VARCHAR}, 
+      #{item.gettime,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrProfessional" >
+    insert into crawler.r_nr_professional
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="professionalId != null" >
+        PROFESSIONAL_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="employer != null" >
+        EMPLOYER,
+      </if>
+      <if test="employeraddress != null" >
+        EMPLOYERADDRESS,
+      </if>
+      <if test="occupation != null" >
+        OCCUPATION,
+      </if>
+      <if test="industry != null" >
+        INDUSTRY,
+      </if>
+      <if test="duty != null" >
+        DUTY,
+      </if>
+      <if test="title != null" >
+        TITLE,
+      </if>
+      <if test="startyear != null" >
+        STARTYEAR,
+      </if>
+      <if test="gettime != null" >
+        GETTIME,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="professionalId != null" >
+        #{professionalId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="employer != null" >
+        #{employer,jdbcType=VARCHAR},
+      </if>
+      <if test="employeraddress != null" >
+        #{employeraddress,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null" >
+        #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null" >
+        #{duty,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="startyear != null" >
+        #{startyear,jdbcType=VARCHAR},
+      </if>
+      <if test="gettime != null" >
+        #{gettime,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrProfessional" >
+    update crawler.r_nr_professional
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="employer != null" >
+        EMPLOYER = #{employer,jdbcType=VARCHAR},
+      </if>
+      <if test="employeraddress != null" >
+        EMPLOYERADDRESS = #{employeraddress,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null" >
+        OCCUPATION = #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        INDUSTRY = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null" >
+        DUTY = #{duty,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="startyear != null" >
+        STARTYEAR = #{startyear,jdbcType=VARCHAR},
+      </if>
+      <if test="gettime != null" >
+        GETTIME = #{gettime,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where PROFESSIONAL_ID = #{professionalId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrProfessional" >
+    update crawler.r_nr_professional
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      EMPLOYER = #{employer,jdbcType=VARCHAR},
+      EMPLOYERADDRESS = #{employeraddress,jdbcType=VARCHAR},
+      OCCUPATION = #{occupation,jdbcType=VARCHAR},
+      INDUSTRY = #{industry,jdbcType=VARCHAR},
+      DUTY = #{duty,jdbcType=VARCHAR},
+      TITLE = #{title,jdbcType=VARCHAR},
+      STARTYEAR = #{startyear,jdbcType=VARCHAR},
+      GETTIME = #{gettime,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where PROFESSIONAL_ID = #{professionalId,jdbcType=VARCHAR}
+  </update>
+</mapper>

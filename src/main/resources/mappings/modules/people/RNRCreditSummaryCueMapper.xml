@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRCreditSummaryCueMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tansun.easycare.modules.credit.entity.people.RNRCreditSummaryCue">
+		<id column="CREDITSUMMARYCUE_ID" jdbcType="VARCHAR" property="creditsummarycueId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="PERHOUSELOANCOUNT" jdbcType="DECIMAL" property="perhouseloancount" />
+		<result column="PERBUSINESSHOUSELOANCOUNT" jdbcType="DECIMAL"
+			property="perbusinesshouseloancount" />
+		<result column="OTHERLOANCOUNT" jdbcType="DECIMAL" property="otherloancount" />
+		<result column="FIRSTLOANOPENMONTH" jdbcType="VARCHAR"
+			property="firstloanopenmonth" />
+		<result column="LOANCARDCOUNT" jdbcType="DECIMAL" property="loancardcount" />
+		<result column="FIRSTLOANCARDOPENMONTH" jdbcType="VARCHAR"
+			property="firstloancardopenmonth" />
+		<result column="STANDARDLOANCARDCOUNT" jdbcType="DECIMAL"
+			property="standardloancardcount" />
+		<result column="FIRSTSTANDARDLOANCARDOPENMONTH" jdbcType="VARCHAR"
+			property="firststandardloancardopenmonth" />
+		<result column="ANNOUNCECOUNT" jdbcType="DECIMAL" property="announcecount" />
+		<result column="DISSENTCOUNT" jdbcType="DECIMAL" property="dissentcount" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		CREDITSUMMARYCUE_ID, REPORT_ID, PERHOUSELOANCOUNT,
+		PERBUSINESSHOUSELOANCOUNT,
+		OTHERLOANCOUNT,
+		FIRSTLOANOPENMONTH,
+		LOANCARDCOUNT, FIRSTLOANCARDOPENMONTH, STANDARDLOANCARDCOUNT,
+		FIRSTSTANDARDLOANCARDOPENMONTH, ANNOUNCECOUNT, DISSENTCOUNT,
+		TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_creditsummarycue
+		where CREDITSUMMARYCUE_ID =
+		#{creditsummarycueId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_creditsummarycue
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		crawler.r_nr_creditsummarycue
+		where CREDITSUMMARYCUE_ID =
+		#{creditsummarycueId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert"
+		parameterType="com.tansun.easycare.modules.credit.entity.people.RNRCreditSummaryCue">
+		<selectKey order="BEFORE" resultType="String" keyProperty="creditsummarycueId">
+			select UUID()
+		</selectKey>
+		insert into crawler.r_nr_CREDITSUMMARYCUE (CREDITSUMMARYCUE_ID, REPORT_ID,
+		PERHOUSELOANCOUNT,
+		PERBUSINESSHOUSELOANCOUNT, OTHERLOANCOUNT,
+		FIRSTLOANOPENMONTH, LOANCARDCOUNT, FIRSTLOANCARDOPENMONTH,
+		STANDARDLOANCARDCOUNT, FIRSTSTANDARDLOANCARDOPENMONTH,
+		ANNOUNCECOUNT,
+		DISSENTCOUNT, TIME_STAMP
+		)
+		values
+		(#{creditsummarycueId,jdbcType=VARCHAR},
+		#{reportId,jdbcType=VARCHAR},
+		#{perhouseloancount,jdbcType=DECIMAL},
+		#{perbusinesshouseloancount,jdbcType=DECIMAL},
+		#{otherloancount,jdbcType=DECIMAL},
+		#{firstloanopenmonth,jdbcType=VARCHAR},
+		#{loancardcount,jdbcType=DECIMAL},
+		#{firstloancardopenmonth,jdbcType=VARCHAR},
+		#{standardloancardcount,jdbcType=DECIMAL},
+		#{firststandardloancardopenmonth,jdbcType=VARCHAR},
+		#{announcecount,jdbcType=DECIMAL}, #{dissentcount,jdbcType=DECIMAL},
+		#{timeStamp,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	
+	 <insert id="insertByBatch" parameterType="java.util.List">
+	 insert into crawler.r_nr_CREDITSUMMARYCUE (CREDITSUMMARYCUE_ID, REPORT_ID,
+		PERHOUSELOANCOUNT,
+		PERBUSINESSHOUSELOANCOUNT, OTHERLOANCOUNT,
+		FIRSTLOANOPENMONTH, LOANCARDCOUNT, FIRSTLOANCARDOPENMONTH,
+		STANDARDLOANCARDCOUNT, FIRSTSTANDARDLOANCARDOPENMONTH,
+		ANNOUNCECOUNT,
+		DISSENTCOUNT, TIME_STAMP
+		)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		 (#{item.creditsummarycueId,jdbcType=VARCHAR},
+		#{item.reportId,jdbcType=VARCHAR},
+		#{item.perhouseloancount,jdbcType=DECIMAL},
+		#{item.perbusinesshouseloancount,jdbcType=DECIMAL},
+		#{item.otherloancount,jdbcType=DECIMAL},
+		#{item.firstloanopenmonth,jdbcType=VARCHAR},
+		#{item.loancardcount,jdbcType=DECIMAL},
+		#{item.firstloancardopenmonth,jdbcType=VARCHAR},
+		#{item.standardloancardcount,jdbcType=DECIMAL},
+		#{item.firststandardloancardopenmonth,jdbcType=VARCHAR},
+		#{item.announcecount,jdbcType=DECIMAL}, #{item.dissentcount,jdbcType=DECIMAL},
+		#{item.timeStamp,jdbcType=TIMESTAMP}
+		)
+	    </foreach>
+  	</insert>
+  	
+  	
+	<insert id="insertSelective"
+		parameterType="com.tansun.easycare.modules.credit.entity.people.RNRCreditSummaryCue">
+		insert into crawler.r_nr_CREDITSUMMARYCUE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="creditsummarycueId != null">
+				CREDITSUMMARYCUE_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="perhouseloancount != null">
+				PERHOUSELOANCOUNT,
+			</if>
+			<if test="perbusinesshouseloancount != null">
+				PERBUSINESSHOUSELOANCOUNT,
+			</if>
+			<if test="otherloancount != null">
+				OTHERLOANCOUNT,
+			</if>
+			<if test="firstloanopenmonth != null">
+				FIRSTLOANOPENMONTH,
+			</if>
+			<if test="loancardcount != null">
+				LOANCARDCOUNT,
+			</if>
+			<if test="firstloancardopenmonth != null">
+				FIRSTLOANCARDOPENMONTH,
+			</if>
+			<if test="standardloancardcount != null">
+				STANDARDLOANCARDCOUNT,
+			</if>
+			<if test="firststandardloancardopenmonth != null">
+				FIRSTSTANDARDLOANCARDOPENMONTH,
+			</if>
+			<if test="announcecount != null">
+				ANNOUNCECOUNT,
+			</if>
+			<if test="dissentcount != null">
+				DISSENTCOUNT,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="creditsummarycueId != null">
+				#{creditsummarycueId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="perhouseloancount != null">
+				#{perhouseloancount,jdbcType=DECIMAL},
+			</if>
+			<if test="perbusinesshouseloancount != null">
+				#{perbusinesshouseloancount,jdbcType=DECIMAL},
+			</if>
+			<if test="otherloancount != null">
+				#{otherloancount,jdbcType=DECIMAL},
+			</if>
+			<if test="firstloanopenmonth != null">
+				#{firstloanopenmonth,jdbcType=VARCHAR},
+			</if>
+			<if test="loancardcount != null">
+				#{loancardcount,jdbcType=DECIMAL},
+			</if>
+			<if test="firstloancardopenmonth != null">
+				#{firstloancardopenmonth,jdbcType=VARCHAR},
+			</if>
+			<if test="standardloancardcount != null">
+				#{standardloancardcount,jdbcType=DECIMAL},
+			</if>
+			<if test="firststandardloancardopenmonth != null">
+				#{firststandardloancardopenmonth,jdbcType=VARCHAR},
+			</if>
+			<if test="announcecount != null">
+				#{announcecount,jdbcType=DECIMAL},
+			</if>
+			<if test="dissentcount != null">
+				#{dissentcount,jdbcType=DECIMAL},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.tansun.easycare.modules.credit.entity.people.RNRCreditSummaryCue">
+		update crawler.r_nr_CREDITSUMMARYCUE
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="perhouseloancount != null">
+				PERHOUSELOANCOUNT =
+				#{perhouseloancount,jdbcType=DECIMAL},
+			</if>
+			<if test="perbusinesshouseloancount != null">
+				PERBUSINESSHOUSELOANCOUNT =
+				#{perbusinesshouseloancount,jdbcType=DECIMAL},
+			</if>
+			<if test="otherloancount != null">
+				OTHERLOANCOUNT = #{otherloancount,jdbcType=DECIMAL},
+			</if>
+			<if test="firstloanopenmonth != null">
+				FIRSTLOANOPENMONTH =
+				#{firstloanopenmonth,jdbcType=VARCHAR},
+			</if>
+			<if test="loancardcount != null">
+				LOANCARDCOUNT = #{loancardcount,jdbcType=DECIMAL},
+			</if>
+			<if test="firstloancardopenmonth != null">
+				FIRSTLOANCARDOPENMONTH =
+				#{firstloancardopenmonth,jdbcType=VARCHAR},
+			</if>
+			<if test="standardloancardcount != null">
+				STANDARDLOANCARDCOUNT =
+				#{standardloancardcount,jdbcType=DECIMAL},
+			</if>
+			<if test="firststandardloancardopenmonth != null">
+				FIRSTSTANDARDLOANCARDOPENMONTH =
+				#{firststandardloancardopenmonth,jdbcType=VARCHAR},
+			</if>
+			<if test="announcecount != null">
+				ANNOUNCECOUNT = #{announcecount,jdbcType=DECIMAL},
+			</if>
+			<if test="dissentcount != null">
+				DISSENTCOUNT = #{dissentcount,jdbcType=DECIMAL},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where CREDITSUMMARYCUE_ID = #{creditsummarycueId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.tansun.easycare.modules.credit.entity.people.RNRCreditSummaryCue">
+		update crawler.r_nr_CREDITSUMMARYCUE
+		set REPORT_ID =
+		#{reportId,jdbcType=VARCHAR},
+		PERHOUSELOANCOUNT =
+		#{perhouseloancount,jdbcType=DECIMAL},
+		PERBUSINESSHOUSELOANCOUNT =
+		#{perbusinesshouseloancount,jdbcType=DECIMAL},
+		OTHERLOANCOUNT =
+		#{otherloancount,jdbcType=DECIMAL},
+		FIRSTLOANOPENMONTH =
+		#{firstloanopenmonth,jdbcType=VARCHAR},
+		LOANCARDCOUNT =
+		#{loancardcount,jdbcType=DECIMAL},
+		FIRSTLOANCARDOPENMONTH =
+		#{firstloancardopenmonth,jdbcType=VARCHAR},
+		STANDARDLOANCARDCOUNT =
+		#{standardloancardcount,jdbcType=DECIMAL},
+		FIRSTSTANDARDLOANCARDOPENMONTH =
+		#{firststandardloancardopenmonth,jdbcType=VARCHAR},
+		ANNOUNCECOUNT =
+		#{announcecount,jdbcType=DECIMAL},
+		DISSENTCOUNT =
+		#{dissentcount,jdbcType=DECIMAL},
+		TIME_STAMP =
+		#{timeStamp,jdbcType=TIMESTAMP}
+		where CREDITSUMMARYCUE_ID =
+		#{creditsummarycueId,jdbcType=VARCHAR}
+	</update>
+</mapper>

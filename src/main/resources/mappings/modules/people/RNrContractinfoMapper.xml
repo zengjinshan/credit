@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrContractinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrContractinfo" >
+    <id column="CONTRACTINFO_ID" property="contractinfoId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="LOAN_ID" property="loanId" jdbcType="VARCHAR" />
+    <result column="FINANCEORG" property="financeorg" jdbcType="VARCHAR" />
+    <result column="FINANCETYPE" property="financetype" jdbcType="VARCHAR" />
+    <result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="CURRENCY" property="currency" jdbcType="VARCHAR" />
+    <result column="OPENDATE" property="opendate" jdbcType="VARCHAR" />
+    <result column="ENDDATE" property="enddate" jdbcType="VARCHAR" />
+    <result column="CREDITLIMITAMOUNT" property="creditlimitamount" jdbcType="DECIMAL" />
+    <result column="GUARANTEETYPE" property="guaranteetype" jdbcType="VARCHAR" />
+    <result column="PAYMENTRATING" property="paymentrating" jdbcType="VARCHAR" />
+    <result column="PAYMENTCYC" property="paymentcyc" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CONTRACTINFO_ID, REPORT_ID, LOAN_ID, FINANCEORG, FINANCETYPE, ACCOUNT, TYPE, CURRENCY, 
+    OPENDATE, ENDDATE, CREDITLIMITAMOUNT, GUARANTEETYPE, PAYMENTRATING, PAYMENTCYC, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_contractinfo
+    where CONTRACTINFO_ID = #{contractinfoId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_contractinfo
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <select id="selectByLoanId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_contractinfo
+    where LOAN_ID = #{loanId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_contractinfo
+    where CONTRACTINFO_ID = #{contractinfoId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrContractinfo" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="contractinfoId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_contractinfo (CONTRACTINFO_ID, REPORT_ID, LOAN_ID, 
+      FINANCEORG, FINANCETYPE, ACCOUNT, 
+      TYPE, CURRENCY, OPENDATE, 
+      ENDDATE, CREDITLIMITAMOUNT, GUARANTEETYPE, 
+      PAYMENTRATING, PAYMENTCYC, TIME_STAMP
+      )
+    values (#{contractinfoId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{loanId,jdbcType=VARCHAR}, 
+      #{financeorg,jdbcType=VARCHAR}, #{financetype,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{opendate,jdbcType=VARCHAR}, 
+      #{enddate,jdbcType=VARCHAR}, #{creditlimitamount,jdbcType=DECIMAL}, #{guaranteetype,jdbcType=VARCHAR}, 
+      #{paymentrating,jdbcType=VARCHAR}, #{paymentcyc,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE}
+      )
+  </insert>
+  
+  <insert id="insertByBatch" parameterType="java.util.List">
+	  insert into crawler.r_nr_contractinfo (CONTRACTINFO_ID, REPORT_ID, LOAN_ID, 
+      FINANCEORG, FINANCETYPE, ACCOUNT, 
+      TYPE, CURRENCY, OPENDATE, 
+      ENDDATE, CREDITLIMITAMOUNT, GUARANTEETYPE, 
+      PAYMENTRATING, PAYMENTCYC, TIME_STAMP
+      )
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		 (#{item.contractinfoId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.loanId,jdbcType=VARCHAR}, 
+      #{item.financeorg,jdbcType=VARCHAR}, #{item.financetype,jdbcType=VARCHAR}, #{item.account,jdbcType=VARCHAR}, 
+      #{item.type,jdbcType=VARCHAR}, #{item.currency,jdbcType=VARCHAR}, #{item.opendate,jdbcType=VARCHAR}, 
+      #{item.enddate,jdbcType=VARCHAR}, #{item.creditlimitamount,jdbcType=DECIMAL}, #{item.guaranteetype,jdbcType=VARCHAR}, 
+      #{item.paymentrating,jdbcType=VARCHAR}, #{item.paymentcyc,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE}
+      )
+	    </foreach>
+  	</insert>
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrContractinfo" >
+    insert into crawler.r_nr_contractinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contractinfoId != null" >
+        CONTRACTINFO_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="loanId != null" >
+        LOAN_ID,
+      </if>
+      <if test="financeorg != null" >
+        FINANCEORG,
+      </if>
+      <if test="financetype != null" >
+        FINANCETYPE,
+      </if>
+      <if test="account != null" >
+        ACCOUNT,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="currency != null" >
+        CURRENCY,
+      </if>
+      <if test="opendate != null" >
+        OPENDATE,
+      </if>
+      <if test="enddate != null" >
+        ENDDATE,
+      </if>
+      <if test="creditlimitamount != null" >
+        CREDITLIMITAMOUNT,
+      </if>
+      <if test="guaranteetype != null" >
+        GUARANTEETYPE,
+      </if>
+      <if test="paymentrating != null" >
+        PAYMENTRATING,
+      </if>
+      <if test="paymentcyc != null" >
+        PAYMENTCYC,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contractinfoId != null" >
+        #{contractinfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null" >
+        #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="financeorg != null" >
+        #{financeorg,jdbcType=VARCHAR},
+      </if>
+      <if test="financetype != null" >
+        #{financetype,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="opendate != null" >
+        #{opendate,jdbcType=VARCHAR},
+      </if>
+      <if test="enddate != null" >
+        #{enddate,jdbcType=VARCHAR},
+      </if>
+      <if test="creditlimitamount != null" >
+        #{creditlimitamount,jdbcType=DECIMAL},
+      </if>
+      <if test="guaranteetype != null" >
+        #{guaranteetype,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentrating != null" >
+        #{paymentrating,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentcyc != null" >
+        #{paymentcyc,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrContractinfo" >
+    update crawler.r_nr_contractinfo
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null" >
+        LOAN_ID = #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="financeorg != null" >
+        FINANCEORG = #{financeorg,jdbcType=VARCHAR},
+      </if>
+      <if test="financetype != null" >
+        FINANCETYPE = #{financetype,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        CURRENCY = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="opendate != null" >
+        OPENDATE = #{opendate,jdbcType=VARCHAR},
+      </if>
+      <if test="enddate != null" >
+        ENDDATE = #{enddate,jdbcType=VARCHAR},
+      </if>
+      <if test="creditlimitamount != null" >
+        CREDITLIMITAMOUNT = #{creditlimitamount,jdbcType=DECIMAL},
+      </if>
+      <if test="guaranteetype != null" >
+        GUARANTEETYPE = #{guaranteetype,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentrating != null" >
+        PAYMENTRATING = #{paymentrating,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentcyc != null" >
+        PAYMENTCYC = #{paymentcyc,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where CONTRACTINFO_ID = #{contractinfoId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrContractinfo" >
+    update crawler.r_nr_contractinfo
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      LOAN_ID = #{loanId,jdbcType=VARCHAR},
+      FINANCEORG = #{financeorg,jdbcType=VARCHAR},
+      FINANCETYPE = #{financetype,jdbcType=VARCHAR},
+      ACCOUNT = #{account,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      CURRENCY = #{currency,jdbcType=VARCHAR},
+      OPENDATE = #{opendate,jdbcType=VARCHAR},
+      ENDDATE = #{enddate,jdbcType=VARCHAR},
+      CREDITLIMITAMOUNT = #{creditlimitamount,jdbcType=DECIMAL},
+      GUARANTEETYPE = #{guaranteetype,jdbcType=VARCHAR},
+      PAYMENTRATING = #{paymentrating,jdbcType=VARCHAR},
+      PAYMENTCYC = #{paymentcyc,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where CONTRACTINFO_ID = #{contractinfoId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrGuaranteesummaryMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrGuaranteesummary" >
+    <id column="GUARANTEESUMMARY_ID" property="guaranteesummaryId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="COUNT" property="count" jdbcType="DECIMAL" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="BALANCE" property="balance" jdbcType="DECIMAL" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    GUARANTEESUMMARY_ID, REPORT_ID, COUNT, AMOUNT, BALANCE, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_guaranteesummary
+    where GUARANTEESUMMARY_ID = #{guaranteesummaryId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_guaranteesummary
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_guaranteesummary
+    where GUARANTEESUMMARY_ID = #{guaranteesummaryId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrGuaranteesummary" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="guaranteesummaryId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_guaranteesummary (GUARANTEESUMMARY_ID, REPORT_ID, COUNT, 
+      AMOUNT, BALANCE, TIME_STAMP
+      )
+    values (#{guaranteesummaryId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{count,jdbcType=DECIMAL}, 
+      #{amount,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, #{timeStamp,jdbcType=DATE}
+      )
+  </insert>
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	 insert into crawler.r_nr_guaranteesummary (GUARANTEESUMMARY_ID, REPORT_ID, COUNT, 
+      AMOUNT, BALANCE, TIME_STAMP
+      )
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.guaranteesummaryId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.count,jdbcType=DECIMAL}, 
+      #{item.amount,jdbcType=DECIMAL}, #{item.balance,jdbcType=DECIMAL}, #{item.timeStamp,jdbcType=DATE}
+      )
+	    </foreach>
+  	</insert>
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrGuaranteesummary" >
+    insert into crawler.r_nr_guaranteesummary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="guaranteesummaryId != null" >
+        GUARANTEESUMMARY_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="count != null" >
+        COUNT,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="balance != null" >
+        BALANCE,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="guaranteesummaryId != null" >
+        #{guaranteesummaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrGuaranteesummary" >
+    update crawler.r_nr_guaranteesummary
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        COUNT = #{count,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        BALANCE = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where GUARANTEESUMMARY_ID = #{guaranteesummaryId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrGuaranteesummary" >
+    update crawler.r_nr_guaranteesummary
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      COUNT = #{count,jdbcType=DECIMAL},
+      AMOUNT = #{amount,jdbcType=DECIMAL},
+      BALANCE = #{balance,jdbcType=DECIMAL},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where GUARANTEESUMMARY_ID = #{guaranteesummaryId,jdbcType=VARCHAR}
+  </update>
+</mapper>

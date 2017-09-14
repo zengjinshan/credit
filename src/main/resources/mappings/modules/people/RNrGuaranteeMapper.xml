@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrGuaranteeMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrGuarantee" >
+    <id column="GUARANTEE_ID" property="guaranteeId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="GUARANTEEINFO_ID" property="guaranteeinfoId" jdbcType="VARCHAR" />
+    <result column="ORGANNAME" property="organname" jdbcType="VARCHAR" />
+    <result column="CONTRACTMONEY" property="contractmoney" jdbcType="DECIMAL" />
+    <result column="BEGINDATE" property="begindate" jdbcType="VARCHAR" />
+    <result column="ENDDATE" property="enddate" jdbcType="VARCHAR" />
+    <result column="GUANANTEEMONEY" property="guananteemoney" jdbcType="DECIMAL" />
+    <result column="GUARANTEEBALANCE" property="guaranteebalance" jdbcType="DECIMAL" />
+    <result column="CLASS5STATE" property="class5state" jdbcType="VARCHAR" />
+    <result column="BILLINGDATE" property="billingdate" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    GUARANTEE_ID, REPORT_ID, GUARANTEEINFO_ID, ORGANNAME, CONTRACTMONEY, BEGINDATE, ENDDATE, 
+    GUANANTEEMONEY, GUARANTEEBALANCE, CLASS5STATE, BILLINGDATE, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_guarantee
+    where GUARANTEE_ID = #{guaranteeId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_guarantee
+    where REPORT_ID = #{reportId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_guarantee
+    where GUARANTEE_ID = #{guaranteeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrGuarantee" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="guaranteeId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_guarantee (GUARANTEE_ID, REPORT_ID, GUARANTEEINFO_ID, 
+      ORGANNAME, CONTRACTMONEY, BEGINDATE, 
+      ENDDATE, GUANANTEEMONEY, GUARANTEEBALANCE, 
+      CLASS5STATE, BILLINGDATE, TIME_STAMP
+      )
+    values (#{guaranteeId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{guaranteeinfoId,jdbcType=VARCHAR}, 
+      #{organname,jdbcType=VARCHAR}, #{contractmoney,jdbcType=DECIMAL}, #{begindate,jdbcType=VARCHAR}, 
+      #{enddate,jdbcType=VARCHAR}, #{guananteemoney,jdbcType=DECIMAL}, #{guaranteebalance,jdbcType=DECIMAL}, 
+      #{class5state,jdbcType=VARCHAR}, #{billingdate,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE}
+      )
+  </insert>
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	  insert into crawler.r_nr_guarantee (GUARANTEE_ID, REPORT_ID, GUARANTEEINFO_ID, 
+      ORGANNAME, CONTRACTMONEY, BEGINDATE, 
+      ENDDATE, GUANANTEEMONEY, GUARANTEEBALANCE, 
+      CLASS5STATE, BILLINGDATE, TIME_STAMP
+      )
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.guaranteeId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.guaranteeinfoId,jdbcType=VARCHAR}, 
+      #{item.organname,jdbcType=VARCHAR}, #{item.contractmoney,jdbcType=DECIMAL}, #{item.begindate,jdbcType=VARCHAR}, 
+      #{item.enddate,jdbcType=VARCHAR}, #{item.guananteemoney,jdbcType=DECIMAL}, #{item.guaranteebalance,jdbcType=DECIMAL}, 
+      #{item.class5state,jdbcType=VARCHAR}, #{item.billingdate,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE}
+      )
+	    </foreach>
+  	</insert>
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrGuarantee" >
+    insert into crawler.r_nr_guarantee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="guaranteeId != null" >
+        GUARANTEE_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="guaranteeinfoId != null" >
+        GUARANTEEINFO_ID,
+      </if>
+      <if test="organname != null" >
+        ORGANNAME,
+      </if>
+      <if test="contractmoney != null" >
+        CONTRACTMONEY,
+      </if>
+      <if test="begindate != null" >
+        BEGINDATE,
+      </if>
+      <if test="enddate != null" >
+        ENDDATE,
+      </if>
+      <if test="guananteemoney != null" >
+        GUANANTEEMONEY,
+      </if>
+      <if test="guaranteebalance != null" >
+        GUARANTEEBALANCE,
+      </if>
+      <if test="class5state != null" >
+        CLASS5STATE,
+      </if>
+      <if test="billingdate != null" >
+        BILLINGDATE,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="guaranteeId != null" >
+        #{guaranteeId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeinfoId != null" >
+        #{guaranteeinfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="organname != null" >
+        #{organname,jdbcType=VARCHAR},
+      </if>
+      <if test="contractmoney != null" >
+        #{contractmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="begindate != null" >
+        #{begindate,jdbcType=VARCHAR},
+      </if>
+      <if test="enddate != null" >
+        #{enddate,jdbcType=VARCHAR},
+      </if>
+      <if test="guananteemoney != null" >
+        #{guananteemoney,jdbcType=DECIMAL},
+      </if>
+      <if test="guaranteebalance != null" >
+        #{guaranteebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="class5state != null" >
+        #{class5state,jdbcType=VARCHAR},
+      </if>
+      <if test="billingdate != null" >
+        #{billingdate,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrGuarantee" >
+    update crawler.r_nr_guarantee
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeinfoId != null" >
+        GUARANTEEINFO_ID = #{guaranteeinfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="organname != null" >
+        ORGANNAME = #{organname,jdbcType=VARCHAR},
+      </if>
+      <if test="contractmoney != null" >
+        CONTRACTMONEY = #{contractmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="begindate != null" >
+        BEGINDATE = #{begindate,jdbcType=VARCHAR},
+      </if>
+      <if test="enddate != null" >
+        ENDDATE = #{enddate,jdbcType=VARCHAR},
+      </if>
+      <if test="guananteemoney != null" >
+        GUANANTEEMONEY = #{guananteemoney,jdbcType=DECIMAL},
+      </if>
+      <if test="guaranteebalance != null" >
+        GUARANTEEBALANCE = #{guaranteebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="class5state != null" >
+        CLASS5STATE = #{class5state,jdbcType=VARCHAR},
+      </if>
+      <if test="billingdate != null" >
+        BILLINGDATE = #{billingdate,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where GUARANTEE_ID = #{guaranteeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrGuarantee" >
+    update crawler.r_nr_guarantee
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      GUARANTEEINFO_ID = #{guaranteeinfoId,jdbcType=VARCHAR},
+      ORGANNAME = #{organname,jdbcType=VARCHAR},
+      CONTRACTMONEY = #{contractmoney,jdbcType=DECIMAL},
+      BEGINDATE = #{begindate,jdbcType=VARCHAR},
+      ENDDATE = #{enddate,jdbcType=VARCHAR},
+      GUANANTEEMONEY = #{guananteemoney,jdbcType=DECIMAL},
+      GUARANTEEBALANCE = #{guaranteebalance,jdbcType=DECIMAL},
+      CLASS5STATE = #{class5state,jdbcType=VARCHAR},
+      BILLINGDATE = #{billingdate,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where GUARANTEE_ID = #{guaranteeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

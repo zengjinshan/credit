@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRMessageHeaderMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tansun.easycare.modules.credit.entity.people.RNRMessageHeader">
+		<id column="MESSAGEHEADER_ID" jdbcType="VARCHAR" property="messageheaderId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="REPORTSN" jdbcType="VARCHAR" property="reportsn" />
+		<result column="QUERYTIME" jdbcType="VARCHAR" property="querytime" />
+		<result column="REPORTCREATETIME" jdbcType="VARCHAR" property="reportcreatetime" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		MESSAGEHEADER_ID, REPORT_ID, REPORTSN, QUERYTIME,
+		REPORTCREATETIME, TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_messageheader
+		where MESSAGEHEADER_ID =
+		#{messageheaderId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_messageheader
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		crawler.r_nr_messageheader
+		where MESSAGEHEADER_ID =
+		#{messageheaderId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRMessageHeader">
+		<selectKey order="BEFORE" resultType="String" keyProperty="messageheaderId">
+			select UUID()
+		</selectKey>
+		insert into crawler.r_nr_MESSAGEHEADER (MESSAGEHEADER_ID, REPORT_ID, REPORTSN,
+		QUERYTIME, REPORTCREATETIME, TIME_STAMP
+		)
+		values
+		(#{messageheaderId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR},
+		#{reportsn,jdbcType=VARCHAR},
+		#{querytime,jdbcType=VARCHAR},
+		#{reportcreatetime,jdbcType=VARCHAR}, #{timeStamp,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	 <insert id="insertByBatch" parameterType="java.util.List">
+	  insert into crawler.r_nr_MESSAGEHEADER (MESSAGEHEADER_ID, REPORT_ID, REPORTSN,
+		QUERYTIME, REPORTCREATETIME, TIME_STAMP
+		)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.messageheaderId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR},
+		#{item.reportsn,jdbcType=VARCHAR},
+		#{item.querytime,jdbcType=VARCHAR},
+		#{item.reportcreatetime,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=TIMESTAMP}
+		)
+	    </foreach>
+  	</insert>
+  	
+	<insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRMessageHeader">
+		insert into crawler.r_nr_MESSAGEHEADER
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="messageheaderId != null">
+				MESSAGEHEADER_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="reportsn != null">
+				REPORTSN,
+			</if>
+			<if test="querytime != null">
+				QUERYTIME,
+			</if>
+			<if test="reportcreatetime != null">
+				REPORTCREATETIME,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="messageheaderId != null">
+				#{messageheaderId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportsn != null">
+				#{reportsn,jdbcType=VARCHAR},
+			</if>
+			<if test="querytime != null">
+				#{querytime,jdbcType=VARCHAR},
+			</if>
+			<if test="reportcreatetime != null">
+				#{reportcreatetime,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRMessageHeader">
+		update crawler.r_nr_MESSAGEHEADER
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportsn != null">
+				REPORTSN = #{reportsn,jdbcType=VARCHAR},
+			</if>
+			<if test="querytime != null">
+				QUERYTIME = #{querytime,jdbcType=VARCHAR},
+			</if>
+			<if test="reportcreatetime != null">
+				REPORTCREATETIME = #{reportcreatetime,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where MESSAGEHEADER_ID = #{messageheaderId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRMessageHeader">
+		update
+		crawler.r_nr_MESSAGEHEADER
+		set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+		REPORTSN = #{reportsn,jdbcType=VARCHAR},
+		QUERYTIME =
+		#{querytime,jdbcType=VARCHAR},
+		REPORTCREATETIME =
+		#{reportcreatetime,jdbcType=VARCHAR},
+		TIME_STAMP =
+		#{timeStamp,jdbcType=TIMESTAMP}
+		where MESSAGEHEADER_ID =
+		#{messageheaderId,jdbcType=VARCHAR}
+	</update>
+</mapper>

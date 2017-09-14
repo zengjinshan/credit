@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrIdentityMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrIdentity" >
+    <id column="IDENTITY_ID" property="identityId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="GENDER" property="gender" jdbcType="VARCHAR" />
+    <result column="BIRTHDAY" property="birthday" jdbcType="VARCHAR" />
+    <result column="MARITALSTATE" property="maritalstate" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="OFFICETELEPHONENO" property="officetelephoneno" jdbcType="VARCHAR" />
+    <result column="HOMETELEPHONENO" property="hometelephoneno" jdbcType="VARCHAR" />
+    <result column="EDULEVEL" property="edulevel" jdbcType="VARCHAR" />
+    <result column="EDUDEGREE" property="edudegree" jdbcType="VARCHAR" />
+    <result column="POSTADDRESS" property="postaddress" jdbcType="VARCHAR" />
+    <result column="REGISTEREDADDRESS" property="registeredaddress" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    IDENTITY_ID, REPORT_ID, GENDER, BIRTHDAY, MARITALSTATE, MOBILE, OFFICETELEPHONENO, 
+    HOMETELEPHONENO, EDULEVEL, EDUDEGREE, POSTADDRESS, REGISTEREDADDRESS, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_identity
+    where IDENTITY_ID = #{identityId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_identity
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_identity
+    where IDENTITY_ID = #{identityId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrIdentity" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="identityId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_identity (IDENTITY_ID, REPORT_ID, GENDER, 
+      BIRTHDAY, MARITALSTATE, MOBILE, 
+      OFFICETELEPHONENO, HOMETELEPHONENO, EDULEVEL, 
+      EDUDEGREE, POSTADDRESS, REGISTEREDADDRESS, 
+      TIME_STAMP)
+    values (#{identityId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=VARCHAR}, #{maritalstate,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{officetelephoneno,jdbcType=VARCHAR}, #{hometelephoneno,jdbcType=VARCHAR}, #{edulevel,jdbcType=VARCHAR}, 
+      #{edudegree,jdbcType=VARCHAR}, #{postaddress,jdbcType=VARCHAR}, #{registeredaddress,jdbcType=VARCHAR}, 
+      #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	 insert into crawler.r_nr_identity (IDENTITY_ID, REPORT_ID, GENDER, 
+      BIRTHDAY, MARITALSTATE, MOBILE, 
+      OFFICETELEPHONENO, HOMETELEPHONENO, EDULEVEL, 
+      EDUDEGREE, POSTADDRESS, REGISTEREDADDRESS, 
+      TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.identityId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.gender,jdbcType=VARCHAR}, 
+      #{item.birthday,jdbcType=VARCHAR}, #{item.maritalstate,jdbcType=VARCHAR}, #{item.mobile,jdbcType=VARCHAR}, 
+      #{item.officetelephoneno,jdbcType=VARCHAR}, #{item.hometelephoneno,jdbcType=VARCHAR}, #{item.edulevel,jdbcType=VARCHAR}, 
+      #{item.edudegree,jdbcType=VARCHAR}, #{item.postaddress,jdbcType=VARCHAR}, #{item.registeredaddress,jdbcType=VARCHAR}, 
+      #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrIdentity" >
+    insert into crawler.r_nr_identity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="identityId != null" >
+        IDENTITY_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="gender != null" >
+        GENDER,
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY,
+      </if>
+      <if test="maritalstate != null" >
+        MARITALSTATE,
+      </if>
+      <if test="mobile != null" >
+        MOBILE,
+      </if>
+      <if test="officetelephoneno != null" >
+        OFFICETELEPHONENO,
+      </if>
+      <if test="hometelephoneno != null" >
+        HOMETELEPHONENO,
+      </if>
+      <if test="edulevel != null" >
+        EDULEVEL,
+      </if>
+      <if test="edudegree != null" >
+        EDUDEGREE,
+      </if>
+      <if test="postaddress != null" >
+        POSTADDRESS,
+      </if>
+      <if test="registeredaddress != null" >
+        REGISTEREDADDRESS,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="identityId != null" >
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="maritalstate != null" >
+        #{maritalstate,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="officetelephoneno != null" >
+        #{officetelephoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="hometelephoneno != null" >
+        #{hometelephoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="edulevel != null" >
+        #{edulevel,jdbcType=VARCHAR},
+      </if>
+      <if test="edudegree != null" >
+        #{edudegree,jdbcType=VARCHAR},
+      </if>
+      <if test="postaddress != null" >
+        #{postaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredaddress != null" >
+        #{registeredaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrIdentity" >
+    update crawler.r_nr_identity
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        GENDER = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="maritalstate != null" >
+        MARITALSTATE = #{maritalstate,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="officetelephoneno != null" >
+        OFFICETELEPHONENO = #{officetelephoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="hometelephoneno != null" >
+        HOMETELEPHONENO = #{hometelephoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="edulevel != null" >
+        EDULEVEL = #{edulevel,jdbcType=VARCHAR},
+      </if>
+      <if test="edudegree != null" >
+        EDUDEGREE = #{edudegree,jdbcType=VARCHAR},
+      </if>
+      <if test="postaddress != null" >
+        POSTADDRESS = #{postaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredaddress != null" >
+        REGISTEREDADDRESS = #{registeredaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where IDENTITY_ID = #{identityId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrIdentity" >
+    update crawler.r_nr_identity
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      GENDER = #{gender,jdbcType=VARCHAR},
+      BIRTHDAY = #{birthday,jdbcType=VARCHAR},
+      MARITALSTATE = #{maritalstate,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      OFFICETELEPHONENO = #{officetelephoneno,jdbcType=VARCHAR},
+      HOMETELEPHONENO = #{hometelephoneno,jdbcType=VARCHAR},
+      EDULEVEL = #{edulevel,jdbcType=VARCHAR},
+      EDUDEGREE = #{edudegree,jdbcType=VARCHAR},
+      POSTADDRESS = #{postaddress,jdbcType=VARCHAR},
+      REGISTEREDADDRESS = #{registeredaddress,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where IDENTITY_ID = #{identityId,jdbcType=VARCHAR}
+  </update>
+</mapper>

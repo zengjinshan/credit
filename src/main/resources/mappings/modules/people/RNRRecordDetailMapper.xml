@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRRecordDetailMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tansun.easycare.modules.credit.entity.people.RNRRecordDetail">
+		<id column="RECORDDETAIL_ID" jdbcType="VARCHAR" property="recorddetailId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="RECORDINFO_ID" jdbcType="VARCHAR" property="recordinfoId" />
+		<result column="QUERYDATE" jdbcType="VARCHAR" property="querydate" />
+		<result column="QUERIER" jdbcType="VARCHAR" property="querier" />
+		<result column="QUERYREASON" jdbcType="VARCHAR" property="queryreason" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		RECORDDETAIL_ID, REPORT_ID, RECORDINFO_ID, QUERYDATE,
+		QUERIER, QUERYREASON, TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_recorddetail
+		where RECORDDETAIL_ID =
+		#{recorddetailId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_recorddetail
+		where REPORT_ID =
+		#{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		crawler.r_nr_recorddetail
+		where RECORDDETAIL_ID =
+		#{recorddetailId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRRecordDetail">
+		<selectKey order="BEFORE" resultType="String" keyProperty="recorddetailId">
+			select UUID()
+		</selectKey>
+		insert into crawler.r_nr_RECORDDETAIL (RECORDDETAIL_ID, REPORT_ID,
+		RECORDINFO_ID,
+		QUERYDATE, QUERIER, QUERYREASON,
+		TIME_STAMP)
+		values
+		(#{recorddetailId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR},
+		#{recordinfoId,jdbcType=VARCHAR},
+		#{querydate,jdbcType=VARCHAR},
+		#{querier,jdbcType=VARCHAR}, #{queryreason,jdbcType=VARCHAR},
+		#{timeStamp,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="insertByBatch" parameterType="java.util.List">
+		insert into crawler.r_nr_RECORDDETAIL (RECORDDETAIL_ID, REPORT_ID,
+		RECORDINFO_ID,
+		QUERYDATE, QUERIER, QUERYREASON,
+		TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.recorddetailId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR},
+		#{item.recordinfoId,jdbcType=VARCHAR},
+		#{item.querydate,jdbcType=VARCHAR},
+		#{item.querier,jdbcType=VARCHAR}, #{item.queryreason,jdbcType=VARCHAR},
+		#{item.timeStamp,jdbcType=TIMESTAMP})
+	    </foreach>
+  	</insert>
+  	
+  	
+	<insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRRecordDetail">
+		insert into crawler.r_nr_RECORDDETAIL
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="recorddetailId != null">
+				RECORDDETAIL_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="recordinfoId != null">
+				RECORDINFO_ID,
+			</if>
+			<if test="querydate != null">
+				QUERYDATE,
+			</if>
+			<if test="querier != null">
+				QUERIER,
+			</if>
+			<if test="queryreason != null">
+				QUERYREASON,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="recorddetailId != null">
+				#{recorddetailId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="recordinfoId != null">
+				#{recordinfoId,jdbcType=VARCHAR},
+			</if>
+			<if test="querydate != null">
+				#{querydate,jdbcType=VARCHAR},
+			</if>
+			<if test="querier != null">
+				#{querier,jdbcType=VARCHAR},
+			</if>
+			<if test="queryreason != null">
+				#{queryreason,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRRecordDetail">
+		update crawler.r_nr_RECORDDETAIL
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="recordinfoId != null">
+				RECORDINFO_ID = #{recordinfoId,jdbcType=VARCHAR},
+			</if>
+			<if test="querydate != null">
+				QUERYDATE = #{querydate,jdbcType=VARCHAR},
+			</if>
+			<if test="querier != null">
+				QUERIER = #{querier,jdbcType=VARCHAR},
+			</if>
+			<if test="queryreason != null">
+				QUERYREASON = #{queryreason,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where RECORDDETAIL_ID = #{recorddetailId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRRecordDetail">
+		update
+		crawler.r_nr_RECORDDETAIL
+		set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+		RECORDINFO_ID = #{recordinfoId,jdbcType=VARCHAR},
+		QUERYDATE =
+		#{querydate,jdbcType=VARCHAR},
+		QUERIER = #{querier,jdbcType=VARCHAR},
+		QUERYREASON = #{queryreason,jdbcType=VARCHAR},
+		TIME_STAMP =
+		#{timeStamp,jdbcType=TIMESTAMP}
+		where RECORDDETAIL_ID =
+		#{recorddetailId,jdbcType=VARCHAR}
+	</update>
+</mapper>

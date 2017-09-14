@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrOverduesumMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrOverduesum" >
+    <id column="OVERDUESUM_ID" property="overduesumId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="COUNT" property="count" jdbcType="DECIMAL" />
+    <result column="MONTHS" property="months" jdbcType="DECIMAL" />
+    <result column="HIGHESTOVERDUEAMOUNTPERMON" property="highestoverdueamountpermon" jdbcType="DECIMAL" />
+    <result column="MAXDURATION" property="maxduration" jdbcType="DECIMAL" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    OVERDUESUM_ID, REPORT_ID, COUNT, MONTHS, HIGHESTOVERDUEAMOUNTPERMON, MAXDURATION, 
+    TYPE, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_overduesum
+    where OVERDUESUM_ID = #{overduesumId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_overduesum
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_overduesum
+    where OVERDUESUM_ID = #{overduesumId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrOverduesum" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="overduesumId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_overduesum (OVERDUESUM_ID, REPORT_ID, COUNT, 
+      MONTHS, HIGHESTOVERDUEAMOUNTPERMON, MAXDURATION, 
+      TYPE, TIME_STAMP)
+    values (#{overduesumId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{count,jdbcType=DECIMAL}, 
+      #{months,jdbcType=DECIMAL}, #{highestoverdueamountpermon,jdbcType=DECIMAL}, #{maxduration,jdbcType=DECIMAL}, 
+      #{type,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	  insert into crawler.r_nr_overduesum (OVERDUESUM_ID, REPORT_ID, COUNT, 
+      MONTHS, HIGHESTOVERDUEAMOUNTPERMON, MAXDURATION, 
+      TYPE, TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.overduesumId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.count,jdbcType=DECIMAL}, 
+      #{item.months,jdbcType=DECIMAL}, #{item.highestoverdueamountpermon,jdbcType=DECIMAL}, #{item.maxduration,jdbcType=DECIMAL}, 
+      #{item.type,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  	
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrOverduesum" >
+    insert into crawler.r_nr_overduesum
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="overduesumId != null" >
+        OVERDUESUM_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="count != null" >
+        COUNT,
+      </if>
+      <if test="months != null" >
+        MONTHS,
+      </if>
+      <if test="highestoverdueamountpermon != null" >
+        HIGHESTOVERDUEAMOUNTPERMON,
+      </if>
+      <if test="maxduration != null" >
+        MAXDURATION,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="overduesumId != null" >
+        #{overduesumId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=DECIMAL},
+      </if>
+      <if test="months != null" >
+        #{months,jdbcType=DECIMAL},
+      </if>
+      <if test="highestoverdueamountpermon != null" >
+        #{highestoverdueamountpermon,jdbcType=DECIMAL},
+      </if>
+      <if test="maxduration != null" >
+        #{maxduration,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrOverduesum" >
+    update crawler.r_nr_overduesum
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        COUNT = #{count,jdbcType=DECIMAL},
+      </if>
+      <if test="months != null" >
+        MONTHS = #{months,jdbcType=DECIMAL},
+      </if>
+      <if test="highestoverdueamountpermon != null" >
+        HIGHESTOVERDUEAMOUNTPERMON = #{highestoverdueamountpermon,jdbcType=DECIMAL},
+      </if>
+      <if test="maxduration != null" >
+        MAXDURATION = #{maxduration,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where OVERDUESUM_ID = #{overduesumId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrOverduesum" >
+    update crawler.r_nr_overduesum
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      COUNT = #{count,jdbcType=DECIMAL},
+      MONTHS = #{months,jdbcType=DECIMAL},
+      HIGHESTOVERDUEAMOUNTPERMON = #{highestoverdueamountpermon,jdbcType=DECIMAL},
+      MAXDURATION = #{maxduration,jdbcType=DECIMAL},
+      TYPE = #{type,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where OVERDUESUM_ID = #{overduesumId,jdbcType=VARCHAR}
+  </update>
+</mapper>

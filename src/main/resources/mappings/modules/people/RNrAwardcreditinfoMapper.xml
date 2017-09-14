@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrAwardcreditinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrAwardcreditinfo" >
+    <id column="AWARDCREDITINFO_ID" property="awardcreditinfoId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="SUPER_ID" property="superId" jdbcType="VARCHAR" />
+    <result column="FINANCEORG" property="financeorg" jdbcType="VARCHAR" />
+    <result column="FINANCETYPE" property="financetype" jdbcType="VARCHAR" />
+    <result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+    <result column="CURRENCY" property="currency" jdbcType="VARCHAR" />
+    <result column="OPENDATE" property="opendate" jdbcType="VARCHAR" />
+    <result column="CREDITLIMITAMOUNT" property="creditlimitamount" jdbcType="DECIMAL" />
+    <result column="GUARANTEETYPE" property="guaranteetype" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    AWARDCREDITINFO_ID, REPORT_ID, SUPER_ID, FINANCEORG, FINANCETYPE, ACCOUNT, CURRENCY, 
+    OPENDATE, CREDITLIMITAMOUNT, GUARANTEETYPE, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_awardcreditinfo
+    where AWARDCREDITINFO_ID = #{awardcreditinfoId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_awardcreditinfo
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <select id="selectBySuperId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_awardcreditinfo
+    where SUPER_ID = #{superId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_awardcreditinfo
+    where AWARDCREDITINFO_ID = #{awardcreditinfoId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrAwardcreditinfo" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="awardcreditinfoId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_awardcreditinfo (AWARDCREDITINFO_ID, REPORT_ID, SUPER_ID, 
+      FINANCEORG, FINANCETYPE, ACCOUNT, 
+      CURRENCY, OPENDATE, CREDITLIMITAMOUNT, 
+      GUARANTEETYPE, TIME_STAMP)
+    values (#{awardcreditinfoId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{superId,jdbcType=VARCHAR}, 
+      #{financeorg,jdbcType=VARCHAR}, #{financetype,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{currency,jdbcType=VARCHAR}, #{opendate,jdbcType=VARCHAR}, #{creditlimitamount,jdbcType=DECIMAL}, 
+      #{guaranteetype,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+  	<insert id="insertByBatch" parameterType="java.util.List">
+	  	insert into crawler.r_nr_awardcreditinfo (AWARDCREDITINFO_ID, REPORT_ID, SUPER_ID, 
+      	FINANCEORG, FINANCETYPE, ACCOUNT, 
+      	CURRENCY, OPENDATE, CREDITLIMITAMOUNT, 
+      	GUARANTEETYPE, TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		 (#{item.awardcreditinfoId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.superId,jdbcType=VARCHAR}, 
+      #{item.financeorg,jdbcType=VARCHAR}, #{item.financetype,jdbcType=VARCHAR}, #{item.account,jdbcType=VARCHAR}, 
+      #{item.currency,jdbcType=VARCHAR}, #{item.opendate,jdbcType=VARCHAR}, #{item.creditlimitamount,jdbcType=DECIMAL}, 
+      #{item.guaranteetype,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrAwardcreditinfo" >
+    insert into crawler.r_nr_awardcreditinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="awardcreditinfoId != null" >
+        AWARDCREDITINFO_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="superId != null" >
+        SUPER_ID,
+      </if>
+      <if test="financeorg != null" >
+        FINANCEORG,
+      </if>
+      <if test="financetype != null" >
+        FINANCETYPE,
+      </if>
+      <if test="account != null" >
+        ACCOUNT,
+      </if>
+      <if test="currency != null" >
+        CURRENCY,
+      </if>
+      <if test="opendate != null" >
+        OPENDATE,
+      </if>
+      <if test="creditlimitamount != null" >
+        CREDITLIMITAMOUNT,
+      </if>
+      <if test="guaranteetype != null" >
+        GUARANTEETYPE,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="awardcreditinfoId != null" >
+        #{awardcreditinfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="superId != null" >
+        #{superId,jdbcType=VARCHAR},
+      </if>
+      <if test="financeorg != null" >
+        #{financeorg,jdbcType=VARCHAR},
+      </if>
+      <if test="financetype != null" >
+        #{financetype,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="opendate != null" >
+        #{opendate,jdbcType=VARCHAR},
+      </if>
+      <if test="creditlimitamount != null" >
+        #{creditlimitamount,jdbcType=DECIMAL},
+      </if>
+      <if test="guaranteetype != null" >
+        #{guaranteetype,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrAwardcreditinfo" >
+    update crawler.r_nr_awardcreditinfo
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="superId != null" >
+        SUPER_ID = #{superId,jdbcType=VARCHAR},
+      </if>
+      <if test="financeorg != null" >
+        FINANCEORG = #{financeorg,jdbcType=VARCHAR},
+      </if>
+      <if test="financetype != null" >
+        FINANCETYPE = #{financetype,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        CURRENCY = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="opendate != null" >
+        OPENDATE = #{opendate,jdbcType=VARCHAR},
+      </if>
+      <if test="creditlimitamount != null" >
+        CREDITLIMITAMOUNT = #{creditlimitamount,jdbcType=DECIMAL},
+      </if>
+      <if test="guaranteetype != null" >
+        GUARANTEETYPE = #{guaranteetype,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where AWARDCREDITINFO_ID = #{awardcreditinfoId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrAwardcreditinfo" >
+    update crawler.r_nr_awardcreditinfo
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      SUPER_ID = #{superId,jdbcType=VARCHAR},
+      FINANCEORG = #{financeorg,jdbcType=VARCHAR},
+      FINANCETYPE = #{financetype,jdbcType=VARCHAR},
+      ACCOUNT = #{account,jdbcType=VARCHAR},
+      CURRENCY = #{currency,jdbcType=VARCHAR},
+      OPENDATE = #{opendate,jdbcType=VARCHAR},
+      CREDITLIMITAMOUNT = #{creditlimitamount,jdbcType=DECIMAL},
+      GUARANTEETYPE = #{guaranteetype,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where AWARDCREDITINFO_ID = #{awardcreditinfoId,jdbcType=VARCHAR}
+  </update>
+</mapper>

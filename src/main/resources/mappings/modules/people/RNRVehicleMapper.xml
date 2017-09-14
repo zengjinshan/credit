@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRVehicleMapper">
+	<resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNRVehicle">
+		<id column="VEHICLE_ID" jdbcType="VARCHAR" property="vehicleId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="ENGINECODE" jdbcType="VARCHAR" property="enginecode" />
+		<result column="LICENSECODE" jdbcType="VARCHAR" property="licensecode" />
+		<result column="BRAND" jdbcType="VARCHAR" property="brand" />
+		<result column="CARTYPE" jdbcType="VARCHAR" property="cartype" />
+		<result column="USECHARACTER" jdbcType="VARCHAR" property="usecharacter" />
+		<result column="STATE" jdbcType="VARCHAR" property="state" />
+		<result column="PLEDGEFLAG" jdbcType="VARCHAR" property="pledgeflag" />
+		<result column="GETTIME" jdbcType="VARCHAR" property="gettime" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		VEHICLE_ID, REPORT_ID, ENGINECODE, LICENSECODE, BRAND,
+		CARTYPE, USECHARACTER,
+		STATE,
+		PLEDGEFLAG, GETTIME, TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_vehicle
+		where VEHICLE_ID = #{vehicleId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_vehicle
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		crawler.r_nr_vehicle
+		where VEHICLE_ID = #{vehicleId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRVehicle">
+		<selectKey order="BEFORE" resultType="String" keyProperty="vehicleId">
+			select UUID()
+		</selectKey>
+		insert into crawler.r_nr_VEHICLE (VEHICLE_ID, REPORT_ID, ENGINECODE,
+		LICENSECODE, BRAND, CARTYPE,
+		USECHARACTER, STATE, PLEDGEFLAG,
+		GETTIME,
+		TIME_STAMP)
+		values (#{vehicleId,jdbcType=VARCHAR},
+		#{reportId,jdbcType=VARCHAR},
+		#{enginecode,jdbcType=VARCHAR},
+		#{licensecode,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR},
+		#{cartype,jdbcType=VARCHAR},
+		#{usecharacter,jdbcType=VARCHAR},
+		#{state,jdbcType=VARCHAR},
+		#{pledgeflag,jdbcType=VARCHAR},
+		#{gettime,jdbcType=VARCHAR}, #{timeStamp,jdbcType=TIMESTAMP})
+	</insert>
+	
+	
+	 <insert id="insertByBatch" parameterType="java.util.List">
+	    insert into crawler.r_nr_VEHICLE (VEHICLE_ID, REPORT_ID, ENGINECODE,
+		LICENSECODE, BRAND, CARTYPE,
+		USECHARACTER, STATE, PLEDGEFLAG,
+		GETTIME,
+		TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		     (#{item.vehicleId,jdbcType=VARCHAR},
+			#{item.reportId,jdbcType=VARCHAR},
+			#{item.enginecode,jdbcType=VARCHAR},
+			#{item.licensecode,jdbcType=VARCHAR}, #{item.brand,jdbcType=VARCHAR},
+			#{item.cartype,jdbcType=VARCHAR},
+			#{item.usecharacter,jdbcType=VARCHAR},
+			#{item.state,jdbcType=VARCHAR},
+			#{item.pledgeflag,jdbcType=VARCHAR},
+			#{item.gettime,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=TIMESTAMP})
+	    </foreach>
+  	</insert>
+  
+  
+	<insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRVehicle">
+		insert into crawler.r_nr_VEHICLE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="vehicleId != null">
+				VEHICLE_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="enginecode != null">
+				ENGINECODE,
+			</if>
+			<if test="licensecode != null">
+				LICENSECODE,
+			</if>
+			<if test="brand != null">
+				BRAND,
+			</if>
+			<if test="cartype != null">
+				CARTYPE,
+			</if>
+			<if test="usecharacter != null">
+				USECHARACTER,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="pledgeflag != null">
+				PLEDGEFLAG,
+			</if>
+			<if test="gettime != null">
+				GETTIME,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="vehicleId != null">
+				#{vehicleId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="enginecode != null">
+				#{enginecode,jdbcType=VARCHAR},
+			</if>
+			<if test="licensecode != null">
+				#{licensecode,jdbcType=VARCHAR},
+			</if>
+			<if test="brand != null">
+				#{brand,jdbcType=VARCHAR},
+			</if>
+			<if test="cartype != null">
+				#{cartype,jdbcType=VARCHAR},
+			</if>
+			<if test="usecharacter != null">
+				#{usecharacter,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=VARCHAR},
+			</if>
+			<if test="pledgeflag != null">
+				#{pledgeflag,jdbcType=VARCHAR},
+			</if>
+			<if test="gettime != null">
+				#{gettime,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRVehicle">
+		update crawler.r_nr_VEHICLE
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="enginecode != null">
+				ENGINECODE = #{enginecode,jdbcType=VARCHAR},
+			</if>
+			<if test="licensecode != null">
+				LICENSECODE = #{licensecode,jdbcType=VARCHAR},
+			</if>
+			<if test="brand != null">
+				BRAND = #{brand,jdbcType=VARCHAR},
+			</if>
+			<if test="cartype != null">
+				CARTYPE = #{cartype,jdbcType=VARCHAR},
+			</if>
+			<if test="usecharacter != null">
+				USECHARACTER = #{usecharacter,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="pledgeflag != null">
+				PLEDGEFLAG = #{pledgeflag,jdbcType=VARCHAR},
+			</if>
+			<if test="gettime != null">
+				GETTIME = #{gettime,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where VEHICLE_ID = #{vehicleId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRVehicle">
+		update
+		crawler.r_nr_VEHICLE
+		set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+		ENGINECODE =
+		#{enginecode,jdbcType=VARCHAR},
+		LICENSECODE =
+		#{licensecode,jdbcType=VARCHAR},
+		BRAND = #{brand,jdbcType=VARCHAR},
+		CARTYPE = #{cartype,jdbcType=VARCHAR},
+		USECHARACTER =
+		#{usecharacter,jdbcType=VARCHAR},
+		STATE = #{state,jdbcType=VARCHAR},
+		PLEDGEFLAG = #{pledgeflag,jdbcType=VARCHAR},
+		GETTIME =
+		#{gettime,jdbcType=VARCHAR},
+		TIME_STAMP =
+		#{timeStamp,jdbcType=TIMESTAMP}
+		where VEHICLE_ID =
+		#{vehicleId,jdbcType=VARCHAR}
+	</update>
+</mapper>

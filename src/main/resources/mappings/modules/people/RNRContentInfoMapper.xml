@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRContentInfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tansun.easycare.modules.credit.entity.people.RNRContentInfo">
+		<id column="CONTENTINFO_ID" jdbcType="VARCHAR" property="contentinfoId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="SUPER_ID" jdbcType="VARCHAR" property="superId" />
+		<result column="CONTENT" jdbcType="VARCHAR" property="content" />
+		<result column="GETTIME" jdbcType="VARCHAR" property="gettime" />
+		<result column="TYPE" jdbcType="VARCHAR" property="type" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		CONTENTINFO_ID, REPORT_ID, SUPER_ID, CONTENT, GETTIME,
+		TYPE, TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_contentinfo
+		where CONTENTINFO_ID =
+		#{contentinfoId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_contentinfo
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		crawler.r_nr_contentinfo
+		where CONTENTINFO_ID =
+		#{contentinfoId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRContentInfo">
+		<selectKey order="BEFORE" resultType="String" keyProperty="contentinfoId">
+			select UUID()
+		</selectKey>
+		insert into crawler.r_nr_CONTENTINFO (CONTENTINFO_ID, REPORT_ID, SUPER_ID,
+		CONTENT, GETTIME, TYPE,
+		TIME_STAMP)
+		values
+		(#{contentinfoId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR},
+		#{superId,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR},
+		#{gettime,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+		#{timeStamp,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="insertByBatch" parameterType="java.util.List">
+	  insert into crawler.r_nr_CONTENTINFO (CONTENTINFO_ID, REPORT_ID, SUPER_ID,
+		CONTENT, GETTIME, TYPE,
+		TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		 (#{item.contentinfoId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR},
+		#{item.superId,jdbcType=VARCHAR},
+		#{item.content,jdbcType=VARCHAR},
+		#{item.gettime,jdbcType=VARCHAR}, #{item.type,jdbcType=VARCHAR},
+		#{item.timeStamp,jdbcType=TIMESTAMP})
+	    </foreach>
+  	</insert>
+	<insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRContentInfo">
+		insert into crawler.r_nr_CONTENTINFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contentinfoId != null">
+				CONTENTINFO_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="superId != null">
+				SUPER_ID,
+			</if>
+			<if test="content != null">
+				CONTENT,
+			</if>
+			<if test="gettime != null">
+				GETTIME,
+			</if>
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contentinfoId != null">
+				#{contentinfoId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="superId != null">
+				#{superId,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="gettime != null">
+				#{gettime,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRContentInfo">
+		update crawler.r_nr_CONTENTINFO
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="superId != null">
+				SUPER_ID = #{superId,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				CONTENT = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="gettime != null">
+				GETTIME = #{gettime,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				TYPE = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where CONTENTINFO_ID = #{contentinfoId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRContentInfo">
+		update
+		crawler.r_nr_CONTENTINFO
+		set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+		SUPER_ID
+		= #{superId,jdbcType=VARCHAR},
+		CONTENT = #{content,jdbcType=VARCHAR},
+		GETTIME = #{gettime,jdbcType=VARCHAR},
+		TYPE = #{type,jdbcType=VARCHAR},
+		TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP}
+		where CONTENTINFO_ID =
+		#{contentinfoId,jdbcType=VARCHAR}
+	</update>
+</mapper>

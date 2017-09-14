@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrLatest24monthpaymentstateMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrLatest24monthpaymentstate" >
+    <id column="LATEST_ID" property="latestId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="SUPER_ID" property="superId" jdbcType="VARCHAR" />
+    <result column="BEGINMONTH" property="beginmonth" jdbcType="VARCHAR" />
+    <result column="ENDMONTH" property="endmonth" jdbcType="VARCHAR" />
+    <result column="LATEST24STATE" property="latest24state" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LATEST_ID, REPORT_ID, SUPER_ID, BEGINMONTH, ENDMONTH, LATEST24STATE, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_latest24monthpaymentstate
+    where LATEST_ID = #{latestId,jdbcType=VARCHAR}
+  </select>
+   <select id="selectBySuperId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_latest24monthpaymentstate
+    where SUPER_ID = #{superId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_latest24monthpaymentstate
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_latest24monthpaymentstate
+    where LATEST_ID = #{latestId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrLatest24monthpaymentstate" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="latestId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_latest24monthpaymentstate (LATEST_ID, REPORT_ID, SUPER_ID, 
+      BEGINMONTH, ENDMONTH, LATEST24STATE, 
+      TIME_STAMP)
+    values (#{latestId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{superId,jdbcType=VARCHAR}, 
+      #{beginmonth,jdbcType=VARCHAR}, #{endmonth,jdbcType=VARCHAR}, #{latest24state,jdbcType=VARCHAR}, 
+      #{timeStamp,jdbcType=DATE})
+  </insert>
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	 insert into crawler.r_nr_latest24monthpaymentstate (LATEST_ID, REPORT_ID, SUPER_ID, 
+      BEGINMONTH, ENDMONTH, LATEST24STATE, 
+      TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.latestId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.superId,jdbcType=VARCHAR}, 
+      #{item.beginmonth,jdbcType=VARCHAR}, #{item.endmonth,jdbcType=VARCHAR}, #{item.latest24state,jdbcType=VARCHAR}, 
+      #{item.timeStamp,jdbcType=DATE})
+	    </foreach>
+  	</insert>
+  	
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrLatest24monthpaymentstate" >
+    insert into crawler.r_nr_latest24monthpaymentstate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="latestId != null" >
+        LATEST_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="superId != null" >
+        SUPER_ID,
+      </if>
+      <if test="beginmonth != null" >
+        BEGINMONTH,
+      </if>
+      <if test="endmonth != null" >
+        ENDMONTH,
+      </if>
+      <if test="latest24state != null" >
+        LATEST24STATE,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="latestId != null" >
+        #{latestId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="superId != null" >
+        #{superId,jdbcType=VARCHAR},
+      </if>
+      <if test="beginmonth != null" >
+        #{beginmonth,jdbcType=VARCHAR},
+      </if>
+      <if test="endmonth != null" >
+        #{endmonth,jdbcType=VARCHAR},
+      </if>
+      <if test="latest24state != null" >
+        #{latest24state,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrLatest24monthpaymentstate" >
+    update crawler.r_nr_latest24monthpaymentstate
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="superId != null" >
+        SUPER_ID = #{superId,jdbcType=VARCHAR},
+      </if>
+      <if test="beginmonth != null" >
+        BEGINMONTH = #{beginmonth,jdbcType=VARCHAR},
+      </if>
+      <if test="endmonth != null" >
+        ENDMONTH = #{endmonth,jdbcType=VARCHAR},
+      </if>
+      <if test="latest24state != null" >
+        LATEST24STATE = #{latest24state,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where LATEST_ID = #{latestId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrLatest24monthpaymentstate" >
+    update crawler.r_nr_latest24monthpaymentstate
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      SUPER_ID = #{superId,jdbcType=VARCHAR},
+      BEGINMONTH = #{beginmonth,jdbcType=VARCHAR},
+      ENDMONTH = #{endmonth,jdbcType=VARCHAR},
+      LATEST24STATE = #{latest24state,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where LATEST_ID = #{latestId,jdbcType=VARCHAR}
+  </update>
+</mapper>

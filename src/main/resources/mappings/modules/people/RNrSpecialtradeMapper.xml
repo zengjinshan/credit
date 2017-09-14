@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNrSpecialtradeMapper" >
+  <resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNrSpecialtrade" >
+    <id column="SPECIALTRADE_ID" property="specialtradeId" jdbcType="VARCHAR" />
+    <result column="REPORT_ID" property="reportId" jdbcType="VARCHAR" />
+    <result column="SUPER_ID" property="superId" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="GETTIME" property="gettime" jdbcType="VARCHAR" />
+    <result column="CHANGINGMONTHS" property="changingmonths" jdbcType="DECIMAL" />
+    <result column="CHANGINGAMOUNT" property="changingamount" jdbcType="DECIMAL" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="TIME_STAMP" property="timeStamp" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SPECIALTRADE_ID, REPORT_ID, SUPER_ID, TYPE, GETTIME, CHANGINGMONTHS, CHANGINGAMOUNT, 
+    CONTENT, TIME_STAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crawler.r_nr_specialtrade
+    where SPECIALTRADE_ID = #{specialtradeId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_specialtrade
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crawler.r_nr_specialtrade
+    where SPECIALTRADE_ID = #{specialtradeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrSpecialtrade" >
+  <selectKey order="BEFORE" resultType="String" keyProperty="specialtradeId">
+			select UUID()
+		</selectKey>
+    insert into crawler.r_nr_specialtrade (SPECIALTRADE_ID, REPORT_ID, SUPER_ID, 
+      TYPE, GETTIME, CHANGINGMONTHS, 
+      CHANGINGAMOUNT, CONTENT, TIME_STAMP
+      )
+    values (#{specialtradeId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR}, #{superId,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{gettime,jdbcType=VARCHAR}, #{changingmonths,jdbcType=DECIMAL}, 
+      #{changingamount,jdbcType=DECIMAL}, #{content,jdbcType=VARCHAR}, #{timeStamp,jdbcType=DATE}
+      )
+  </insert>
+  
+    <insert id="insertByBatch" parameterType="java.util.List">
+	   insert into crawler.r_nr_specialtrade (SPECIALTRADE_ID, REPORT_ID, SUPER_ID, 
+      TYPE, GETTIME, CHANGINGMONTHS, 
+      CHANGINGAMOUNT, CONTENT, TIME_STAMP
+      )
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		   (#{item.specialtradeId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR}, #{item.superId,jdbcType=VARCHAR}, 
+      #{item.type,jdbcType=VARCHAR}, #{item.gettime,jdbcType=VARCHAR}, #{item.changingmonths,jdbcType=DECIMAL}, 
+      #{item.changingamount,jdbcType=DECIMAL}, #{item.content,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=DATE}
+      )
+	    </foreach>
+  	</insert>
+  	
+  	
+  <insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrSpecialtrade" >
+    insert into crawler.r_nr_specialtrade
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="specialtradeId != null" >
+        SPECIALTRADE_ID,
+      </if>
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="superId != null" >
+        SUPER_ID,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="gettime != null" >
+        GETTIME,
+      </if>
+      <if test="changingmonths != null" >
+        CHANGINGMONTHS,
+      </if>
+      <if test="changingamount != null" >
+        CHANGINGAMOUNT,
+      </if>
+      <if test="content != null" >
+        CONTENT,
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="specialtradeId != null" >
+        #{specialtradeId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="superId != null" >
+        #{superId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="gettime != null" >
+        #{gettime,jdbcType=VARCHAR},
+      </if>
+      <if test="changingmonths != null" >
+        #{changingmonths,jdbcType=DECIMAL},
+      </if>
+      <if test="changingamount != null" >
+        #{changingamount,jdbcType=DECIMAL},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        #{timeStamp,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrSpecialtrade" >
+    update crawler.r_nr_specialtrade
+    <set >
+      <if test="reportId != null" >
+        REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="superId != null" >
+        SUPER_ID = #{superId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="gettime != null" >
+        GETTIME = #{gettime,jdbcType=VARCHAR},
+      </if>
+      <if test="changingmonths != null" >
+        CHANGINGMONTHS = #{changingmonths,jdbcType=DECIMAL},
+      </if>
+      <if test="changingamount != null" >
+        CHANGINGAMOUNT = #{changingamount,jdbcType=DECIMAL},
+      </if>
+      <if test="content != null" >
+        CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStamp != null" >
+        TIME_STAMP = #{timeStamp,jdbcType=DATE},
+      </if>
+    </set>
+    where SPECIALTRADE_ID = #{specialtradeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNrSpecialtrade" >
+    update crawler.r_nr_specialtrade
+    set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+      SUPER_ID = #{superId,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      GETTIME = #{gettime,jdbcType=VARCHAR},
+      CHANGINGMONTHS = #{changingmonths,jdbcType=DECIMAL},
+      CHANGINGAMOUNT = #{changingamount,jdbcType=DECIMAL},
+      CONTENT = #{content,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=DATE}
+    where SPECIALTRADE_ID = #{specialtradeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

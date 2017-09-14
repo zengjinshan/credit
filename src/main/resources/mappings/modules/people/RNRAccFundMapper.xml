@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="accFundMapper">
+	<resultMap id="BaseResultMap" type="com.tansun.easycare.modules.credit.entity.people.RNRAccFund">
+		<id column="ACCFUND_ID" jdbcType="VARCHAR" property="accfundId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="AREA" jdbcType="VARCHAR" property="area" />
+		<result column="REGISTERDATE" jdbcType="VARCHAR" property="registerdate" />
+		<result column="FIRSTMONTH" jdbcType="VARCHAR" property="firstmonth" />
+		<result column="TOMONTH" jdbcType="VARCHAR" property="tomonth" />
+		<result column="STATE" jdbcType="VARCHAR" property="state" />
+		<result column="PAY" jdbcType="DECIMAL" property="pay" />
+		<result column="OWNPERCENT" jdbcType="VARCHAR" property="ownpercent" />
+		<result column="COMPERCENT" jdbcType="VARCHAR" property="compercent" />
+		<result column="ORGANNAME" jdbcType="VARCHAR" property="organname" />
+		<result column="GETTIME" jdbcType="VARCHAR" property="gettime" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ACCFUND_ID, REPORT_ID, AREA, REGISTERDATE, FIRSTMONTH,
+		TOMONTH, STATE, PAY,
+		OWNPERCENT,
+		COMPERCENT, ORGANNAME, GETTIME,
+		TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from r_nr_accfund
+		where ACCFUND_ID = #{accfundId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from r_nr_accfund
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		r_nr_accfund
+		where ACCFUND_ID = #{accfundId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRAccFund">
+		insert into r_nr_accfund (ACCFUND_ID, REPORT_ID, AREA,
+		REGISTERDATE,
+		FIRSTMONTH, TOMONTH,
+		STATE, PAY, OWNPERCENT,
+		COMPERCENT, ORGANNAME,
+		GETTIME,
+		TIME_STAMP)
+		values (#{accfundId,jdbcType=VARCHAR},
+		#{reportId,jdbcType=VARCHAR},
+		#{area,jdbcType=VARCHAR},
+		#{registerdate,jdbcType=VARCHAR}, #{firstmonth,jdbcType=VARCHAR},
+		#{tomonth,jdbcType=VARCHAR},
+		#{state,jdbcType=VARCHAR},
+		#{pay,jdbcType=DECIMAL},
+		#{ownpercent,jdbcType=VARCHAR},
+		#{compercent,jdbcType=VARCHAR}, #{organname,jdbcType=VARCHAR},
+		#{gettime,jdbcType=VARCHAR},
+		#{timeStamp,jdbcType=TIMESTAMP})
+	</insert>
+
+    
+	
+	<insert id="insertByBatch" parameterType="java.util.List">
+	  insert into r_nr_ACCFUND (ACCFUND_ID, REPORT_ID, AREA,
+		REGISTERDATE,
+		FIRSTMONTH, TOMONTH,
+		STATE, PAY, OWNPERCENT,
+		COMPERCENT, ORGANNAME,
+		GETTIME,
+		TIME_STAMP)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.accfundId,jdbcType=VARCHAR},
+		#{item.reportId,jdbcType=VARCHAR},
+		#{item.area,jdbcType=VARCHAR},
+		#{item.registerdate,jdbcType=VARCHAR}, #{item.firstmonth,jdbcType=VARCHAR},
+		#{item.tomonth,jdbcType=VARCHAR},
+		#{item.state,jdbcType=VARCHAR},
+		#{item.pay,jdbcType=DECIMAL},
+		#{item.ownpercent,jdbcType=VARCHAR},
+		#{item.compercent,jdbcType=VARCHAR}, #{item.organname,jdbcType=VARCHAR},
+		#{item.gettime,jdbcType=VARCHAR},
+		#{item.timeStamp,jdbcType=TIMESTAMP})
+	    </foreach>
+  	</insert>
+  	
+  	
+	<insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRAccFund">
+		insert into r_nr_ACCFUND
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="accfundId != null">
+				ACCFUND_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="area != null">
+				AREA,
+			</if>
+			<if test="registerdate != null">
+				REGISTERDATE,
+			</if>
+			<if test="firstmonth != null">
+				FIRSTMONTH,
+			</if>
+			<if test="tomonth != null">
+				TOMONTH,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="pay != null">
+				PAY,
+			</if>
+			<if test="ownpercent != null">
+				OWNPERCENT,
+			</if>
+			<if test="compercent != null">
+				COMPERCENT,
+			</if>
+			<if test="organname != null">
+				ORGANNAME,
+			</if>
+			<if test="gettime != null">
+				GETTIME,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="accfundId != null">
+				#{accfundId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				#{area,jdbcType=VARCHAR},
+			</if>
+			<if test="registerdate != null">
+				#{registerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="firstmonth != null">
+				#{firstmonth,jdbcType=VARCHAR},
+			</if>
+			<if test="tomonth != null">
+				#{tomonth,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=VARCHAR},
+			</if>
+			<if test="pay != null">
+				#{pay,jdbcType=DECIMAL},
+			</if>
+			<if test="ownpercent != null">
+				#{ownpercent,jdbcType=VARCHAR},
+			</if>
+			<if test="compercent != null">
+				#{compercent,jdbcType=VARCHAR},
+			</if>
+			<if test="organname != null">
+				#{organname,jdbcType=VARCHAR},
+			</if>
+			<if test="gettime != null">
+				#{gettime,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRAccFund">
+		update r_nr_ACCFUND
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				AREA = #{area,jdbcType=VARCHAR},
+			</if>
+			<if test="registerdate != null">
+				REGISTERDATE = #{registerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="firstmonth != null">
+				FIRSTMONTH = #{firstmonth,jdbcType=VARCHAR},
+			</if>
+			<if test="tomonth != null">
+				TOMONTH = #{tomonth,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="pay != null">
+				PAY = #{pay,jdbcType=DECIMAL},
+			</if>
+			<if test="ownpercent != null">
+				OWNPERCENT = #{ownpercent,jdbcType=VARCHAR},
+			</if>
+			<if test="compercent != null">
+				COMPERCENT = #{compercent,jdbcType=VARCHAR},
+			</if>
+			<if test="organname != null">
+				ORGANNAME = #{organname,jdbcType=VARCHAR},
+			</if>
+			<if test="gettime != null">
+				GETTIME = #{gettime,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ACCFUND_ID = #{accfundId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRAccFund">
+		update
+		R_NR_ACCFUND
+		set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+		AREA =
+		#{area,jdbcType=VARCHAR},
+		REGISTERDATE =
+		#{registerdate,jdbcType=VARCHAR},
+		FIRSTMONTH =
+		#{firstmonth,jdbcType=VARCHAR},
+		TOMONTH = #{tomonth,jdbcType=VARCHAR},
+		STATE = #{state,jdbcType=VARCHAR},
+		PAY = #{pay,jdbcType=DECIMAL},
+		OWNPERCENT = #{ownpercent,jdbcType=VARCHAR},
+		COMPERCENT =
+		#{compercent,jdbcType=VARCHAR},
+		ORGANNAME =
+		#{organname,jdbcType=VARCHAR},
+		GETTIME = #{gettime,jdbcType=VARCHAR},
+		TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP}
+		where ACCFUND_ID =
+		#{accfundId,jdbcType=VARCHAR}
+	</update>
+</mapper>

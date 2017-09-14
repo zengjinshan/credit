@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRAdminPunishmentMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tansun.easycare.modules.credit.entity.people.RNRAdminPunishment">
+		<id column="ADMINPUNISHMENT_ID" jdbcType="VARCHAR" property="adminpunishmentId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="ORGANNAME" jdbcType="VARCHAR" property="organname" />
+		<result column="CONTENT" jdbcType="VARCHAR" property="content" />
+		<result column="MONEY" jdbcType="DECIMAL" property="money" />
+		<result column="BEGINDATE" jdbcType="VARCHAR" property="begindate" />
+		<result column="ENDDATE" jdbcType="VARCHAR" property="enddate" />
+		<result column="RESULT" jdbcType="VARCHAR" property="result" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ADMINPUNISHMENT_ID, REPORT_ID, ORGANNAME, CONTENT, MONEY, BEGINDATE, ENDDATE, RESULT,
+		TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_adminpunishment
+		where ADMINPUNISHMENT_ID = #{adminpunishmentId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_adminpunishment
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from crawler.r_nr_adminpunishment
+		where ADMINPUNISHMENT_ID = #{adminpunishmentId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert"
+		parameterType="com.tansun.easycare.modules.credit.entity.people.RNRAdminPunishment">
+		<selectKey order="BEFORE" resultType="String" keyProperty="adminpunishmentId">
+			select UUID() </selectKey>
+		insert into crawler.r_nr_ADMINPUNISHMENT (ADMINPUNISHMENT_ID, REPORT_ID,
+		ORGANNAME,
+		CONTENT, MONEY, BEGINDATE,
+		ENDDATE, RESULT, TIME_STAMP
+		)
+		values (#{adminpunishmentId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR},
+		#{organname,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{begindate,jdbcType=VARCHAR},
+		#{enddate,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR},
+		#{timeStamp,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="insertByBatch" parameterType="java.util.List">
+	  	insert into crawler.r_nr_ADMINPUNISHMENT (ADMINPUNISHMENT_ID, REPORT_ID,
+		ORGANNAME,
+		CONTENT, MONEY, BEGINDATE,
+		ENDDATE, RESULT, TIME_STAMP
+		)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		(#{item.adminpunishmentId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR},
+		#{item.organname,jdbcType=VARCHAR},
+		#{item.content,jdbcType=VARCHAR}, #{item.money,jdbcType=DECIMAL}, #{item.begindate,jdbcType=VARCHAR},
+		#{item.enddate,jdbcType=VARCHAR}, #{item.result,jdbcType=VARCHAR},
+		#{item.timeStamp,jdbcType=TIMESTAMP}
+		)
+	    </foreach>
+  	</insert>
+  	
+  	
+	<insert id="insertSelective"
+		parameterType="com.tansun.easycare.modules.credit.entity.people.RNRAdminPunishment">
+		insert into crawler.r_nr_ADMINPUNISHMENT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="adminpunishmentId != null">
+				ADMINPUNISHMENT_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="organname != null">
+				ORGANNAME,
+			</if>
+			<if test="content != null">
+				CONTENT,
+			</if>
+			<if test="money != null">
+				MONEY,
+			</if>
+			<if test="begindate != null">
+				BEGINDATE,
+			</if>
+			<if test="enddate != null">
+				ENDDATE,
+			</if>
+			<if test="result != null">
+				RESULT,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="adminpunishmentId != null">
+				#{adminpunishmentId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="organname != null">
+				#{organname,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="money != null">
+				#{money,jdbcType=DECIMAL},
+			</if>
+			<if test="begindate != null">
+				#{begindate,jdbcType=VARCHAR},
+			</if>
+			<if test="enddate != null">
+				#{enddate,jdbcType=VARCHAR},
+			</if>
+			<if test="result != null">
+				#{result,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.tansun.easycare.modules.credit.entity.people.RNRAdminPunishment">
+		update crawler.r_nr_ADMINPUNISHMENT
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="organname != null">
+				ORGANNAME = #{organname,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				CONTENT = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="money != null">
+				MONEY = #{money,jdbcType=DECIMAL},
+			</if>
+			<if test="begindate != null">
+				BEGINDATE = #{begindate,jdbcType=VARCHAR},
+			</if>
+			<if test="enddate != null">
+				ENDDATE = #{enddate,jdbcType=VARCHAR},
+			</if>
+			<if test="result != null">
+				RESULT = #{result,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ADMINPUNISHMENT_ID = #{adminpunishmentId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.tansun.easycare.modules.credit.entity.people.RNRAdminPunishment">
+		update crawler.r_nr_ADMINPUNISHMENT
+		set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+		ORGANNAME = #{organname,jdbcType=VARCHAR},
+		CONTENT = #{content,jdbcType=VARCHAR},
+		MONEY = #{money,jdbcType=DECIMAL},
+		BEGINDATE = #{begindate,jdbcType=VARCHAR},
+		ENDDATE = #{enddate,jdbcType=VARCHAR},
+		RESULT = #{result,jdbcType=VARCHAR},
+		TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP}
+		where ADMINPUNISHMENT_ID = #{adminpunishmentId,jdbcType=VARCHAR}
+	</update>
+</mapper>

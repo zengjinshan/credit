@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tansun.easycare.modules.credit.dao.people.RNRTaxArrearMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tansun.easycare.modules.credit.entity.people.RNRTaxArrear">
+		<id column="TAXARREAR_ID" jdbcType="VARCHAR" property="taxarrearId" />
+		<result column="REPORT_ID" jdbcType="VARCHAR" property="reportId" />
+		<result column="ORGANNAME" jdbcType="VARCHAR" property="organname" />
+		<result column="TAXARREAAMOUNT" jdbcType="DECIMAL" property="taxarreaamount" />
+		<result column="REVENUEDATE" jdbcType="VARCHAR" property="revenuedate" />
+		<result column="TIME_STAMP" jdbcType="TIMESTAMP" property="timeStamp" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		TAXARREAR_ID, REPORT_ID, ORGANNAME, TAXARREAAMOUNT,
+		REVENUEDATE, TIME_STAMP
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_taxarrear
+		where TAXARREAR_ID =
+		#{taxarrearId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByReportId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from crawler.r_nr_taxarrear
+		where REPORT_ID= #{reportId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		crawler.r_nr_taxarrear
+		where TAXARREAR_ID = #{taxarrearId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRTaxArrear">
+		<selectKey order="BEFORE" resultType="String" keyProperty="taxarrearId">
+			select UUID()
+		</selectKey>
+		insert into crawler.r_nr_TAXARREAR (TAXARREAR_ID, REPORT_ID, ORGANNAME,
+		TAXARREAAMOUNT, REVENUEDATE, TIME_STAMP
+		)
+		values
+		(#{taxarrearId,jdbcType=VARCHAR}, #{reportId,jdbcType=VARCHAR},
+		#{organname,jdbcType=VARCHAR},
+		#{taxarreaamount,jdbcType=DECIMAL},
+		#{revenuedate,jdbcType=VARCHAR}, #{timeStamp,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	
+	<insert id="insertByBatch" parameterType="java.util.List">
+	    insert into crawler.r_nr_TAXARREAR (TAXARREAR_ID, REPORT_ID, ORGANNAME,
+		TAXARREAAMOUNT, REVENUEDATE, TIME_STAMP
+		)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		    (#{item.taxarrearId,jdbcType=VARCHAR}, #{item.reportId,jdbcType=VARCHAR},
+			#{item.organname,jdbcType=VARCHAR},
+			#{item.taxarreaamount,jdbcType=DECIMAL},
+			#{item.revenuedate,jdbcType=VARCHAR}, #{item.timeStamp,jdbcType=TIMESTAMP}
+			)
+	    </foreach>
+  	</insert>
+  
+  
+	<insert id="insertSelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRTaxArrear">
+		insert into crawler.r_nr_TAXARREAR
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="taxarrearId != null">
+				TAXARREAR_ID,
+			</if>
+			<if test="reportId != null">
+				REPORT_ID,
+			</if>
+			<if test="organname != null">
+				ORGANNAME,
+			</if>
+			<if test="taxarreaamount != null">
+				TAXARREAAMOUNT,
+			</if>
+			<if test="revenuedate != null">
+				REVENUEDATE,
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="taxarrearId != null">
+				#{taxarrearId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportId != null">
+				#{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="organname != null">
+				#{organname,jdbcType=VARCHAR},
+			</if>
+			<if test="taxarreaamount != null">
+				#{taxarreaamount,jdbcType=DECIMAL},
+			</if>
+			<if test="revenuedate != null">
+				#{revenuedate,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				#{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRTaxArrear">
+		update crawler.r_nr_TAXARREAR
+		<set>
+			<if test="reportId != null">
+				REPORT_ID = #{reportId,jdbcType=VARCHAR},
+			</if>
+			<if test="organname != null">
+				ORGANNAME = #{organname,jdbcType=VARCHAR},
+			</if>
+			<if test="taxarreaamount != null">
+				TAXARREAAMOUNT = #{taxarreaamount,jdbcType=DECIMAL},
+			</if>
+			<if test="revenuedate != null">
+				REVENUEDATE = #{revenuedate,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+				TIME_STAMP = #{timeStamp,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where TAXARREAR_ID = #{taxarrearId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tansun.easycare.modules.credit.entity.people.RNRTaxArrear">
+		update
+		crawler.r_nr_TAXARREAR
+		set REPORT_ID = #{reportId,jdbcType=VARCHAR},
+		ORGANNAME =
+		#{organname,jdbcType=VARCHAR},
+		TAXARREAAMOUNT =
+		#{taxarreaamount,jdbcType=DECIMAL},
+		REVENUEDATE =
+		#{revenuedate,jdbcType=VARCHAR},
+		TIME_STAMP =
+		#{timeStamp,jdbcType=TIMESTAMP}
+		where TAXARREAR_ID =
+		#{taxarrearId,jdbcType=VARCHAR}
+	</update>
+</mapper>
