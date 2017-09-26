@@ -28,6 +28,36 @@ import com.tansun.easycare.modules.credit.entity.people.RNrState;
  */
 @Component("tableHandle")
 public abstract class ETableHandle {
+	
+	protected String startTitle = null;
+	protected String endTitle = null;
+	protected int startrow=1;
+	
+	
+	public int getStartrow() {
+		return startrow;
+	}
+
+	public void setStartrow(int startrow) {
+		this.startrow = startrow;
+	}
+
+	public String getStartTitle() {
+		return startTitle;
+	}
+
+	public void setStartTitle(String startTitle) {
+		this.startTitle = startTitle;
+	}
+
+	public String getEndTitle() {
+		return endTitle;
+	}
+
+	public void setEndTitle(String endTitle) {
+		this.endTitle = endTitle;
+	}
+
 	protected String headDelimiter = "|";
 	private Element tableElement = null;
 	protected final String headSplit = ",";
@@ -138,7 +168,7 @@ public abstract class ETableHandle {
 		this.onlyId = onlyId;
 	}
 	
-	protected final String TIMESTAMP = "timeStamp";
+
 	protected String fixKeyValue;
 
 	/**
@@ -366,7 +396,7 @@ public abstract class ETableHandle {
 		String[] actrualHead = parserHead(element, 1);
 		if (actrualHead != null && actrualHead.length == getHead().length) {
 			for (int i = 0; i < actrualHead.length; i++) {
-				if (!getHead()[i].equals(actrualHead[i])) {
+				if (!getHead()[i].trim().replace(" ", "").equals(actrualHead[i].trim().replace(" ", ""))) {
 					match = false;
 					break;
 				}
@@ -419,6 +449,10 @@ public abstract class ETableHandle {
 				BeanUtil.set(obj, mapping[index], td.text());
 			}
 			index++;
+			if(index==mapping.length)
+			{
+				break;
+			}
 		}
 		fillCommonField(obj,99,null);
 		return obj;
@@ -426,7 +460,6 @@ public abstract class ETableHandle {
 
 	protected void fillCommonField(Object obj,int position,String keyId) {
 		BeanUtil.set(obj, REPORTID, reportId);
-		BeanUtil.set(obj, TIMESTAMP, new Date());
 		if(primaryKey!=null)
 			BeanUtil.set(obj, primaryKey, UUID.randomUUID().toString().toLowerCase());
 		if(firPrimaryKey!=null)
@@ -549,5 +582,9 @@ public abstract class ETableHandle {
 	 */
 	public Map<String, Object> getMap() throws Exception {
 		return getBeanMap(tableElement);
+	}
+	
+	public List<Object> commonParse(Elements list, String reportNo) {
+		return null;
 	}
 }

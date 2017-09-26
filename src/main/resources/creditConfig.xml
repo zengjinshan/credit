@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+
+	<!-- 企业征信报告解析 -->
+	
+	<!-- 高管人员信息 -->
+	<bean id="ReportEHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeEHandle" scope="prototype">
+		<property name="head" value="机构信用代码,中征码,报告日期,查询原因,查询操作员" />
+		<property name="headMapping" value="creditcode,querorgcode,reportdate,queryreason,usercode" />
+		<property name="primaryKey" value="reportId" />
+		<property name="subHead" value="" />
+		<property name="subHeadMapping" value="" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrReport" />
+	</bean>
+	
+	<bean id="IdentityEHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeEHandle" scope="prototype">
+		<property name="head" value="名称,注册地址,登记注册类型,登记注册号,登记注册日期,有效截止日期,组织机构代码,中征码,国税登记号,地税登记号" />
+		<property name="headMapping" value="borrname,regiaddr,,regino,regidate,licensematdate,contborrcode,,gsregino,dsregino" />
+		<property name="primaryKey" value="identityId" />
+		<property name="subHead" value="" />
+		<property name="subHeadMapping" value="" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrIdentity" />
+	</bean>
+	
+	<!-- 高管人员信息 -->
+	<bean id="SeniorexecutiveEHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeAHandle" scope="prototype">
+		<property name="head" value="职务,姓名,证件类型,证件号码" />
+		<property name="headMapping" value="manatypecode,mananame,certtype,certno" />
+		<property name="primaryKey" value="seniorexecutiveId" />
+		<property name="subHead" value="" />
+		<property name="subHeadMapping" value="" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrSeniorexecutive" />
+	</bean>
+	
+		
+	<!-- 有直接关联关系的其他企业  -->
+	<bean id="RelationinfoEHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeAHandle" scope="prototype">
+		<property name="head" value="名称,中征码,关系" />
+		<property name="headMapping" value="name,loancardcode,relationship" />
+		<property name="primaryKey" value="relationinfoId" />
+		<property name="subHead" value="" />
+		<property name="subHeadMapping" value="" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrRelationinfo" />
+	</bean>
+	
+	<!-- 未结清信贷信息概要 -->
+	<bean id="Summaryunsettled01EHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeBHandle" scope="prototype">
+		<property name="head" value="由资产管理公司处置的债务,欠息汇总" />
+		<property name="headMapping" value="" />
+		<property name="subHead" value="笔数,余额,最近一次处置完成日期,笔数,余额（元）" />
+		<property name="subHeadMapping" value="debtsdamfNumber,debtsdamfBalance,lastdisposaleddate,owebalancesumNumber,owebalancesumBalance" />
+		<property name="primaryKey" value="summaryunsettled01Id" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrSummaryunsettled01" />
+	</bean>
+
+	<bean id="Summaryunsettled03EHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeBHandle" scope="prototype">
+		<property name="head" value="垫款汇总,担保代偿或第三方代偿的债务" />
+		<property name="headMapping" value="" />
+		<property name="subHead" value="笔数 ,余额,笔数,余额,最近一次还款日期 " />
+		<property name="subHeadMapping" value="paidbackbalancesumNumber,paidbackbalancesumBalance,guaranteenum,guaranteebalance,guaranteepayoffdate" />
+		<property name="primaryKey" value="summaryunsettled01Id" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrSummaryunsettled01" />
+	</bean>
+	
+
+	<bean id="Summaryunsettled02EHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeBHandle" scope="prototype">
+		<property name="head" value=",正常类汇总,关注类汇总,不良/违约类汇总,合计" />
+		<property name="headMapping" value="" />
+		<property name="subHead" value="笔数,余额,笔数,余额,笔数,余额,笔数,余额" />
+		<property name="subHeadMapping" value="type,normalsumNumber,normalsumBalance,concernedsumNumber,concernedsumBalance,badsumNumber,badsumBalance,sumtotalNumber,sumtotalBalance" />
+		<property name="primaryKey" value="summaryunsettled02Id" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrSummaryunsettled02" />
+	</bean>
+	
+	<!-- 已结清信贷信息概要-->
+	<bean id="Summarysettled01EHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeBHandle" scope="prototype">
+		<property name="head" value="由资产管理公司处置的债务,被剥离负债汇总,欠息汇总" />
+		<property name="headMapping" value="" />
+		<property name="subHead" value="笔数,原始金额,处置完成日期,笔数,金额,最近一次被剥离日期,笔数,最近一次结清日期 " />
+		<property name="subHeadMapping" value="debtsdamfNumber,debtsdamfBalance,lastdisposaleddate,liabilitieNumber,liabilitieBalance,liabilitieLastdate,oweNumber,oweSettleLastdate" />
+		<property name="primaryKey" value="summarysettled01Id" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrSummarysettled01" />
+	</bean>
+
+	<bean id="Summarysettled03EHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeBHandle" scope="prototype">
+		<property name="head" value="垫款汇总,担保代偿或第三方代偿的债务" />
+		<property name="headMapping" value="" />
+		<property name="subHead" value="笔数,金额,结清日期,笔数,金额,追偿完毕日期/代偿还清日期 " />
+		<property name="subHeadMapping" value="paidbackbalancesumNumber,paidbackbalancesumBalance,paidbackbalancesumPaiddate,guaranteenum,guaranteemoney,guaranteecompensationdate" />
+		<property name="primaryKey" value="summarysettled01Id" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrSummarysettled01" />
+	</bean>
+	
+
+	<bean id="Summarysettled02EHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeAHandle" scope="prototype">
+		<property name="head" value=",贷款,类贷款,贸易融资,保理,票据贴现,银行承兑汇票,信用证,保函" />
+		<property name="headMapping" value="type,loan,loansame,finan,assuree,bill,postal,letter,guarante" />
+		<property name="subHead" value="" />
+		<property name="subHeadMapping" value="" />
+		<property name="primaryKey" value="summarysettled02Id" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrSummarysettled02" />
+	</bean>
+	
+	
+	<bean id="SummaryguaranteeEHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeBHandle" scope="prototype">
+		<property name="head" value=",笔数,担保金额,所担保主业务余额" />
+		<property name="headMapping" value="" />
+		<property name="subHead" value="正常类,关注类,不良类,合计" />
+		<property name="subHeadMapping" value="type,amount,guaranteeamount,guaranteedNormal,guaranteedConcerned,guaranteedBad,total" />
+		<property name="primaryKey" value="summaryguaranteeId" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrSummaryguarantee" />
+	</bean>
+	
+	<bean id="GuaranteeinfoEHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeAHandle" scope="prototype">
+		<property name="head" value="类型,被担保人,证件类型,证件号码,担保币种,担保金额,担保形式,主业务" />
+		<property name="headMapping" value="guaranteetype,guarantor,certtype,certno,currency,guaranteeamount,guaranteekindcode" />
+		<property name="subHead" value="" />
+		<property name="subHeadMapping" value="" />
+		<property name="primaryKey" value="guaranteeId" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrGuaranteeinfo" />
+	</bean>
+	
+	<bean id="BankdescriptionEHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeAHandle" scope="prototype">
+		<property name="head" value="内容,报送机构,添加日期 " />
+		<property name="headMapping" value="content,submissionagency,submissiondate" />
+		<property name="subHead" value="" />
+		<property name="subHeadMapping" value="" />
+		<property name="primaryKey" value="bankdescriptionId" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrBankdescription" />
+	</bean>
+	
+	<bean id="SubjectstatementEHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeAHandle" scope="prototype">
+		<property name="head" value="内容,添加日期 " />
+		<property name="headMapping" value="content,declarationdate" />
+		<property name="subHead" value="" />
+		<property name="subHeadMapping" value="" />
+		<property name="primaryKey" value="subjectstatementId" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrSubjectstatement" />
+	</bean>
+	
+	<bean id="CredittaggingEHandle" class="com.tansun.di.crawler.table.handle.enterprise.ETypeAHandle" scope="prototype">
+		<property name="head" value="内容,添加日期 " />
+		<property name="headMapping" value="content,markdate" />
+		<property name="subHead" value="" />
+		<property name="subHeadMapping" value="" />
+		<property name="primaryKey" value="credittaggingId" />
+		<property name="thrHead" value="" />
+		<property name="thrHeadMapping" value="" />
+		<property name="fourHead" value="" />
+		<property name="fourHeadMapping" value="" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrCredittagging" />
+	</bean>
+	
+	
+	<!-- 未结清业务  -->
+	<bean id="UnpaidAssetdisposalHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="信贷记录明细" />
+		<property name="endTitle" value="不良和违约类" />
+		<property name="head" value="由资产管理公司处置的债务" />
+		<property name="headMapping" value="assetmanagercode,currency,inceptsum,inceptdate,balance,lastdisposaleddate" />
+		<property name="primaryKey" value="unpaidAssetdisposalId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnpaidAssetdisposal" />
+	</bean>
+	
+	<bean id="UnpaidGuaranteecHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="信贷记录明细" />
+		<property name="endTitle" value="不良和违约类" />
+		<property name="head" value="担保及第三方代偿的债务" />
+		<property name="headMapping" value="compensationorganization,lastcompensationdate,compensationsum,compensationoverage,lastpayoffdate" />
+		<property name="primaryKey" value="unpaidGuaranteecId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnpaidGuaranteec" />
+	</bean>
+	
+	<bean id="UnpaidDebtinterestHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="信贷记录明细" />
+		<property name="endTitle" value="不良和违约类" />
+		<property name="head" value="欠息" />
+		<property name="headMapping" value="financecode,currency,owebalancetormb,owebalancechangedate,owekindcode" />
+		<property name="primaryKey" value="unpaidDebtinterestId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnpaidDebtinterest" />
+	</bean>
+	
+	<bean id="UnpaidPaidbackHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="信贷记录明细" />
+		<property name="endTitle" value="不良和违约类" />
+		<property name="head" value="垫款" />
+		<property name="headMapping" value="financecode,currency,paidbacksum,pbbalancetormb,paidbackdate,fiveclasscode,originaloperation" />
+		<property name="primaryKey" value="unpaidPaidbackId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnpaidPaidback" />
+	</bean>
+	
+	<!-- 不良和违约类  -->
+	<bean id="BLUbLoaninfoHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="不良和违约类" />
+		<property name="endTitle" value="关注类" />
+		<property name="head" value="贷款" />
+		<property name="headMapping" value="financecode,
+			loankindcode,
+			currency,
+			duebillsum,
+			duebillbalance,
+			duebilltakeoutdate,
+			duebillterminatedate,
+			fiveclasscode,
+			loanformcode,
+			guarantee,
+			extension" />
+		<property name="primaryKey" value="ubLoaninfoId" />
+		<property name="fixKeyValue" value="contractcode=不良和违约类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbLoaninfo" />
+	</bean>
+	
+	<bean id="BLUbLoansameinfoHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="不良和违约类" />
+		<property name="endTitle" value="关注类" />
+		<property name="head" value="类贷款" />
+		<property name="headMapping" value="Financecode,
+			Loankindcode,
+			Currency,
+			Duebillsum,
+			Duebillbalance,
+			Duebilltakeoutdate,
+			Duebillterminatedate,
+			Fiveclasscode,
+			Guarantee,
+			delay" />
+		<property name="primaryKey" value="ubLoansameinfoId" />
+		<property name="fixKeyValue" value="contractcode=不良和违约类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbLoansameinfo" />
+	</bean>
+	
+	<bean id="BLUbTradefinancingHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="不良和违约类" />
+		<property name="endTitle" value="关注类" />
+		<property name="head" value="贸易融资" />
+		<property name="headMapping" value="financecode,financekindcode,currency,financesum,financingbalance,duebilltakeoutdate,duebillterminatedate
+			,fiveclasscode,guarantee,extension" />
+		<property name="primaryKey" value="tradefinancingId" />
+		<property name="fixKeyValue" value="contractcode=不良和违约类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbTradefinancing" />
+	</bean>
+	
+	<bean id="BLUbFactoringHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="不良和违约类" />
+		<property name="endTitle" value="关注类" />
+		<property name="head" value="保理" />
+		<property name="headMapping" value="financecode,
+			assureproductcode,
+			currency,
+			extendsum,
+			extendbalance,
+			extenddate,
+			fiveclasscode,
+			guarantee,
+			paidbackflag" />
+		<property name="primaryKey" value="ubFactoringId" />
+		<property name="fixKeyValue" value="contractcode=不良和违约类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbFactoring" />
+	</bean>
+	
+	<bean id="BLUbBilldiscountHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="不良和违约类" />
+		<property name="endTitle" value="关注类" />
+		<property name="head" value="票据贴现" />
+		<property name="headMapping" value="financecode,
+			currency,
+			discountsum,
+			discountdate,
+			duebillterminatedate,
+			fiveclasscode" />
+		<property name="primaryKey" value="ubBilldiscountId" />
+		<property name="fixKeyValue" value="contractcode=不良和违约类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbBilldiscount" />
+	</bean>
+	
+	<bean id="BLUbBankacceptanceHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="不良和违约类" />
+		<property name="endTitle" value="关注类" />
+		<property name="head" value="银行承兑汇票" />
+		<property name="headMapping" value="Financecode,
+			Currency,
+			Posum,
+			Postartdate,
+			Postopdate,
+			Bailscale,
+			Fiveclasscode,
+			Guarantee,
+			Paidbackflag" />
+		<property name="primaryKey" value="ubBankacceptanceId" />
+		<property name="fixKeyValue" value="contractcode=不良和违约类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbBankacceptance" />
+	</bean>
+	
+	<bean id="BLUbLettercreditHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="不良和违约类" />
+		<property name="endTitle" value="关注类" />
+		<property name="head" value="信用证" />
+		<property name="headMapping" value="Financecode,
+			Currency,
+			Lettersum,
+			Letterdate,
+			Letterinvaliddate,
+			Availablebalance,
+			Bailscale,
+			Fiveclasscode,
+			Guarantee,
+			Paidbackflag" />
+		<property name="primaryKey" value="ubLettercreditId" />
+		<property name="fixKeyValue" value="contractcode=不良和违约类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbLettercredit" />
+	</bean>
+	
+	<bean id="BLUbLetterguaranteeHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="不良和违约类" />
+		<property name="endTitle" value="关注类" />
+		<property name="head" value="保函" />
+		<property name="headMapping" value="Financecode,
+			Lettersum,
+			Guaranteeletterkindcode,
+			Currency,
+			Startdate,
+			Terminatedate,
+			Letterbalance,
+			Bailscale,
+			Fiveclasscode,
+			Guarantee,
+			Paidbackflag" />
+		<property name="primaryKey" value="ubLetterguaranteeId" />
+		<property name="fixKeyValue" value="contractcode=不良和违约类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbLetterguarantee" />
+	</bean>
+	
+	
+	<!-- 关注类  -->
+	<bean id="UbLoaninfoHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="关注类" />
+		<property name="endTitle" value="正常类" />
+		<property name="head" value="贷款" />
+		<property name="headMapping" value="financecode,
+			loankindcode,
+			currency,
+			duebillsum,
+			duebillbalance,
+			duebilltakeoutdate,
+			duebillterminatedate,
+			fiveclasscode,
+			loanformcode,
+			guarantee,
+			extension" />
+		<property name="primaryKey" value="ubLoaninfoId" />
+		<property name="fixKeyValue" value="contractcode=关注类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbLoaninfo" />
+	</bean>
+	
+	<bean id="UbTradefinancingHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="关注类" />
+		<property name="endTitle" value="正常类" />
+		<property name="head" value="贸易融资" />
+		<property name="headMapping" value="financecode,financekindcode,currency,financesum,financingbalance,duebilltakeoutdate,duebillterminatedate
+			,fiveclasscode,guarantee,extension" />
+		<property name="primaryKey" value="tradefinancingId" />
+		<property name="fixKeyValue" value="contractcode=关注类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbTradefinancing" />
+	</bean>
+	
+	<bean id="UbFactoringHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="关注类" />
+		<property name="endTitle" value="正常类" />
+		<property name="head" value="保理" />
+		<property name="headMapping" value="financecode,
+			assureproductcode,
+			currency,
+			extendsum,
+			extendbalance,
+			extenddate,
+			fiveclasscode,
+			guarantee,
+			paidbackflag" />
+		<property name="primaryKey" value="ubFactoringId" />
+		<property name="fixKeyValue" value="contractcode=关注类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbFactoring" />
+	</bean>
+	
+	<bean id="UbBilldiscountHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="关注类" />
+		<property name="endTitle" value="正常类" />
+		<property name="head" value="票据贴现" />
+		<property name="headMapping" value="financecode,
+			currency,
+			discountsum,
+			discountdate,
+			duebillterminatedate,
+			fiveclasscode" />
+		<property name="primaryKey" value="ubBilldiscountId" />
+		<property name="fixKeyValue" value="contractcode=关注类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbBilldiscount" />
+	</bean>
+	
+	<bean id="UbBankacceptanceHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="关注类" />
+		<property name="endTitle" value="正常类" />
+		<property name="head" value="银行承兑汇票" />
+		<property name="headMapping" value="Financecode,
+			Currency,
+			Posum,
+			Postartdate,
+			Postopdate,
+			Bailscale,
+			Fiveclasscode,
+			Guarantee,
+			Paidbackflag" />
+		<property name="primaryKey" value="ubBankacceptanceId" />
+		<property name="fixKeyValue" value="contractcode=关注类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbBankacceptance" />
+	</bean>
+	
+	<bean id="UbLettercreditHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="关注类" />
+		<property name="endTitle" value="正常类" />
+		<property name="head" value="信用证" />
+		<property name="headMapping" value="Financecode,
+			Currency,
+			Lettersum,
+			Letterdate,
+			Letterinvaliddate,
+			Availablebalance,
+			Bailscale,
+			Fiveclasscode,
+			Guarantee,
+			Paidbackflag" />
+		<property name="primaryKey" value="ubLettercreditId" />
+		<property name="fixKeyValue" value="contractcode=关注类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbLettercredit" />
+	</bean>
+	
+	<bean id="UbLetterguaranteeHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="关注类" />
+		<property name="endTitle" value="正常类" />
+		<property name="head" value="保函" />
+		<property name="headMapping" value="Financecode,
+			Lettersum,
+			Guaranteeletterkindcode,
+			Currency,
+			Startdate,
+			Terminatedate,
+			Letterbalance,
+			Bailscale,
+			Fiveclasscode,
+			Guarantee,
+			Paidbackflag" />
+		<property name="primaryKey" value="ubLetterguaranteeId" />
+		<property name="fixKeyValue" value="contractcode=关注类" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUbLetterguarantee" />
+	</bean>
+	
+	<!-- 正常类  -->
+	<bean id="UnLoaninfoHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="正常类" />
+		<property name="endTitle" value="已结清业务" />
+		<property name="head" value="贷款" />
+		<property name="headMapping" value="Financecode,
+			Loankindcode,
+			Currency,
+			Duebillsum,
+			Duebillbalance,
+			Duebilltakeoutdate,
+			Duebillterminatedate,
+			Loanformcode,
+			Guarantee,
+			Extension" />
+		<property name="primaryKey" value="unLoaninfoId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnLoaninfo" />
+	</bean>
+	
+	<bean id="UnLoansameinfoHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="正常类" />
+		<property name="endTitle" value="已结清业务" />
+		<property name="head" value="类贷款" />
+		<property name="headMapping" value="Financecode,
+			Loankindcode,
+			Currency,
+			Financesum,
+			balance,
+			Financedate,
+			terminatedate,
+			Loanformcode,
+			Guarantee,
+			delay" />
+		<property name="primaryKey" value="unLoansameinfoId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnLoansameinfo" />
+	</bean>
+	
+	<bean id="UnTradefinancingHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="正常类" />
+		<property name="endTitle" value="已结清业务" />
+		<property name="head" value="贸易融资" />
+		<property name="headMapping" value="Financecode,
+			Financekindcode,
+			Currency,
+			Financesum,
+			Financingbalance,
+			Duebilltakeoutdate,
+			Duebillterminatedate,
+			Guarantee,
+			Extension" />
+		<property name="primaryKey" value="unTradefinancingId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnTradefinancing" />
+	</bean>
+	
+	<bean id="UnFactoringHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="正常类" />
+		<property name="endTitle" value="已结清业务" />
+		<property name="head" value="保理" />
+		<property name="headMapping" value="Financecode,
+			Assureproductcode,
+			Currency,
+			Extendsum,
+			Extendbalance,
+			Extenddate,
+			Guarantee,
+			Paidbackflag" />
+		<property name="primaryKey" value="unFactoringId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnFactoring" />
+	</bean>
+	
+	<bean id="UnBilldiscountHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="正常类" />
+		<property name="endTitle" value="已结清业务" />
+		<property name="head" value="票据贴现" />
+		<property name="headMapping" value="Financecode,
+			cnt,
+			Discountsum" />
+		<property name="primaryKey" value="unBilldiscountId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnBilldiscount" />
+	</bean>
+	
+	<bean id="UnBankacceptanceHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="正常类" />
+		<property name="endTitle" value="已结清业务" />
+		<property name="head" value="银行承兑汇票" />
+		<property name="headMapping" value="Financecode,
+			cnt,
+			balLt30,
+			balLt60,
+			balLt90,
+			balGt90,
+			total" />
+		<property name="primaryKey" value="unBankacceptanceId" />
+		<property name="fixKeyValue" value="" />
+		<property name="startrow" value="2" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnBankacceptance" />
+	</bean>
+	
+	<bean id="UnLettercreditHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="正常类" />
+		<property name="endTitle" value="已结清业务" />
+		<property name="head" value="信用证" />
+		<property name="headMapping" value="Financecode,
+			cnt,
+			Lettersum,
+			Availablebalance" />
+		<property name="primaryKey" value="unLettercreditId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnLettercredit" />
+	</bean>
+	
+	<bean id="UnLetterguaranteeHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="正常类" />
+		<property name="endTitle" value="已结清业务" />
+		<property name="head" value="保函" />
+		<property name="headMapping" value="Financecode,
+			cnt,
+			Lettersum,
+			Letterbalance" />
+		<property name="primaryKey" value="unLetterguaranteeId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrUnLetterguarantee" />
+	</bean>
+	
+	<!-- 已结清业务 -->
+	<bean id="PaidGuaranteecomHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="担保代偿信息" />
+		<property name="headMapping" value="Compensationorganization,
+			Lastcompensationdate,
+			Compensationsum,
+			Compensationsettledate" />
+		<property name="primaryKey" value="paidGuaranteecomId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPaidGuaranteecom" />
+	</bean>
+	
+	<bean id="PaidDebtinterestHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="欠息" />
+		<property name="headMapping" value="Financecode,
+			Currency,
+			Owebalancetormb,
+			Firstdate,
+			Latestdate,
+			Owekindcode" />
+		<property name="primaryKey" value="paidDebtinterestId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPaidDebtinterest" />
+	</bean>
+	
+	<bean id="PaidPaidbackHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="垫款" />
+		<property name="headMapping" value="Financecode,
+			Currency,
+			Paidbacksum,
+			Paidbackdate,
+			Settlementdate,
+			Fiveclasscode,
+			Originaloperation" />
+		<property name="primaryKey" value="paidPaidbackId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPaidPaidback" />
+	</bean>
+	
+	<bean id="PbLoaninfoHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="贷款" />
+		<property name="headMapping" value="Financecode,
+			Loankindcode,
+			Currency,
+			Duebillsum,
+			Duebilltakeoutdate,
+			Duebillterminatedate,
+			settlementdate,
+			Repaytype,
+			Fiveclasscode" />
+		<property name="primaryKey" value="pbLoaninfoId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPbLoaninfo" />
+	</bean>
+	
+	<bean id="PbLoansameinfoHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="类贷款" />
+		<property name="headMapping" value="Financecode,
+			Loankindcode,
+			Currency,
+			Duebillsum,
+			Duebilltakeoutdate,
+			Duebillterminatedate,
+			Settlementdate,
+			Repaytype,
+			Fiveclasscode" />
+		<property name="primaryKey" value="pbLoansameinfoId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPbLoansameinfo" />
+	</bean>
+	
+	<bean id="PbTradefinancingHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="贸易融资" />
+		<property name="headMapping" value="Financecode,
+			Financekindcode,
+			Currency,
+			Financesum,
+			Duebilltakeoutdate,
+			Duebillterminatedate,
+			Settlementdate,
+			Repaymentmethod,
+			Fiveclasscode" />
+		<property name="primaryKey" value="pbTradefinancingId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPbTradefinancing" />
+	</bean>
+	
+	<bean id="PbFactoringHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="保理" />
+		<property name="headMapping" value="Financecode,
+			Assureproductcode,
+			Currency,
+			Extendsum,
+			Extenddate,
+			Settlementdate,
+			Fiveclasscode,
+			Paidbackflag" />
+		<property name="primaryKey" value="pbFactoringId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPbFactoring" />
+	</bean>
+	
+	<bean id="PbBilldiscountHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="票据贴现" />
+		<property name="headMapping" value="Financecode,
+			Currency,
+			Discountsum,
+			Discountdate,
+			Duebillterminatedate,
+			Settlementdate,
+			Fiveclasscode" />
+		<property name="primaryKey" value="pbBilldiscountId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPbBilldiscount" />
+	</bean>
+	
+	<bean id="PbBankacceptanceHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="银行承兑汇票" />
+		<property name="headMapping" value="Financecode,
+			Currency,
+			Posum,
+			Postartdate,
+			Postopdate,
+			Settlementdate,
+			Fiveclasscode,
+			Paidbackflag" />
+		<property name="primaryKey" value="pbBankacceptanceId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPbBankacceptance" />
+	</bean>
+	
+	<bean id="PbLettercreditHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="信用证" />
+		<property name="headMapping" value="Financecode,
+			Currency,
+			Lettersum,
+			Letterdate,
+			Letterinvaliddate,
+			Cancellationdate,
+			Fiveclasscode,
+			Paidbackflag" />
+		<property name="primaryKey" value="pbLettercreditId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPbLettercredit" />
+	</bean>
+	
+	<bean id="PbLetterguaranteeHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="已结清业务" />
+		<property name="endTitle" value="对外担保记录" />
+		<property name="head" value="保函" />
+		<property name="headMapping" value="Financecode,
+			Guaranteeletterkindcode,
+			Currency,
+			Lettersum,
+			Startdate,
+			Terminatedate,
+			Settlementdate,
+			Fiveclasscode,
+			Paidbackflag" />
+		<property name="primaryKey" value="pbLetterguaranteeId" />
+		<property name="fixKeyValue" value="" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrPbLetterguarantee" />
+	</bean>
+	
+	<bean id="DebthistoryHandle" class="com.tansun.di.crawler.table.handle.enterprise.EFetchHandle"
+		scope="prototype">
+		<property name="startTitle" value="负债变化历史" />
+		<property name="endTitle" value="对外担保信息概要" />
+		<property name="head" value="负债变化历史" />
+		<property name="headMapping" value="liabilitiesdate,toalliabilitiessum,toalbadliabilitiessum" />
+		<property name="primaryKey" value="debthistoryId" />
+		<property name="fixKeyValue" value="tr" />
+		<property name="startrow" value="0" />
+		<property name="model" value="com.tansun.easycare.modules.credit.entity.enterprise.EcNrDebthistory" />
+	</bean>
+</beans>

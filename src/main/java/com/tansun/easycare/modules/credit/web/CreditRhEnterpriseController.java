@@ -104,8 +104,10 @@ public class CreditRhEnterpriseController extends BaseController {
             paramMap.put("loancardcode",dataCapture.getLoanCardNo());
             paramMap.put("searchReasonCode",dataCapture.getSearchReason());
             String html = enterprise.enterpriseSearch(paramMap);
-//            html= creditRhEnterpriseService.enterpriseSearch(html, request);
-            creditRhEnterpriseService.jsoupToObject(html);//解析
+            //结构化解析
+            creditRhEnterpriseService.jsoupToObject(html);
+            
+            html= creditRhEnterpriseService.enterpriseSearch(html, request);
             model.addAttribute("resultHtml",html);
             dataCapture.setId(UUID.randomUUID().toString().replaceAll("-",""));
             dataCapture.setCreateUser(user.getId());

@@ -33,8 +33,20 @@ public class EcNrSummaryguarantee {
     private Date updateDate;
     @Column(name = "total",length = 2000)
     private String total;
+    
+    @Column(name = "type",length = 200)
+    private String type;
+    
+    
+    public String getType() {
+		return type;
+	}
 
-    public String getSummaryguaranteeId() {
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getSummaryguaranteeId() {
         return summaryguaranteeId;
     }
 

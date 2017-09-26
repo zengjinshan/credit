@@ -1,7 +1,7 @@
 package com.tansun.easycare.modules.credit.service.impl;
 
+
 import com.tansun.di.crawler.table.handle.enterprise.ETableHandle;
-import com.tansun.di.crawler.table.handle.people.TableHandle;
 import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.framework.service.BaseService;
 import com.tansun.easycare.framework.util.CreditPropertyUtil;
@@ -116,15 +116,18 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 		Elements trEls = root.select("body").select("table");
 		Iterator<Element> itable = trEls.iterator();
 
+		
+		allObjectList.addAll(parseAndSaveFetch(trEls,reportId));
 		allObjectList.addAll(parseAndSave(itable,reportId));
-		if(allObjectList.size()>0)
-		{
-			try {
-				baseService.batchSave(allObjectList);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		}
+				
+//		if(allObjectList.size()>0)
+//		{
+//			try {
+//				baseService.batchSave(allObjectList);
+//			} catch (Exception e1) {
+//				e1.printStackTrace();
+//			}
+//		}
 		System.out.println("end");
 	}
 
@@ -132,7 +135,6 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 	
 	//重入锁
 	 private Lock lock1 = new ReentrantLock();
-	//重入锁
 	 private Lock lock2 = new ReentrantLock();
 	 
 	 
@@ -148,23 +150,43 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 			while(tableElementIterator.hasNext())
 			{
 				Element element=tableElementIterator.next();
-				
-				ETableHandle handle = tableAdapter.getTableHandle(element);
-				if(handle==null)
+				if(!element.text().trim().equals("")&&!element.text().trim().equals(" "))
 				{
-					continue;
-				}
-				handle.setReportId(reportId);
-				try {
-//					handle.save();
-					allObjectList.addAll(handle.getList());
-				} catch (Exception e) {
-					
+					System.out.println(element.text());
+					ETableHandle handle = tableAdapter.getTableHandle(element);
+					if(handle==null)
+					{
+						continue;
+					}
+					handle.setReportId(reportId);
+					try {
+	//					handle.save();
+						allObjectList.addAll(handle.getList());
+						System.out.println(allObjectList.size());
+					} catch (Exception e) {
+						
+					}
 				}
 			}
 			return allObjectList;
 		} finally {
 			lock1.unlock();
+		}
+		
+	}
+	
+	private List<Object> parseAndSaveFetch(Elements tableElementIterator,String reportId) {
+		lock2.lock();
+		try {
+			List<ETableHandle> handleList = tableAdapter.getFetchHandle();
+			List<Object> allObjectList=new ArrayList<Object>();
+			for(ETableHandle handle:handleList)
+			{
+				allObjectList.addAll(handle.commonParse(tableElementIterator, reportId));
+			}
+			return allObjectList;
+		} finally {
+			lock2.unlock();
 		}
 		
 	}

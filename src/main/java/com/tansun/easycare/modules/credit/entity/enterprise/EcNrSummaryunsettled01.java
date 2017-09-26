@@ -33,7 +33,21 @@ public class EcNrSummaryunsettled01 {
     private String paidbackbalancesumBalance;
 	@Column(name = "UPDATE_DATE")
     private Date updateDate;
-
+	
+	//EcNrSummaryunsettled03
+	@Column(name = "GuaranteeNum",length = 8)
+    private String guaranteenum;
+	@Column(name = "GuaranteeBalance",length = 20)
+    private String guaranteebalance;
+	@Column(name = "GuaranteePayOffDate",length = 10)
+    private String guaranteepayoffdate;
+	@Column(name = "InsuranceNum",length = 8)
+    private String insurancenum;
+	@Column(name = "InsuranceBalance",length = 20)
+    private String insurancebalance;
+	@Column(name = "InsurancePayOffDate",length = 10)
+    private String insurancepayoffdate;
+	
     public String getSummaryunsettled01Id() {
         return summaryunsettled01Id;
     }
@@ -112,5 +126,53 @@ public class EcNrSummaryunsettled01 {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+    
+    public String getGuaranteenum() {
+        return guaranteenum;
+    }
+
+    public void setGuaranteenum(String guaranteenum) {
+        this.guaranteenum = guaranteenum == null ? null : guaranteenum.trim();
+    }
+
+    public String getGuaranteebalance() {
+        return guaranteebalance;
+    }
+
+    public void setGuaranteebalance(String guaranteebalance) {
+        this.guaranteebalance = guaranteebalance == null ? null : guaranteebalance.trim();
+    }
+
+    public String getGuaranteepayoffdate() {
+        return guaranteepayoffdate;
+    }
+
+    public void setGuaranteepayoffdate(String guaranteepayoffdate) {
+        this.guaranteepayoffdate = guaranteepayoffdate == null ? null : guaranteepayoffdate.trim();
+    }
+
+    public String getInsurancenum() {
+        return insurancenum;
+    }
+
+    public void setInsurancenum(String insurancenum) {
+        this.insurancenum = insurancenum == null ? null : insurancenum.trim();
+    }
+
+    public String getInsurancebalance() {
+        return insurancebalance;
+    }
+
+    public void setInsurancebalance(String insurancebalance) {
+        this.insurancebalance = insurancebalance == null ? null : insurancebalance.trim();
+    }
+
+    public String getInsurancepayoffdate() {
+        return insurancepayoffdate;
+    }
+
+    public void setInsurancepayoffdate(String insurancepayoffdate) {
+        this.insurancepayoffdate = insurancepayoffdate == null ? null : insurancepayoffdate.trim();
     }
 }

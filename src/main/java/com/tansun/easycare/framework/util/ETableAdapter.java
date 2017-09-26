@@ -1,5 +1,6 @@
 package com.tansun.easycare.framework.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,28 @@ public class ETableAdapter {
 			if (handle.match(tableElement)) {
 				handle.setTableElement(tableElement);
 				// TODO 暂时不删
-				// handleList.remove(handle);
+				 handleList.remove(handle);
 				break;
 			} else {
 				th = null;
+			}
+		}
+		return th;
+	}
+	
+	public List<ETableHandle> getFetchHandle()
+	{
+		List<ETableHandle> th = new ArrayList<ETableHandle>();
+		for (ETableHandle handle : handleList) {
+			if (handle.getStartTitle()!=null) {
+				th.add(handle);
+			} 
+		}
+		if(th.size()>0)
+		{
+			for(ETableHandle handle : th)
+			{
+				handleList.remove(handle);
 			}
 		}
 		return th;

@@ -29,7 +29,7 @@
 	<!-- Context ConfigLocation -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring-context.xml,classpath:spring-context-shiro.xml,classpath:tableConfig.xml</param-value>
+		<param-value>classpath:spring-context.xml,classpath:spring-context-shiro.xml,classpath:tableConfig.xml,classpath:creditConfig.xml</param-value>
 	</context-param>
 	<listener>
 		<listener-class>com.tansun.easycare.modules.sys.listener.WebContextListener</listener-class>

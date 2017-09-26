@@ -59,11 +59,7 @@ public class ETypeBHandle extends ETableHandle {
 		for (int i = 2; i < trs.size(); i++) {
 			Element tr = trs.get(i);
 			Object obj = getBean(tr, true, null);
-			if (model.indexOf("RNRFellbackSum") > -1 || model.indexOf("RNRRecordSummary") > -1||model.indexOf("RNrOverduesum") > -1) {
-				valueList.addAll((List<Object>) obj);
-			} else {
-				valueList.add(obj);
-			}
+			valueList.add(obj);
 		}
 		return valueList;
 	}
@@ -77,7 +73,7 @@ public class ETypeBHandle extends ETableHandle {
 		String[] actrualHead = parserHead(element, 1);
 		if (actrualHead != null && actrualHead.length == getHead().length) {
 			for (int i = 0; i < actrualHead.length; i++) {
-				if (!getHead()[i].equals(actrualHead[i])) {
+				if (!getHead()[i].equals(actrualHead[i].trim().replace(" ", ""))) {
 					match = false;
 					return match;
 				}
@@ -90,7 +86,7 @@ public class ETypeBHandle extends ETableHandle {
 		String[] subHead = parserHead(element, 2);
 		if (subHead != null && subHead.length == getSubHead().length) {
 			for (int i = 0; i < actrualHead.length; i++) {
-				if (!getHead()[i].equals(actrualHead[i])) {
+				if (!getHead()[i].equals(actrualHead[i].trim().replace(" ", ""))) {
 					match = false;
 					return match;
 				}
@@ -138,10 +134,6 @@ public class ETypeBHandle extends ETableHandle {
 					BeanUtil.set(obj, fixKeyValue.split("=")[0], fixKeyValue.split("=")[1]);
 			}
 		}
-		List<Object> sumList = null;
-		if (model.indexOf("RNRFellbackSum") > -1 || model.indexOf("RNRRecordSummary") > -1 ||model.indexOf("RNrOverduesum") > -1) {
-			sumList = new ArrayList<Object>();
-		}
 
 		Iterator<Element> itd = tds.iterator();
 		int index = 0;
@@ -151,59 +143,16 @@ public class ETypeBHandle extends ETableHandle {
 		}
 		while (itd.hasNext()) {
 			Element td = itd.next();
-			if (model.indexOf("RNRFellbackSum") > -1) {
-				BeanUtil.set(obj, mapping[index % 2], td.text());
-				if (index % 2 == 1) {
-					BeanUtil.set(obj, mapping[2], "000" + index / 2);
-					fillCommonField(obj,99,null);
-					sumList.add(obj);
-					obj = BeanUtil.getInstance(model);
+			if (!"".equals(mapping[index])) {
+				String value = td.text().trim();
+				if (obj instanceof RNRMessageHeader) {
+					value = value.substring(value.indexOf(":")+1, value.length());
 				}
-			} 
-			else if (model.indexOf("RNrOverduesum") > -1) {
-				BeanUtil.set(obj, mapping[index % 4], td.text());
-				if (index % 4 == 3) {
-					BeanUtil.set(obj, mapping[4], "000" + index / 3);
-					fillCommonField(obj,99,null);
-					sumList.add(obj);
-					obj = BeanUtil.getInstance(model);
-				}
-			}
-			else if (model.indexOf("RNRRecordSummary") > -1) {
-				obj = genereRecordSummaryBean(index, td);
-				sumList.add(obj);
-			} else {
-				if (!"".equals(mapping[index])) {
-					String value = td.text().trim();
-					if (obj instanceof RNRMessageHeader) {
-						value = value.substring(value.indexOf(":")+1, value.length());
-					}
-					BeanUtil.set(obj, mapping[index],value);
-					fillCommonField(obj,99,null);
-				}
+				BeanUtil.set(obj, mapping[index],value);
 			}
 			index++;
 		}
-		if (model.indexOf("RNRFellbackSum") > -1 || model.indexOf("RNRRecordSummary") > -1 ||model.indexOf("RNrOverduesum") > -1) {
-			return sumList;
-		} else {
-			return obj;
-		}
-	}
-
-	private Object genereRecordSummaryBean(int index, Element td) {
-		Object obj;
-		obj = BeanUtil.getInstance(model);
 		fillCommonField(obj,99,null);
-		BeanUtil.set(obj, this.getSubHeadMapping()[0], this.getSubHead()[index].trim());
-		BeanUtil.set(obj, this.getSubHeadMapping()[1], td.text().trim());
-		if (index < 2) {
-			BeanUtil.set(obj, "type", "0001");
-		} else if (index >= 2 && index < 5) {
-			BeanUtil.set(obj, "type", "0002");
-		} else if (index >= 5 && index < 9) {
-			BeanUtil.set(obj, "type", "0003");
-		}
 		return obj;
 	}
 }
