@@ -459,9 +459,10 @@ public abstract class ETableHandle {
 	}
 
 	protected void fillCommonField(Object obj,int position,String keyId) {
-		BeanUtil.set(obj, REPORTID, reportId);
+		
 		if(primaryKey!=null)
 			BeanUtil.set(obj, primaryKey, UUID.randomUUID().toString().toLowerCase());
+		BeanUtil.set(obj, REPORTID, reportId);
 		if(firPrimaryKey!=null)
 		{
 			String uuid=UUID.randomUUID().toString().toLowerCase();

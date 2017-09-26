@@ -120,14 +120,14 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 		allObjectList.addAll(parseAndSaveFetch(trEls,reportId));
 		allObjectList.addAll(parseAndSave(itable,reportId));
 				
-//		if(allObjectList.size()>0)
-//		{
-//			try {
-//				baseService.batchSave(allObjectList);
-//			} catch (Exception e1) {
-//				e1.printStackTrace();
-//			}
-//		}
+		if(allObjectList.size()>0)
+		{
+			try {
+				baseService.batchSave(allObjectList);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
 		System.out.println("end");
 	}
 
@@ -182,6 +182,7 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 			List<Object> allObjectList=new ArrayList<Object>();
 			for(ETableHandle handle:handleList)
 			{
+				handle.setReportId(reportId);
 				allObjectList.addAll(handle.commonParse(tableElementIterator, reportId));
 			}
 			return allObjectList;

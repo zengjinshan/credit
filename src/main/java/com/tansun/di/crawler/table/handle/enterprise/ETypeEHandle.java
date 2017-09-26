@@ -81,6 +81,7 @@ public class ETypeEHandle extends ETableHandle {
 			}
 			
 		}
+		fillCommonField(obj,99,null);
 		return obj;
 	}
 	

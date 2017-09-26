@@ -163,7 +163,8 @@ public class EFetchHandle  extends ETableHandle {
 
 					// 主键
 					BeanUtil.set(obj, getPrimaryKey(), UUID.randomUUID().toString().toLowerCase());
-					BeanUtil.set(obj, "reportId", "");
+					System.out.println("reportId:"+getReportId());
+					BeanUtil.set(obj, "reportId", getReportId());
 					BeanUtil.set(obj, "updateDate", new Date());
 					
 					
@@ -236,7 +237,7 @@ public class EFetchHandle  extends ETableHandle {
 						{
 							obj = (Object) clazz.newInstance();
 							BeanUtil.set(obj, getPrimaryKey(), UUID.randomUUID().toString().toLowerCase());
-							BeanUtil.set(obj, "reportId", "");
+							BeanUtil.set(obj, "reportId", getReportId());
 							BeanUtil.set(obj, "updateDate", new Date());
 						}
 						String f = fs[rowIndex].trim();
