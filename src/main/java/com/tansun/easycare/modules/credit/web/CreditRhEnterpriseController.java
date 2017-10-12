@@ -4,14 +4,9 @@ import com.tansun.easycare.common.Constant;
 import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.core.web.BaseController;
 import com.tansun.easycare.framework.httpspider.EnterpriseCredit;
-import com.tansun.easycare.framework.httpspider.PersonCredit;
 import com.tansun.easycare.framework.service.BaseService;
-import com.tansun.easycare.framework.util.CreditPropertyUtil;
-import com.tansun.easycare.framework.util.DownFile;
-import com.tansun.easycare.framework.util.HtmlRegxUtil;
 import com.tansun.easycare.framework.util.MsgIdUtil;
 import com.tansun.easycare.modules.credit.domain.EnterpriseDataCapture;
-import com.tansun.easycare.modules.credit.domain.PersonDataCapture;
 import com.tansun.easycare.modules.credit.domain.RhSearchLog;
 import com.tansun.easycare.modules.credit.domain.RhUser;
 import com.tansun.easycare.modules.credit.service.ICreditRhEnterpriseService;
@@ -19,19 +14,18 @@ import com.tansun.easycare.modules.sys.entity.Dict;
 import com.tansun.easycare.modules.sys.entity.User;
 import com.tansun.easycare.modules.sys.utils.DictUtils;
 import com.tansun.easycare.modules.sys.utils.UserUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.util.*;
 
 /**
@@ -90,12 +84,13 @@ public class CreditRhEnterpriseController extends BaseController {
         String username="";
         String password="";
         String outCode="";
+        String html="";
         try{
             List<RhUser> rhUsers = baseService.queryForListBySql("creditRhUserMapper.selectRhUser",map);
             if(rhUsers!=null&&rhUsers.size()>0){
-                username=rhUsers.get(0).getUserId();
-                password=rhUsers.get(0).getPassword();
-                outCode=rhUsers.get(0).getOutOrgCode();
+                    username=rhUsers.get(0).getUserId();
+                    password=rhUsers.get(0).getPassword();
+                    outCode=rhUsers.get(0).getOutOrgCode();
             }
             EnterpriseCredit enterprise=new EnterpriseCredit();
 //            String login = enterprise.login(username, password, outCode);
@@ -106,7 +101,7 @@ public class CreditRhEnterpriseController extends BaseController {
             String html = enterprise.enterpriseSearch(paramMap);
             //结构化解析
             creditRhEnterpriseService.jsoupToObject(html);
-            
+
             html= creditRhEnterpriseService.enterpriseSearch(html, request);
             model.addAttribute("resultHtml",html);
             dataCapture.setId(UUID.randomUUID().toString().replaceAll("-",""));

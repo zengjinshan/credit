@@ -1,24 +1,19 @@
 package com.tansun.easycare.framework.httpspider;
 
 import com.tansun.easycare.framework.util.CreditPropertyUtil;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
@@ -205,7 +200,7 @@ public class PersonCredit {
                         }
                     }
                     if (!"1402".equals(creditResult)){
-                        creditResult = new String(baos.toByteArray(),"utf8");//GBK
+                        creditResult = new String(baos.toByteArray(),"gbk");//GBK
                         logger.info("查询结果====================:"+creditResult);
                     }
                 }catch(Exception e){

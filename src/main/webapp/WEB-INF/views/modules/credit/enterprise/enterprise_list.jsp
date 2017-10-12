@@ -114,9 +114,9 @@
         <tr onclick="checkLine(this);">
             <td><input type="checkbox" id="${enterpriseDataCapture.id }"></td>
             <td>${enterpriseDataCapture.loanCardNo}</td>
-            <td>${fns:getDictLabel(dataCapture.searchReason,"enterprise_query_reason" ,"")}</td>
+            <td>${fns:getDictLabel(enterpriseDataCapture.searchReason,"enterprise_query_reason" ,"")}</td>
             <td>
-                <fmt:formatDate value="${dataCapture.createDate}" pattern="yyyy-MM-dd HH:mm:ss" type="both"/>
+                <fmt:formatDate value="${enterpriseDataCapture.createDate}" pattern="yyyy-MM-dd HH:mm:ss" type="both"/>
             </td>
         </tr>
     </c:forEach>

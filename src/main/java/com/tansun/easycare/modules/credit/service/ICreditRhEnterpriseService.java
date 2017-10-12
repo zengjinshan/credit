@@ -2,9 +2,9 @@ package com.tansun.easycare.modules.credit.service;
 
 import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.modules.credit.domain.EnterpriseDataCapture;
+import com.tansun.easycare.modules.sys.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * Author：jennie
@@ -25,5 +25,18 @@ public interface ICreditRhEnterpriseService {
     public String enterpriseSearch(String html, HttpServletRequest request)throws Exception;
 
 	public void jsoupToObject(String rawText);
+
+    /**
+     * 个人征信记录保存及日志记录
+     * @param dataCapture
+     * @param username
+     * @param pwd
+     * @param user
+     * @param resultHtml
+     * @throws Exception
+     */
+    void saveDataCaptureAndLog(EnterpriseDataCapture dataCapture,
+                               String username, String pwd, String outCode,
+                               User user, String resultHtml) throws Exception;
 
 }

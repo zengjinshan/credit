@@ -2,10 +2,17 @@ package com.tansun.easycare.modules.credit.service.impl;
 
 
 import com.tansun.di.crawler.table.handle.people.TableHandle;
+import com.tansun.easycare.common.Constant;
 import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.framework.service.BaseService;
+import com.tansun.easycare.framework.util.MsgIdUtil;
+import com.tansun.easycare.framework.util.TableAdapter;
 import com.tansun.easycare.modules.credit.domain.PersonDataCapture;
+import com.tansun.easycare.modules.credit.domain.RhSearchLog;
 import com.tansun.easycare.modules.credit.service.ICreditRhPersonService;
+import com.tansun.easycare.modules.sys.entity.User;
+import com.tansun.easycare.modules.sys.utils.DictUtils;
+import com.tansun.easycare.modules.sys.utils.UserUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,16 +20,11 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+
+import javax.annotation.Resource;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import javax.annotation.Resource;
-import com.tansun.easycare.framework.util.TableAdapter;
 
 /**
  * Created by admin on 2017/6/14.
@@ -121,8 +123,49 @@ public class CreditRhPersonServiceImpl implements ICreditRhPersonService {
 		}	
 	}
 
+	@Override
+	public void saveDataCaptureAndLog(PersonDataCapture dataCapture,
+									  String username, String pwd,
+									  User user,String resultHtml) throws Exception {
+		//人行个人征信查询日志
+		RhSearchLog searchLog=new RhSearchLog();
+		searchLog.setId(UUID.randomUUID().toString().replaceAll("-",""));
+		searchLog.setCreateDate(new Date());
+		searchLog.setSearcherLoginIp(UserUtils.getUser().getLoginIp());
+		searchLog.setSearcherLoginRhPassword(pwd);
+		searchLog.setSearcherLoginRhUserId(username);
+		searchLog.setQuerySeri(MsgIdUtil.randomForNum(7));
+		searchLog.setCreateUser(user.getId());
+		searchLog.setCreateUserName(user.getName());
+		searchLog.setPeFlag(Constant.CREDIT_PERSON);
+		searchLog.setSearcher(dataCapture.getSearchedUserName());
+		searchLog.setSearcherNo(dataCapture.getSearchedCerNo());
+		searchLog.setSearchType(DictUtils.getDictLabel(dataCapture.getSearchedCerType(),"cer_type",""));
+		try{
+			dataCapture.setUpdateDate(new Date());
+			dataCapture.setUpdateUser(UserUtils.getUser().getId());
+			dataCapture.setId(UUID.randomUUID().toString().replaceAll("-",""));
+			dataCapture.setCaptureData(resultHtml);
+			dataCapture.setCreateDate(new Date());
+			dataCapture.setCreateUser(UserUtils.getUser().getId());
+			dataCapture.setQuerySuccess("1");
+			dataCapture.setSearcherLoginIp(UserUtils.getUser().getLoginIp());
+			dataCapture.setSearcherLoginRhPassword(pwd);
+			dataCapture.setSearcherLoginRhUserId(username);
+			dataCapture.setSearcherName(UserUtils.getUser().getName());
+			baseService.insertBySql("creditRhPersonMapper.saveDataCapture",dataCapture);
+			searchLog.setQuerySuccess("1");
+		}catch (Exception e){
+			searchLog.setQuerySuccess("0");
+		}
+		try {
+			baseService.save(searchLog);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 
-	
+
 	//重入锁
 	 private Lock lock1 = new ReentrantLock();
 	//重入锁

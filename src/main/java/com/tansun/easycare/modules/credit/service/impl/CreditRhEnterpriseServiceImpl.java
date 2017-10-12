@@ -2,14 +2,16 @@ package com.tansun.easycare.modules.credit.service.impl;
 
 
 import com.tansun.di.crawler.table.handle.enterprise.ETableHandle;
+import com.tansun.di.crawler.table.handle.people.TableHandle;
+import com.tansun.easycare.common.Constant;
 import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.framework.service.BaseService;
-import com.tansun.easycare.framework.util.CreditPropertyUtil;
-import com.tansun.easycare.framework.util.DownFile;
-import com.tansun.easycare.framework.util.ETableAdapter;
-import com.tansun.easycare.framework.util.HtmlRegxUtil;
+import com.tansun.easycare.framework.util.*;
 import com.tansun.easycare.modules.credit.domain.EnterpriseDataCapture;
+import com.tansun.easycare.modules.credit.domain.RhSearchLog;
 import com.tansun.easycare.modules.credit.service.ICreditRhEnterpriseService;
+import com.tansun.easycare.modules.sys.entity.User;
+import com.tansun.easycare.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -116,10 +115,10 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 		Elements trEls = root.select("body").select("table");
 		Iterator<Element> itable = trEls.iterator();
 
-		
+
 		allObjectList.addAll(parseAndSaveFetch(trEls,reportId));
 		allObjectList.addAll(parseAndSave(itable,reportId));
-				
+
 		if(allObjectList.size()>0)
 		{
 			try {
@@ -131,10 +130,43 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 		System.out.println("end");
 	}
 
+    @Override
+    public void saveDataCaptureAndLog(EnterpriseDataCapture dataCapture,
+                                      String username, String pwd, String outCode,
+                                      User user, String resultHtml) throws Exception {
+        dataCapture.setId(UUID.randomUUID().toString().replaceAll("-",""));
+        dataCapture.setCreateUser(user.getId());
+        dataCapture.setSearcherLoginRhUserId(username);
+        dataCapture.setSearcherLoginRhPassword(pwd);
+        dataCapture.setCaptureData(resultHtml);
+        dataCapture.setCreateDate(new Date());
+        dataCapture.setSearcherOrgCode(outCode);
+        dataCapture.setSearchType("20");
+        baseService.insertBySql("creditRhEnterpriseMapper.saveEnterprise",dataCapture);
 
-	
-	//重入锁
+        RhSearchLog searchLog=new RhSearchLog();
+        searchLog.setId(UUID.randomUUID().toString().replaceAll("-",""));
+        searchLog.setCreateDate(new Date());
+        searchLog.setSearcherLoginIp(UserUtils.getUser().getLoginIp());
+        searchLog.setSearcherLoginRhPassword(pwd);
+        searchLog.setSearcherLoginRhUserId(username);
+        searchLog.setQuerySeri(MsgIdUtil.randomForNum(7));
+        searchLog.setCreateUser(user.getId());
+        searchLog.setCreateUserName(user.getName());
+        searchLog.setPeFlag(Constant.CREDIT_ENTERPRISE);
+        searchLog.setSearcherNo(dataCapture.getLoanCardNo());
+        Document doc = Jsoup.parse(resultHtml);
+        String searcher = doc.select("span.black").first().text();
+        searcher=searcher.substring(2,searcher.length());
+        searchLog.setSearcher(searcher);
+        searchLog.setSearchType("中征码");
+        baseService.save(searchLog);
+    }
+
+
+    //重入锁
 	 private Lock lock1 = new ReentrantLock();
+	//重入锁
 	 private Lock lock2 = new ReentrantLock();
 	 
 	 
@@ -164,7 +196,7 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 						allObjectList.addAll(handle.getList());
 						System.out.println(allObjectList.size());
 					} catch (Exception e) {
-						
+
 					}
 				}
 			}
@@ -174,7 +206,7 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 		}
 		
 	}
-	
+
 	private List<Object> parseAndSaveFetch(Elements tableElementIterator,String reportId) {
 		lock2.lock();
 		try {
@@ -189,6 +221,6 @@ public class CreditRhEnterpriseServiceImpl implements ICreditRhEnterpriseService
 		} finally {
 			lock2.unlock();
 		}
-		
+
 	}
 }

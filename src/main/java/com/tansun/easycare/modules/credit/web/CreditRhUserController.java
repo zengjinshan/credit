@@ -51,7 +51,7 @@ public class CreditRhUserController extends BaseController {
             Page<RhUser> rhUserList = creditRhUserService.findRhUserList(type, code, new Page<RhUser>(request, response));
             model.addAttribute("page", rhUserList);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         List<Dict> rh_user_type = DictUtils.getDictList("rh_user_type");
         model.addAttribute("dicts",rh_user_type);

@@ -15,11 +15,11 @@
         </if>
 
         <if test="beginDate !=null and beginDate!=''">
-            AND CREATE_DATE>=#{createDate}
+            AND CREATE_DATE>=to_timestamp(#{beginDate},'yyyy-MM-dd hh24:mi:ss.ff')
         </if>
 
         <if test="endDate !=null and endDate!=''">
-            AND CREATE_DATE &lt;=#{endDate}
+            AND CREATE_DATE &lt;=to_timestamp(#{endDate},'yyyy-MM-dd hh24:mi:ss.ff')
         </if>
         ORDER  BY CREATE_DATE DESC
 

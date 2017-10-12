@@ -30,7 +30,7 @@
 	<context:component-scan base-package="com.tansun.easycare"><!-- base-package 如果多个，用“,”分隔 -->
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
-	
+
  	<!-- MyBatis begin -->
     <bean id="sqlSessionFactory" class="org.tansun.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>

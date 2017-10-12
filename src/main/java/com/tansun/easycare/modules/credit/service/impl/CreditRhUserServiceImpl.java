@@ -37,6 +37,6 @@ public class CreditRhUserServiceImpl implements ICreditRhUserService {
     public void delete(String id) throws Exception {
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("id",id);
-        baseService.queryForObjectBySql("creditRhUserMapper.deleteRhUser", map);
+        baseService.deleteBySql("creditRhUserMapper.deleteRhUser", map);
     }
 }

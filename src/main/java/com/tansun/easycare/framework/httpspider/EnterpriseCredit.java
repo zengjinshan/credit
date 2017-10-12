@@ -10,20 +10,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.params.AllClientPNames;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -234,7 +228,7 @@ public class EnterpriseCredit {
                         }
                     }
                     if (!"1402".equals(creditResult)) {
-                        creditResult = new String(baos.toByteArray(), "utf8");//gbk
+                        creditResult = new String(baos.toByteArray(), "gbk");//gbk
                         //logger.info("查询结果====================:" + creditResult);
                     }
                 } catch (Exception e) {

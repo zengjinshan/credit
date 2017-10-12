@@ -14,6 +14,7 @@ import com.tansun.easycare.modules.sys.entity.Dict;
 import com.tansun.easycare.modules.sys.entity.User;
 import com.tansun.easycare.modules.sys.utils.DictUtils;
 import com.tansun.easycare.modules.sys.utils.UserUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -105,53 +106,44 @@ public class CreditRhPersonController extends BaseController {
         String username="";
         String password="";
         try {
+
             List<RhUser> rhUsers = baseService.queryForListBySql("creditRhUserMapper.selectRhUser",map);
             if(rhUsers!=null&&rhUsers.size()>0){
-                username=rhUsers.get(0).getUserId();
-                password=rhUsers.get(0).getPassword();
+                    username=rhUsers.get(0).getUserId();
+                    password=rhUsers.get(0).getPassword();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //人行个人征信查询日志
-        RhSearchLog searchLog=new RhSearchLog();
-        searchLog.setId(UUID.randomUUID().toString().replaceAll("-",""));
-        searchLog.setCreateDate(new Date());
-        searchLog.setSearcherLoginIp(UserUtils.getUser().getLoginIp());
-        searchLog.setSearcherLoginRhPassword(password);
-        searchLog.setSearcherLoginRhUserId(username);
-        searchLog.setQuerySeri(MsgIdUtil.randomForNum(7));
-        searchLog.setCreateUser(user.getId());
-        searchLog.setCreateUserName(user.getName());
-        searchLog.setPeFlag(Constant.CREDIT_PERSON);
-        PersonCredit personCredit = new PersonCredit();
-        try{
-//            personCredit.login(username,password);//人行登录
-            //人行信用报告页面抓取
-           resultHtml = personCredit.personSearch(dataCapture.getSearchedCerType(), dataCapture.getSearchedCerNo(), dataCapture.getSearchedUserName(),
-                   dataCapture.getQueryReason(), "30", dataCapture.getQueryType());
-           creditRhPersonService.jsoupToObject(resultHtml);
-            int i = resultHtml.lastIndexOf("<tr>");
-            int j = resultHtml.lastIndexOf("</tr>");
-            resultHtml=resultHtml.replace(resultHtml.substring(i,j)," ");
-            dataCapture.setUpdateDate(new Date());
-            dataCapture.setUpdateUser(UserUtils.getUser().getId());
-            dataCapture.setId(UUID.randomUUID().toString().replaceAll("-",""));
-            dataCapture.setCaptureData(resultHtml);
-            dataCapture.setCreateDate(new Date());
-            dataCapture.setCreateUser(UserUtils.getUser().getId());
-            dataCapture.setQuerySuccess("1");
-            dataCapture.setSearcherLoginIp(UserUtils.getUser().getLoginIp());
-            dataCapture.setSearcherLoginRhPassword(password);
-            dataCapture.setSearcherLoginRhUserId(username);
-            dataCapture.setSearcherName(UserUtils.getUser().getName());
-            baseService.insertBySql("creditRhPersonMapper.saveDataCapture",dataCapture);
-            searchLog.setQuerySuccess("1");
-        }catch (Exception e){
-            searchLog.setQuerySuccess("0");
-        }
-        try {
-            baseService.save(searchLog);
+            List<PersonDataCapture> list = baseService.queryForListBySql("creditRhPersonMapper.selectCreditPersonList", dataCapture);
+            if(CollectionUtils.isEmpty(list)){
+                PersonCredit personCredit = new PersonCredit();
+                personCredit.login(username,password);//人行登录
+                //人行信用报告页面抓取
+                resultHtml = personCredit.personSearch(dataCapture.getSearchedCerType(), dataCapture.getSearchedCerNo(), dataCapture.getSearchedUserName(),
+                        dataCapture.getQueryReason(), "30", dataCapture.getQueryType());
+                creditRhPersonService.jsoupToObject(resultHtml);
+                int i = resultHtml.lastIndexOf("<tr>");
+                int j = resultHtml.lastIndexOf("</tr>");
+                resultHtml=resultHtml.replace(resultHtml.substring(i,j)," ");
+                creditRhPersonService.saveDataCaptureAndLog(dataCapture,username,password,user,resultHtml);
+            }else {
+                PersonDataCapture p = (PersonDataCapture) baseService.find(PersonDataCapture.class, list.get(0).getId());
+                resultHtml=p.getCaptureData();
+                RhSearchLog searchLog=new RhSearchLog();
+                searchLog.setId(UUID.randomUUID().toString().replaceAll("-",""));
+                searchLog.setCreateDate(new Date());
+                searchLog.setSearcherLoginIp(UserUtils.getUser().getLoginIp());
+                searchLog.setSearcherLoginRhPassword(password);
+                searchLog.setSearcherLoginRhUserId(username);
+                searchLog.setQuerySeri(MsgIdUtil.randomForNum(7));
+                searchLog.setCreateUser(user.getId());
+                searchLog.setCreateUserName(user.getName());
+                searchLog.setPeFlag(Constant.CREDIT_PERSON);
+                searchLog.setSearcher(dataCapture.getSearchedUserName());
+                searchLog.setSearcherNo(dataCapture.getSearchedCerNo());
+                searchLog.setSearchType(DictUtils.getDictLabel(dataCapture.getSearchedCerType(),"cer_type",""));
+                searchLog.setQuerySuccess("1");
+                baseService.save(searchLog);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
