@@ -7,7 +7,7 @@ import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.framework.service.BaseService;
 import com.tansun.easycare.framework.util.MsgIdUtil;
 import com.tansun.easycare.framework.util.TableAdapter;
-import com.tansun.easycare.modules.credit.domain.PersonDataCapture;
+import com.tansun.easycare.modules.credit.domain.person.PersonDataCapture;
 import com.tansun.easycare.modules.credit.domain.RhSearchLog;
 import com.tansun.easycare.modules.credit.service.ICreditRhPersonService;
 import com.tansun.easycare.modules.sys.entity.User;

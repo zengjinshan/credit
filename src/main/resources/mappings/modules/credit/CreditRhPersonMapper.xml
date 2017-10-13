@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="creditRhPersonMapper">
 
-    <select id="selectCreditPersonList" resultType="com.tansun.easycare.modules.credit.domain.PersonDataCapture">
+    <select id="selectCreditPersonList" resultType="com.tansun.easycare.modules.credit.domain.person.PersonDataCapture">
         SELECT id,
         CREATE_DATE AS createDate,
         UPDATE_DATE AS updateDate,

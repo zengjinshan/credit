@@ -6,7 +6,7 @@ import com.tansun.easycare.core.web.BaseController;
 import com.tansun.easycare.framework.httpspider.PersonCredit;
 import com.tansun.easycare.framework.service.BaseService;
 import com.tansun.easycare.framework.util.MsgIdUtil;
-import com.tansun.easycare.modules.credit.domain.PersonDataCapture;
+import com.tansun.easycare.modules.credit.domain.person.PersonDataCapture;
 import com.tansun.easycare.modules.credit.domain.RhSearchLog;
 import com.tansun.easycare.modules.credit.domain.RhUser;
 import com.tansun.easycare.modules.credit.service.ICreditRhPersonService;

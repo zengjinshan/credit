@@ -1,7 +1,7 @@
 package com.tansun.easycare.modules.credit.service;
 
 import com.tansun.easycare.core.persistence.Page;
-import com.tansun.easycare.modules.credit.domain.PersonDataCapture;
+import com.tansun.easycare.modules.credit.domain.person.PersonDataCapture;
 import com.tansun.easycare.modules.sys.entity.User;
 
 /**

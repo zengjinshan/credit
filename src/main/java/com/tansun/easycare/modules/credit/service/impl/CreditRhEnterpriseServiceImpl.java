@@ -2,12 +2,11 @@ package com.tansun.easycare.modules.credit.service.impl;
 
 
 import com.tansun.di.crawler.table.handle.enterprise.ETableHandle;
-import com.tansun.di.crawler.table.handle.people.TableHandle;
 import com.tansun.easycare.common.Constant;
 import com.tansun.easycare.core.persistence.Page;
 import com.tansun.easycare.framework.service.BaseService;
 import com.tansun.easycare.framework.util.*;
-import com.tansun.easycare.modules.credit.domain.EnterpriseDataCapture;
+import com.tansun.easycare.modules.credit.domain.enterprise.EnterpriseDataCapture;
 import com.tansun.easycare.modules.credit.domain.RhSearchLog;
 import com.tansun.easycare.modules.credit.service.ICreditRhEnterpriseService;
 import com.tansun.easycare.modules.sys.entity.User;

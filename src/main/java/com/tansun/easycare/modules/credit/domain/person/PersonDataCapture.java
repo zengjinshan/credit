@@ -1,4 +1,4 @@
-package com.tansun.easycare.modules.credit.domain;
+package com.tansun.easycare.modules.credit.domain.person;
 
 import com.tansun.easycare.core.persistence.DataEntity;
 

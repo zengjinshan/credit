@@ -62,7 +62,8 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
         <property name="loadTimeWeaver" ref="loadTimeWeaver"/>
-        <property name="packagesToScan" value="com.tansun.easycare.modules.*.domain.**,com.tansun.easycare.modules.credit.entity.people,com.tansun.easycare.modules.credit.entity.enterprise" />
+        <property name="packagesToScan" value="com.tansun.easycare.modules.*.domain.**,
+        com.tansun.easycare.modules.credit.entity.**" />
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
